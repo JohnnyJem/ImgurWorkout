@@ -1,0 +1,49 @@
+
+
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/cvimage"
+    app:cardBackgroundColor="@color/backgroundcolor">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:adjustViewBounds="true"
+            android:id="@+id/imgur_img_cv"/>
+
+        <LinearLayout
+            android:layout_marginLeft="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@color/backgroundcolor">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/imgur_title_cv"
+            android:text="title"
+            android:textSize="17sp"
+            android:singleLine="true"
+            android:gravity="start"
+            android:paddingTop="3dp"
+            android:paddingLeft="3dp"
+
+            />
+
+        </LinearLayout>
+
+
+
+
+    </LinearLayout>
+</LinearLayout>
+</android.support.v7.widget.CardView>

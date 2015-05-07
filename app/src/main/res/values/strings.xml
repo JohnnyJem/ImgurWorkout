@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">Imgur Workout</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_playlist">PlaylistActivity</string>
+
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Start Page</string>
+    <string name="hello_blank_fragment2">Second Page</string>
+    <string name="title_activity_base">BaseActivity</string>
+    <string name="title_activity_import">ImportActivity</string>
+    <string name="playlist_your">Playlists</string>
+    <string name="resources_your">Resources</string>
+    <string name="albums_your">Albums</string>
+    <string name="tags_your">Tags</string>
+    <string name="title_activity_imgur_api">ImgurApi</string>
+    <string name="drawer_open">drawer open</string>
+    <string name="drawer_close">drawer close</string>
+    <string name="title_activity_twitter_gson">Import Playlist</string>
+    <string name="title_activity_library">Library</string>
+    <string name="title_activity_library_image_viewer">Album Viewer</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="title_activity_tutorial">Tutorial</string>
+    <string name="title_activity_download">DownloadActivity</string>
+</resources>

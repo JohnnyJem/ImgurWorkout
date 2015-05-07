@@ -1,0 +1,35 @@
+
+
+    <android.support.v7.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/cv"
+        app:cardBackgroundColor="@color/backgroundcolor">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:adjustViewBounds="true"
+                android:id="@+id/imgur_img_cv"
+                android:layout_weight="4"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="49dp"
+                android:id="@+id/imgur_title_cv"
+                android:text="title"
+                android:lines="1"
+                android:singleLine="true"
+                android:gravity="left"
+                android:layout_gravity="center"
+                android:background="@color/toolbarcolor"
+                android:padding="5dp"
+                />
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
