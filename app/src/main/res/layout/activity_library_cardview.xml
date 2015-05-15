@@ -19,17 +19,33 @@
                 android:adjustViewBounds="true"
                 android:id="@+id/imgur_img_cv"
                 android:layout_weight="4"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="49dp"
+                android:layout_height="wrap_content"
                 android:id="@+id/imgur_title_cv"
                 android:text="title"
+                android:textStyle="bold"
                 android:lines="1"
                 android:singleLine="true"
+                android:layout_weight="3"
                 android:gravity="left"
-                android:layout_gravity="center"
                 android:background="@color/toolbarcolor"
                 android:padding="5dp"
                 />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/imgur_img_description_cv"
+                    android:lines="1"
+                    android:singleLine="true"
+                    android:layout_weight="1"
+                    android:gravity="left"
+                    android:background="@color/toolbarcolor"
+                    android:padding="5dp"/>
+            </LinearLayout>
         </LinearLayout>
     </android.support.v7.widget.CardView>

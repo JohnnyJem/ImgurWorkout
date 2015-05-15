@@ -204,26 +204,35 @@ public class Imgur extends BaseActivity {
         if (loading != null && !loading.isDone() && !loading.isCancelled())
             return;
 
-        String enteredUrl = "https://api.imgur.com/3/album/"+imgurImportLink+".json";
+        final String enteredUrl = "https://api.imgur.com/3/album/"+imgurImportLink+".json";
+        final String CLIENTID = "3b78168400c66fd";
+        // This request loads a URL as JsonObject and invokes
+        // a callback on completion.
+
+
         // This request loads a URL as JsonObject and invokes
         // a callback on completion.
         loading = Ion.with(this)
                 .load(enteredUrl)
-                .setHeader("Authorization", "Client-ID " + "3b78168400c66fd")
                 .setLogging("ION_VERBOSE_LOGGING", Log.VERBOSE)
+                .setHeader("Authorization", "Client-ID " + CLIENTID)
                 .asJsonObject()
                 .setCallback(new FutureCallback<JsonObject>() {
                     @Override
                     public void onCompleted(Exception e, JsonObject result) {
-                        Log.v("JSONOBJECT",result.toString());
+                        //TODO: FIND OUT WHY JSONOBJECT RETURNS NULL.
                         // this is called back onto the ui thread, no Activity.runOnUiThread or Handler.post necessary.
+
                         if (e != null) {
-                            Toast.makeText(Imgur.this, "Error loading images", Toast.LENGTH_LONG).show();
+                            Toast.makeText(Imgur.this, "Error loading images", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Imgur.this, enteredUrl, Toast.LENGTH_LONG).show();
+
                             return;
                         }
-                      album = result.getAsJsonObject("data");
 
-                        if(album.has("images")){
+                        album = result.getAsJsonObject("data");
+
+                        if (album.has("images")) {
 
                             JsonArray images = album.getAsJsonArray("images");
 
@@ -239,9 +248,9 @@ public class Imgur extends BaseActivity {
                                 }
                             }
 
-                        }else {
+                        } else {
                             Toast.makeText(Imgur.this, "Failed to connect. " +
-                                    "Please try again."+"Make sure capitalization is correct", Toast.LENGTH_LONG).show();
+                                    "Please try again." + "Make sure capitalization is correct", Toast.LENGTH_LONG).show();
                         }
 
 
@@ -289,7 +298,6 @@ public class Imgur extends BaseActivity {
                final String filename = imgurAdapter.getItem(i).get("link").toString().replace("\"", "").substring(imgurAdapter.getItem(i).get("link").toString().replace("\"", "").lastIndexOf('/') + 1);
 
                 final int totalcount = imgurAdapter.getCount();
-                final String successFilePathDownload = null;
 
                 downloading = Ion.with(getBaseContext())
                         .load(imgurAdapter.getItem(i).get("link").toString().replace("\"", ""))
@@ -315,15 +323,13 @@ public class Imgur extends BaseActivity {
 
                                 if (e != null) {
                                     Toast.makeText(getBaseContext(), "Error downloading file " + count, Toast.LENGTH_LONG).show();
-                                   String filepath = getFileStreamPath(filename).toString();
+                                    String filepath =  getFileStreamPath(filename).toString();
                                     count++;
                                     resetDownload(filepath);
                                     return;
                                 }
                                 count++;
-                                 String filepath = getFileStreamPath(filename).toString();
 
-                                resetDownload(filepath);
                             }
                         });
 

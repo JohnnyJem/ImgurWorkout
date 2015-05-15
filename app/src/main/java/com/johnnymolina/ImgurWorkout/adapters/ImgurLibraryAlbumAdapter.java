@@ -18,6 +18,8 @@ import com.johnnymolina.ImgurWorkout.activities.LibraryAlbumViewerActivity;
 import com.johnnymolina.ImgurWorkout.network.model.ImgurAlbum;
 import com.johnnymolina.ImgurWorkout.network.model.ImgurImage;
 
+import org.w3c.dom.Text;
+
 import java.io.File;
 
 import io.realm.Realm;
@@ -36,6 +38,7 @@ public class ImgurLibraryAlbumAdapter extends RealmRecyclerViewAdapter<ImgurAlbu
 
         public ImageView image;
         public TextView title;
+        public TextView description;
 
 
         public AlbumViewHolder(View view) {
@@ -46,7 +49,7 @@ public class ImgurLibraryAlbumAdapter extends RealmRecyclerViewAdapter<ImgurAlbu
 
             image = (ImageView) view.findViewById(R.id.imgur_img_cv);
             title = (TextView) view.findViewById(R.id.imgur_title_cv);
-
+            description = (TextView) view.findViewById(R.id.imgur_img_description_cv);
             //make the view from the viewholder clickable.
             view.setClickable(true);
             view.setOnClickListener(this);
@@ -113,6 +116,8 @@ public class ImgurLibraryAlbumAdapter extends RealmRecyclerViewAdapter<ImgurAlbu
         ImgurAlbum album = getItem(i);
         avh.title.setText(album.getTitle());
 
+        avh.description.setText(album.getDescription());
+
         albumID = album.getId();
 
         String imageId = album.getImages().get(0).getId();
@@ -126,8 +131,8 @@ public class ImgurLibraryAlbumAdapter extends RealmRecyclerViewAdapter<ImgurAlbu
        // album.getImages().get(0).getSysLink()
        // context.getFilesDir().toString() + album.getImages().get(0).getId() + ".gif"
                 .load("file:///data/data/com.johnnymolina.nextphase/files/"+imageLink)
+                .asBitmap()
                 .thumbnail(0.3f)
-                .crossFade()
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .placeholder(android.R.drawable.progress_indeterminate_horizontal)
                 .error(R.drawable.imageplaceholder)

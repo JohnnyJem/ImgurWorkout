@@ -5,11 +5,9 @@ import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
-/**
- * Created by Johnny Molina on 4/1/2015.
- */
 
-//Custom Viewpager.Prevens paging of views.Call setPagingEnabled = false to disable paging.
+/*-------------------This ViewPager Prevents paging of views. Call setPagingEnabled = false to disable paging------------------*/
+
 public class CustomViewPager extends ViewPager {
 
     private boolean isPagingEnabled = true;

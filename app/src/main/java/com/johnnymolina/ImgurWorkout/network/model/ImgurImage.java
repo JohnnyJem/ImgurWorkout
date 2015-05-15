@@ -2,15 +2,17 @@ package com.johnnymolina.ImgurWorkout.network.model;
 
 import io.realm.RealmObject;
 
-/**
- * Created by Johnny Molina on 3/25/2015.
- */
+
+/*-------- This is the realm.io model used to store JSON list image objects from the main JSON object from Imgur.com api calls*/
+
 public class ImgurImage extends RealmObject {
     private String id;
     private String title;
     private String description;
     private String link;
     private String sysLink;
+    //Album string associates this object with its ImgurAlbum model object.
+    // Consists of AlbumID+AlbumUnique generated through NextSessionId() method.
     private String album;
     private int length;
 

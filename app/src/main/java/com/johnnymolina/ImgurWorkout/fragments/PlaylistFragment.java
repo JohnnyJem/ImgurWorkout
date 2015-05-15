@@ -93,20 +93,25 @@ int imagesFragmentPosition;
 
         slidePosition.setText(String.valueOf(imagesFragmentPosition+ 1)+"\\" + albumQuery.get(0).getImages().size() );
 
-        String imageUrl = albumImages.get(imagesFragmentPosition).getLink();
-        String imageId = albumImages.get(imagesFragmentPosition).getId();
-        String imageLink = albumImages.get(imagesFragmentPosition).getLink().substring(albumImages.get(imagesFragmentPosition).getLink().lastIndexOf('/') + 1);
+        String imageLink;
+
+        if (albumImages.get(imagesFragmentPosition).getSysLink() != "null"){
+           imageLink ="file:///data/data/com.johnnymolina.nextphase/files/"+ albumImages.get(imagesFragmentPosition).getLink().substring(albumImages.get(imagesFragmentPosition).getLink().lastIndexOf('/') + 1);
+        }else{
+            imageLink= albumImages.get(imagesFragmentPosition).getLink().toString();
+        }
 
         //start with Glide
 
         //start with Glide
         Glide.with(context)
-                .load("file:///data/data/com.johnnymolina.nextphase/files/"+ imageLink)
+                .load(imageLink)
                 .thumbnail(0.2f)
                 .crossFade(3)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .error(R.drawable.imageplaceholder)
                 .into(image);
+
 
 //setting up the timers
 

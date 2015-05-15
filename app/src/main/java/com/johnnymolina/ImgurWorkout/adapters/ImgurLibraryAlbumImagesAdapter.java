@@ -23,8 +23,8 @@ public class ImgurLibraryAlbumImagesAdapter extends RealmRecyclerViewAdapter<Img
         public AlbumViewHolder(View view) {
             super(view);
             context= view.getContext();
-            image = (ImageView) view.findViewById(R.id.imgur_img_cv);
-            title = (TextView) view.findViewById(R.id.imgur_title_cv);;
+            image = (ImageView) view.findViewById(R.id.imgur_img_album_cv);
+            title = (TextView) view.findViewById(R.id.imgur_album_title_cv);;
         }
     }
 

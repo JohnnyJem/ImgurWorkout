@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -39,7 +40,7 @@ public class MainLibraryActivity extends BaseActivity {
 
         adapter = new ImgurLibraryAlbumAdapter();
         RecyclerView rv = (RecyclerView)findViewById(R.id.rv);
-        rv.setLayoutManager(new GridLayoutManager(getBaseContext(), 3));
+        rv.setLayoutManager(new LinearLayoutManager(getBaseContext()));
         rv.setAdapter(adapter);
 
 
