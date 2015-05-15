@@ -220,7 +220,7 @@ public class Imgur extends BaseActivity {
                 .setCallback(new FutureCallback<JsonObject>() {
                     @Override
                     public void onCompleted(Exception e, JsonObject result) {
-                        
+
                         // this is called back onto the ui thread, no Activity.runOnUiThread or Handler.post necessary.
 
                         if (e != null) {
