@@ -14,7 +14,7 @@ import com.johnnymolina.ImgurWorkout.R;
 import com.johnnymolina.ImgurWorkout.network.model.ImgurImage;
 
 
-public class ImgurLibraryAlbumImagesAdapter extends RealmRecyclerViewAdapter<ImgurImage> {
+public class RealmRecyclerViewImgurImagesAdapter extends RealmRecyclerViewAdapter<ImgurImage> {
     //http://gradlewhy.ghost.io/realm-results-with-recyclerview/
     Context context;
     private class AlbumViewHolder extends RecyclerView.ViewHolder {

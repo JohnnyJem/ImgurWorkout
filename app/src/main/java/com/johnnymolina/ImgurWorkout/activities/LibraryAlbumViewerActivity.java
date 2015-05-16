@@ -12,8 +12,9 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.johnnymolina.ImgurWorkout.R;
-import com.johnnymolina.ImgurWorkout.adapters.ImgurLibraryAlbumImagesAdapter;
-import com.johnnymolina.ImgurWorkout.adapters.RealmImgurImageAdapter;
+import com.johnnymolina.ImgurWorkout.adapters.RealmRecyclerViewImgurImagesAdapter;
+import com.johnnymolina.ImgurWorkout.adapters.RealmRecyclerViewLogAdapter;
+import com.johnnymolina.ImgurWorkout.adapters.RealmImgurImageModelAdapter;
 import com.johnnymolina.ImgurWorkout.network.model.ImgurAlbum;
 import com.johnnymolina.ImgurWorkout.network.model.ImgurImage;
 import com.rey.material.widget.Slider;
@@ -24,7 +25,7 @@ import io.realm.RealmResults;
 public class LibraryAlbumViewerActivity extends BaseActivity {
 
     private Realm realm;
-    private ImgurLibraryAlbumImagesAdapter adapter;
+    private RealmRecyclerViewImgurImagesAdapter adapter;
     FrameLayout parent;
     RelativeLayout activityLibraryAlbumViewer;
     String albumID;
@@ -39,7 +40,7 @@ public class LibraryAlbumViewerActivity extends BaseActivity {
         activityLibraryAlbumViewer= (RelativeLayout) LayoutInflater.from(getBaseContext()).inflate(R.layout.activity_library_album_viewer, null);
         parent.addView(activityLibraryAlbumViewer);
         realm = Realm.getInstance(this);
-        adapter = new ImgurLibraryAlbumImagesAdapter();
+        adapter = new RealmRecyclerViewImgurImagesAdapter();
         RecyclerView rv = (RecyclerView)findViewById(R.id.rvimage);
         rv.setLayoutManager(new LinearLayoutManager(getBaseContext()));
         rv.setAdapter(adapter);
@@ -70,7 +71,7 @@ public class LibraryAlbumViewerActivity extends BaseActivity {
 
         this.getSupportActionBar().setTitle(albumQuery.get(0).getTitle());
 
-        RealmImgurImageAdapter realmAdapter = new RealmImgurImageAdapter(getBaseContext(), albumImages, true);
+        RealmImgurImageModelAdapter realmAdapter = new RealmImgurImageModelAdapter(getBaseContext(), albumImages, true);
         // Set the data and tell the RecyclerView to draw
         adapter.setRealmAdapter(realmAdapter);
         adapter.notifyDataSetChanged();

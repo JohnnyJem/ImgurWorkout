@@ -24,4 +24,6 @@
     <string name="title_activity_settings">Settings</string>
     <string name="title_activity_tutorial">Tutorial</string>
     <string name="title_activity_download">DownloadActivity</string>
+    <string name="title_activity_log">Workout Log</string>
+    <string name="workout_log_title">Workout Log</string>
 </resources>

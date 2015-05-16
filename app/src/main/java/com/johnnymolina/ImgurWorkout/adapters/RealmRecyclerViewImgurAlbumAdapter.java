@@ -26,7 +26,7 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 
 
-public class ImgurLibraryAlbumAdapter extends RealmRecyclerViewAdapter<ImgurAlbum> {
+public class RealmRecyclerViewImgurAlbumAdapter extends RealmRecyclerViewAdapter<ImgurAlbum> {
 //http://gradlewhy.ghost.io/realm-results-with-recyclerview/
     Context mContext;
     String albumID;

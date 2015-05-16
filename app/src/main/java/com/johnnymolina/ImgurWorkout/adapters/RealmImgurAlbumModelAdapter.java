@@ -6,8 +6,8 @@ package com.johnnymolina.ImgurWorkout.adapters;
 
         import io.realm.RealmResults;
 
-public class RealmImgurAlbumAdapter extends RealmModelAdapter<ImgurAlbum> {
-    public RealmImgurAlbumAdapter(Context context, RealmResults<ImgurAlbum> realmResults, boolean automaticUpdate) {
+public class RealmImgurAlbumModelAdapter extends RealmModelAdapter<ImgurAlbum> {
+    public RealmImgurAlbumModelAdapter(Context context, RealmResults<ImgurAlbum> realmResults, boolean automaticUpdate) {
         super(context, realmResults, automaticUpdate);
     }
 }

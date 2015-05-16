@@ -72,18 +72,23 @@ public class BaseActivityAdapter extends RecyclerView.Adapter<BaseActivityAdapte
                 case 1:
                     Intent intent = new Intent(context,MainLibraryActivity.class);
                     context.startActivity(intent);
+
                     break;
                 case 2:
-                    Intent intent2 = new Intent(context,Imgur.class);
+                    Intent intent2 = new Intent(context,LogActivity.class);
                     context.startActivity(intent2);
                     break;
                 case 3:
-                    Intent intent3 = new Intent(context,Settings.class);
+                    Intent intent3 = new Intent(context,Imgur.class);
                     context.startActivity(intent3);
                     break;
                 case 4:
-                    Intent intent4 = new Intent(context,Tutorial.class);
+                    Intent intent4 = new Intent(context,Settings.class);
                     context.startActivity(intent4);
+                    break;
+                case 5:
+                    Intent intent5 = new Intent(context,Tutorial.class);
+                    context.startActivity(intent5);
                     break;
             }
 

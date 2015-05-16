@@ -1,0 +1,72 @@
+ <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.johnnymolina.ImgurWorkout.activities.LogActivity"
+        >
+        <ScrollView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:fillViewport="true"
+            android:id="@+id/main_layout_scroll">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical"
+                android:layout_gravity="fill"
+                android:id="@+id/main_layout"
+                >
+
+                <LinearLayout
+                    android:id="@+id/log_edit_texts_drawer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+               <EditText
+                   android:id="@+id/log_edit_text_DateTime"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:hint="Day Month 00th, 0pm"/>
+                <EditText
+                    android:id="@+id/log_edit_text_workout_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Workout Type. Arms. Chest. Legs etc"/>
+
+                <EditText
+                    android:id="@+id/log_edit_text_album_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Album Name"/>
+                <EditText
+                    android:id="@+id/log_edit_text_time_length"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="length of time 00:00:00"/>
+
+                <EditText
+                    android:id="@+id/log_edit_text_notes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Write your notes here"/>
+                </LinearLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/rv_log_activity"/>
+            </LinearLayout>
+
+        </ScrollView>
+        <include
+            android:id="@+id/fab_log_open"
+            layout="@layout/fab_log_open">
+        </include>
+     <include
+         android:id="@+id/fab_log_add"
+         layout="@layout/fab_log_add"
+          >
+     </include>
+    </RelativeLayout>

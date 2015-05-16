@@ -3,7 +3,6 @@ package com.johnnymolina.ImgurWorkout.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -14,8 +13,8 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
 import com.johnnymolina.ImgurWorkout.R;
-import com.johnnymolina.ImgurWorkout.adapters.ImgurLibraryAlbumAdapter;
-import com.johnnymolina.ImgurWorkout.adapters.RealmImgurAlbumAdapter;
+import com.johnnymolina.ImgurWorkout.adapters.RealmRecyclerViewImgurAlbumAdapter;
+import com.johnnymolina.ImgurWorkout.adapters.RealmImgurAlbumModelAdapter;
 import com.johnnymolina.ImgurWorkout.network.model.ImgurAlbum;
 
 import io.realm.Realm;
@@ -24,7 +23,7 @@ import io.realm.RealmResults;
 public class MainLibraryActivity extends BaseActivity {
 
     private Realm realm;
-    private ImgurLibraryAlbumAdapter adapter;
+    private RealmRecyclerViewImgurAlbumAdapter adapter;
     FrameLayout parent;
     RelativeLayout activityLibrary;
     TextToSpeech tts;
@@ -38,7 +37,7 @@ public class MainLibraryActivity extends BaseActivity {
         parent.addView(activityLibrary);
         realm = Realm.getInstance(this);
 
-        adapter = new ImgurLibraryAlbumAdapter();
+        adapter = new RealmRecyclerViewImgurAlbumAdapter();
         RecyclerView rv = (RecyclerView)findViewById(R.id.rv);
         rv.setLayoutManager(new LinearLayoutManager(getBaseContext()));
         rv.setAdapter(adapter);
@@ -87,14 +86,14 @@ public class MainLibraryActivity extends BaseActivity {
                         .contains("title",searchEditText.getText().toString(),false)
                         .findAll();
 
-                RealmImgurAlbumAdapter realmAdapter = new RealmImgurAlbumAdapter(getBaseContext(), events, true);
+                RealmImgurAlbumModelAdapter realmAdapter = new RealmImgurAlbumModelAdapter(getBaseContext(), events, true);
                 // Set the data and tell the RecyclerView to draw
                 adapter.setRealmAdapter(realmAdapter);
                 adapter.notifyDataSetChanged();
 
                 if (searchEditText.getText().toString().equals("")) {
                     RealmResults<ImgurAlbum> events2 = realm.where(ImgurAlbum.class).findAll();
-                    RealmImgurAlbumAdapter realmAdapter2 = new RealmImgurAlbumAdapter(getBaseContext(), events2, true);
+                    RealmImgurAlbumModelAdapter realmAdapter2 = new RealmImgurAlbumModelAdapter(getBaseContext(), events2, true);
                     // Set the data and tell the RecyclerView to draw
                     adapter.setRealmAdapter(realmAdapter2);
                     adapter.notifyDataSetChanged();
@@ -119,7 +118,7 @@ public class MainLibraryActivity extends BaseActivity {
         super.onResume();
 
         RealmResults<ImgurAlbum> events = realm.where(ImgurAlbum.class).findAll();
-        RealmImgurAlbumAdapter realmAdapter = new RealmImgurAlbumAdapter(getBaseContext(), events, true);
+        RealmImgurAlbumModelAdapter realmAdapter = new RealmImgurAlbumModelAdapter(getBaseContext(), events, true);
         // Set the data and tell the RecyclerView to draw
         adapter.setRealmAdapter(realmAdapter);
         adapter.notifyDataSetChanged();
