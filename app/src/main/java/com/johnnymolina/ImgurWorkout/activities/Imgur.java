@@ -30,6 +30,7 @@ import com.koushikdutta.async.future.Future;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.koushikdutta.ion.ProgressCallback;
+import com.rey.material.widget.ProgressView;
 
 import java.io.File;
 import java.math.BigInteger;
@@ -58,6 +59,7 @@ public class Imgur extends BaseActivity {
     Future<File> downloading;
     int count = 1;
     String filePath;
+    ProgressView progressView;
     /* ------------------------------------------------*/
 
     // adapter that holds imgur json object, obviously :)
@@ -75,10 +77,11 @@ public class Imgur extends BaseActivity {
         /*------------------------------------OFFLINE DOWNLOAD SETUP BEGIN--------------------------*/
         fabImportToDatabase = findViewById(R.id.fab_import_to_database);
         downloadLayout = (LinearLayout) findViewById(R.id.download_layout);
-        downloadLayout.setVisibility(View.INVISIBLE);
+        downloadLayout.setVisibility(View.GONE);
         downloadInProgress = (TextView)findViewById(R.id.download_progress);
         downloadCount = (TextView)findViewById(R.id.download_count);
         progressBar = (ProgressBar)findViewById(R.id.progress);
+        progressView = (ProgressView) findViewById(R.id.progress_view);
         fabImportToDatabase.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -266,6 +269,8 @@ public class Imgur extends BaseActivity {
     public void download(View view){
         downloadLayout.setVisibility(View.VISIBLE);
         downloadLayout.setOrientation(LinearLayout.VERTICAL);
+        progressView.setVisibility(View.VISIBLE);
+
         View fab = findViewById(R.id.fab_import_to_database);
         View goNext = findViewById(R.id.fab_go_to_library);
         if (fab.getVisibility() == View.VISIBLE) {
@@ -330,6 +335,9 @@ public class Imgur extends BaseActivity {
                                 }
                                 count++;
 
+                                if (count > imgurAdapter.getCount())
+                                progressView.setVisibility(View.INVISIBLE);
+
                             }
                         });
 
@@ -342,6 +350,7 @@ public class Imgur extends BaseActivity {
             realm.close(); // Remember to close Realm when done.
             fab.setVisibility(View.INVISIBLE);
             goNext.setVisibility(View.VISIBLE);
+
             playlistSubmitButton.setVisibility(View.INVISIBLE);
            } else {
             downloadLayout.setVisibility(View.INVISIBLE);

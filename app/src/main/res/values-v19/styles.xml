@@ -25,4 +25,8 @@
     <style name="ColorsCircularProgressDrawableStyle" parent="Material.Drawable.CircularProgress">
         <item name="cpd_strokeColors">@color/fab_material_green_500</item>
     </style>
-</resources>
+
+    <style name="DeterminateLinearProgressDrawableStyle" parent="Material.Drawable.LinearProgress.Determinate">
+        <item name="lpd_strokeColor">#FF4389F3</item>
+        <item name="lpd_strokeSecondaryColor">#FFB6CDF2</item>
+    </style></resources>

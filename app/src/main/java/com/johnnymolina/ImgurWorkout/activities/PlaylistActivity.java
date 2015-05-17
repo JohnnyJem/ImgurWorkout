@@ -165,7 +165,7 @@ public class PlaylistActivity extends BaseActivity {
             intent.putExtra("WORKOUT_COMPLETE", "Workout Complete");
             Bundle b = new Bundle();
 
-            String currentDate = new SimpleDateFormat("EEE, MMM d hh a", Locale.US).format(new Date());
+            String currentDate = new SimpleDateFormat("EEE MMM d, hh a", Locale.US).format(new Date());
 
         String day = currentDate;
 
