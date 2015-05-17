@@ -98,11 +98,12 @@ public class LibraryAlbumViewerActivity extends BaseActivity {
         int  minutes = (totalSecs % 3600) / 60;
         int seconds = totalSecs % 60;
 
-        String timeString = String.format("%02d hours %02d minutes %02d seconds", hours, minutes, seconds);
+        String timeString = String.format("%02d : %02d : %02d", hours, minutes, seconds);
         Toast.makeText(getBaseContext(),""+ timeString ,Toast.LENGTH_LONG).show();
         final Intent intent = new Intent(this,PlaylistActivity.class);
         intent.putExtra(ALBUM_ID, albumIdIntentString);
         intent.putExtra(CHRONO_TIME, chronoTime);
+        intent.putExtra("timestring", timeString);
         context.startActivity(intent);
 
     }

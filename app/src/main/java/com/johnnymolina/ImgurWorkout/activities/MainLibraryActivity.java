@@ -47,20 +47,6 @@ public class MainLibraryActivity extends BaseActivity {
 
 
 
-        tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int status) {
-                if (ttsValue == true) {
-                    Bundle b = getIntent().getExtras();
-                    Intent i = getIntent();
-                    String workoutCompleteAnnouncement = "";
-                    if (i.hasExtra("WORKOUT_COMPLETE"))
-                        workoutCompleteAnnouncement = b.getString("WORKOUT_COMPLETE");
-                    tts.speak(workoutCompleteAnnouncement, TextToSpeech.QUEUE_FLUSH, null);
-                }
-            }
-        });
-
 
         //SearchView configuration
 

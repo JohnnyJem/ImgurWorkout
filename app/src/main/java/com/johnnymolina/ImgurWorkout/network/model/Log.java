@@ -8,8 +8,9 @@ import io.realm.RealmObject;
 public class Log extends RealmObject{
 
 
+
     //Incremental ID
-   private String  logID;
+   private int  logID;
 
     // Saturday May 15th, 10pm
   private  String dateTime;
@@ -31,11 +32,11 @@ public class Log extends RealmObject{
 
 //Start getters and setters
 
-    public String getLogID() {
+    public int getLogID() {
         return logID;
     }
 
-    public void setLogID(String logID) {
+    public void setLogID(int logID) {
         this.logID = logID;
     }
 

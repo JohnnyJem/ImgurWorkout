@@ -1,5 +1,6 @@
 package com.johnnymolina.ImgurWorkout.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -7,6 +8,7 @@ import android.speech.tts.TextToSpeech;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -18,6 +20,13 @@ import com.johnnymolina.ImgurWorkout.customViews.CustomViewPager;
 import com.johnnymolina.ImgurWorkout.fragments.PlaylistFragment;
 import com.johnnymolina.ImgurWorkout.network.model.ImgurAlbum;
 import com.johnnymolina.ImgurWorkout.network.model.ImgurImage;
+import com.johnnymolina.ImgurWorkout.network.model.Log;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -32,11 +41,13 @@ public class PlaylistActivity extends BaseActivity {
     private Realm realm;
     int albumSize;
     int chronoTime;
+    String timeString;
     TextToSpeech tts;
     String textTitle;
     CountDownTimer timer;
     CountDownTimer timer2;
     TextView countDownText;
+   public String albumTitleIntent;
 
 
 
@@ -62,6 +73,7 @@ public class PlaylistActivity extends BaseActivity {
         albumID = "";
         albumID = b.getString("ALBUM_ID");
         chronoTime = b.getInt("CHRONO_TIME");
+        timeString = b.getString("timestring");
 
         RealmResults<ImgurAlbum> albumQuery = realm.where(ImgurAlbum.class)
                 .equalTo("id", albumID)
@@ -75,6 +87,9 @@ public class PlaylistActivity extends BaseActivity {
         albumSize = albumImages.size();
 
         CharSequence albumTitle = albumQuery.get(0).getTitle().toString();
+
+            albumTitleIntent = albumTitle.toString();
+
 
         this.getSupportActionBar().setTitle(albumTitle);
 
@@ -145,9 +160,20 @@ public class PlaylistActivity extends BaseActivity {
         if (position + 1 == totalPositions) {
             Toast.makeText(this, "Workout Complete", Toast.LENGTH_LONG).show();
 
-            Intent intent = new Intent(getBaseContext(),MainLibraryActivity.class);
+            Intent intent = new Intent(getBaseContext(),LogActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.putExtra("WORKOUT_COMPLETE", "Workout Complete");
+            Bundle b = new Bundle();
+
+            String currentDate = new SimpleDateFormat("EEE, MMM d hh a", Locale.US).format(new Date());
+
+        String day = currentDate;
+
+            b.putString("dateTime", day);
+            b.putString("albumName", albumTitleIntent);
+            b.putString("lengthTime", timeString);
+            intent.putExtra("Playlist Bundle", b);
+
             startActivity(intent);
             finish();
 

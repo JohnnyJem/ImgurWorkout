@@ -27,7 +27,7 @@ public class BaseActivity extends ActionBarActivity{
 
     //Declare Titles And Icons in their respective Arrays For Our Navigation Drawer List View
     String TITLES[] = {"Playlists","Log","Import","Settings","Tutorial"};
-    int ICONS[] = {R.drawable.ic_grid,R.drawable.ic_grid,R.drawable.fab_import_white,R.drawable.ic_settings,R.drawable.ic_help};
+    int ICONS[] = {R.drawable.ic_grid,R.drawable.ic_playlist_add,R.drawable.fab_import_white,R.drawable.ic_settings,R.drawable.ic_help};
     public CharSequence defaultTitle = "IMGUR WORKOUT";
 
 
