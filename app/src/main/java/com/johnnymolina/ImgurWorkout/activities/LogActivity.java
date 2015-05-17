@@ -192,10 +192,9 @@ public class LogActivity extends BaseActivity {
                     realm.beginTransaction();
                     Log realmLogObject = realm.createObject(Log.class);
                     //increment index
-                    int nextID = 1;
-                    if (nextID != 1) {
-                        nextID = (int) (realm.where(Log.class).maximumInt("id") + 1);
-                    }
+                    int nextID = (int) (realm.where(Log.class).maximumInt("logID") + 1);
+
+
                     realmLogObject.setLogID(nextID);
                     realmLogObject.setDateTime(dateTime.getText().toString());
                     realmLogObject.setAlbumCompletedName(albumName.getText().toString());

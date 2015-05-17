@@ -67,20 +67,20 @@ public class RealmRecyclerViewLogAdapter extends RealmRecyclerViewAdapter<Log> {
         @Override
         public boolean onLongClick(View v) {
             //delete the long clicked album
+            int position = getPosition();
 
-            Log log = getItem(getPosition());
-            Toast.makeText(v.getContext(), "Deleted " + log.getWorkoutType(), Toast.LENGTH_SHORT).show();
             Realm realm;
             realm = Realm.getInstance(context);
-            RealmResults<Log> logToDelete= realm.where(Log.class)
-                    .equalTo("logID",getItem(getPosition()).getLogID())
-                    .findAll();
+            Log logToDelete= realm.where(Log.class)
+                    .equalTo("logID", getItem(getPosition()).getLogID())
+                    .findFirst();
+            Toast.makeText(v.getContext(), "Deleted ", Toast.LENGTH_SHORT).show();
             realm.beginTransaction();
-            logToDelete.remove(0);
+            logToDelete.removeFromRealm();
             realm.commitTransaction();
             realm.close();
 
-            notifyItemRemoved(getPosition());
+            notifyItemRemoved(position);
             notifyDataSetChanged();
             return false;
         }
@@ -101,6 +101,8 @@ public class RealmRecyclerViewLogAdapter extends RealmRecyclerViewAdapter<Log> {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int i) {
 
+
+
         LogViewHolder avh = (LogViewHolder) viewHolder;
 
         Log log = getItem(i);
@@ -113,7 +115,6 @@ public class RealmRecyclerViewLogAdapter extends RealmRecyclerViewAdapter<Log> {
         if (log.getWorkoutType() != null && log.getWorkoutType().toString().length() > 0) {
 
             String workoutTypeFirstLetter = log.getWorkoutType();
-
 
             ColorGenerator generator = ColorGenerator.MATERIAL;
             int color = generator.getColor(workoutTypeFirstLetter);
