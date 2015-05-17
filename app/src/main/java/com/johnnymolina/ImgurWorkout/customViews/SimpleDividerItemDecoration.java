@@ -13,7 +13,7 @@ import com.johnnymolina.ImgurWorkout.R;
  */
 public class SimpleDividerItemDecoration extends RecyclerView.ItemDecoration {
     private Drawable mDivider;
-
+//test
     public SimpleDividerItemDecoration(Context context) {
         mDivider = context.getResources().getDrawable(R.drawable.line_divider);
     }
