@@ -15,6 +15,7 @@ import com.johnnymolina.ImgurWorkout.R;
 import com.johnnymolina.ImgurWorkout.adapters.RealmRecyclerViewImgurImagesAdapter;
 import com.johnnymolina.ImgurWorkout.adapters.RealmRecyclerViewLogAdapter;
 import com.johnnymolina.ImgurWorkout.adapters.RealmImgurImageModelAdapter;
+import com.johnnymolina.ImgurWorkout.customViews.SimpleDividerItemDecoration;
 import com.johnnymolina.ImgurWorkout.network.model.ImgurAlbum;
 import com.johnnymolina.ImgurWorkout.network.model.ImgurImage;
 import com.rey.material.widget.Slider;
@@ -43,6 +44,7 @@ public class LibraryAlbumViewerActivity extends BaseActivity {
         adapter = new RealmRecyclerViewImgurImagesAdapter();
         RecyclerView rv = (RecyclerView)findViewById(R.id.rvimage);
         rv.setLayoutManager(new LinearLayoutManager(getBaseContext()));
+        rv.addItemDecoration(new SimpleDividerItemDecoration(getBaseContext()));
         rv.setAdapter(adapter);
         //temporary album ID
 

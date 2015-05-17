@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 import com.johnnymolina.ImgurWorkout.R;
 import com.johnnymolina.ImgurWorkout.adapters.RealmRecyclerViewImgurAlbumAdapter;
 import com.johnnymolina.ImgurWorkout.adapters.RealmImgurAlbumModelAdapter;
+import com.johnnymolina.ImgurWorkout.customViews.SimpleDividerItemDecoration;
 import com.johnnymolina.ImgurWorkout.network.model.ImgurAlbum;
 
 import io.realm.Realm;
@@ -40,6 +41,7 @@ public class MainLibraryActivity extends BaseActivity {
         adapter = new RealmRecyclerViewImgurAlbumAdapter();
         RecyclerView rv = (RecyclerView)findViewById(R.id.rv);
         rv.setLayoutManager(new LinearLayoutManager(getBaseContext()));
+        rv.addItemDecoration(new SimpleDividerItemDecoration(getBaseContext()));
         rv.setAdapter(adapter);
 
 

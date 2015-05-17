@@ -16,10 +16,10 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.johnnymolina.ImgurWorkout.R;
-import com.johnnymolina.ImgurWorkout.adapters.RealmImgurAlbumModelAdapter;
+
 import com.johnnymolina.ImgurWorkout.adapters.RealmLogModelAdapter;
 import com.johnnymolina.ImgurWorkout.adapters.RealmRecyclerViewLogAdapter;
-import com.johnnymolina.ImgurWorkout.network.model.ImgurAlbum;
+import com.johnnymolina.ImgurWorkout.customViews.SimpleDividerItemDecoration;
 import com.johnnymolina.ImgurWorkout.network.model.Log;
 
 import io.realm.Realm;
@@ -226,6 +226,7 @@ public class LogActivity extends BaseActivity {
         rvLayoutManager.setReverseLayout(true);
         rvLayoutManager.setStackFromEnd(true);
         rv.setItemAnimator(null);
+        rv.addItemDecoration(new SimpleDividerItemDecoration(getBaseContext()));
         rv.setAdapter(adapter);
 
 

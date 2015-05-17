@@ -272,7 +272,7 @@ public class Imgur extends BaseActivity {
         progressView.setVisibility(View.VISIBLE);
 
         View fab = findViewById(R.id.fab_import_to_database);
-        View goNext = findViewById(R.id.fab_go_to_library);
+       final View goNext = findViewById(R.id.fab_go_to_library);
         if (fab.getVisibility() == View.VISIBLE) {
             // Its visible and so objects have loaded into the adapter.
             // Open the default realm. All threads must use it's own reference to the realm.
@@ -337,6 +337,7 @@ public class Imgur extends BaseActivity {
 
                                 if (count > imgurAdapter.getCount())
                                 progressView.setVisibility(View.INVISIBLE);
+                                goNext.setVisibility(View.VISIBLE);
 
                             }
                         });
@@ -349,7 +350,7 @@ public class Imgur extends BaseActivity {
             realm.commitTransaction();
             realm.close(); // Remember to close Realm when done.
             fab.setVisibility(View.INVISIBLE);
-            goNext.setVisibility(View.VISIBLE);
+
 
             playlistSubmitButton.setVisibility(View.INVISIBLE);
            } else {
@@ -366,6 +367,8 @@ public class Imgur extends BaseActivity {
         SecureRandom random = new SecureRandom();
         return new BigInteger(130, random).toString(32);
     }
+
+
 
     //Go to main library activity
     public void goToLibrary(View view){
