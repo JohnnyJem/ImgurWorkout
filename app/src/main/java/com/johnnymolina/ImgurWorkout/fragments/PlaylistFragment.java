@@ -52,20 +52,20 @@ int imagesFragmentPosition;
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-
+//TODO: find out where this bundle comes from
         Bundle args = getArguments();
         imagesFragmentPosition = args.getInt("POSITION");
         imagesAlbumID = args.getString("ALBUM_ID");
         chronoTime = args.getInt("CHRONO_TIME");
 
 
-    cardViewFragment =(CardView) inflater.inflate(R.layout.fragment_card_playlist, container, false);
-              imageTitle = (TextView) cardViewFragment.findViewById(R.id.card_title_text);
-              TextView imageDescription = (TextView) cardViewFragment.findViewById(R.id.card_description_text);
-               image = (ImageView) cardViewFragment.findViewById(R.id.card_image_view);
-              TextView slidePosition =(TextView) cardViewFragment.findViewById(R.id.slide_Position);
-      countDownTimer = (TextView) cardViewFragment.findViewById(R.id.count_down_timer);
-      countDownText = (TextView) cardViewFragment.findViewById(R.id.count_down_text);
+        cardViewFragment =(CardView) inflater.inflate(R.layout.fragment_card_playlist, container, false);
+        imageTitle = (TextView) cardViewFragment.findViewById(R.id.card_title_text);
+        TextView imageDescription = (TextView) cardViewFragment.findViewById(R.id.card_description_text);
+        image = (ImageView) cardViewFragment.findViewById(R.id.card_image_view);
+        TextView slidePosition =(TextView) cardViewFragment.findViewById(R.id.slide_Position);
+        countDownTimer = (TextView) cardViewFragment.findViewById(R.id.count_down_timer);
+        countDownText = (TextView) cardViewFragment.findViewById(R.id.count_down_text);
 
 
         context = cardViewFragment.getContext();

@@ -44,7 +44,7 @@ public class BaseActivity extends ActionBarActivity{
     String TITLE2 = "Your Custom Workout App";
 
 
-    private Toolbar toolbar;              // Declaring the Toolbar Object
+    protected Toolbar toolbar;              // Declaring the Toolbar Object
 
     RecyclerView mRecyclerView;                           // Declaring RecyclerView
     RecyclerView.Adapter mAdapter;                        // Declaring Adapter For Recycler View

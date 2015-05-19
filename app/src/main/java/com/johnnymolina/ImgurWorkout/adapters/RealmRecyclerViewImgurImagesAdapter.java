@@ -7,26 +7,66 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.johnnymolina.ImgurWorkout.R;
 import com.johnnymolina.ImgurWorkout.network.model.ImgurImage;
+import com.rey.material.widget.Switch;
 
 
-public class RealmRecyclerViewImgurImagesAdapter extends RealmRecyclerViewAdapter<ImgurImage> {
+public class RealmRecyclerViewImgurImagesAdapter extends RealmRecyclerViewAdapter<ImgurImage> implements View.OnClickListener, View.OnLongClickListener {
     //http://gradlewhy.ghost.io/realm-results-with-recyclerview/
     Context context;
+
+
+
     private class AlbumViewHolder extends RecyclerView.ViewHolder {
         public ImageView image;
         public TextView title;
+        public Switch timeOrRepSwitch;
+        public TextView timeOrRepTextviewValue;
         public AlbumViewHolder(View view) {
             super(view);
             context= view.getContext();
             image = (ImageView) view.findViewById(R.id.imgur_img_album_cv);
             title = (TextView) view.findViewById(R.id.imgur_album_title_cv);;
+            timeOrRepSwitch = (Switch) view.findViewById(R.id.switch_cv_image_time_or_rep);
+            timeOrRepTextviewValue = (TextView) view.findViewById(R.id.switch_value);
+            //Todo: get the default switch value from our realm image object.
+
+            timeOrRepSwitch.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    timeOrRepSwitch.isChecked();
+
+                    if (timeOrRepSwitch.isChecked() == true)
+                        timeOrRepTextviewValue.setText("Sets");
+                    else
+                        timeOrRepTextviewValue.setText("Timed");
+                }
+            });
         }
     }
+
+
+
+
+    @Override
+    public void onClick(View v) {
+
+    }
+
+    @Override
+    public boolean onLongClick(View v) {
+        return false;
+    }
+
+
+
+
+
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int i) {

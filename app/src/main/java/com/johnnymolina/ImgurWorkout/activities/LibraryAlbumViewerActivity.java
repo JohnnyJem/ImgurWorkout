@@ -30,54 +30,58 @@ public class LibraryAlbumViewerActivity extends BaseActivity {
     FrameLayout parent;
     RelativeLayout activityLibraryAlbumViewer;
     String albumID;
-
     Slider slider;
     int albumSize;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //setting up our layout
         parent = (FrameLayout) findViewById(R.id.placeholder);
         activityLibraryAlbumViewer= (RelativeLayout) LayoutInflater.from(getBaseContext()).inflate(R.layout.activity_library_album_viewer, null);
         parent.addView(activityLibraryAlbumViewer);
+        slider = (Slider) findViewById(R.id.slider_sl_discrete);
+
+
+        //setting up our realm adapter
         realm = Realm.getInstance(this);
         adapter = new RealmRecyclerViewImgurImagesAdapter();
         RecyclerView rv = (RecyclerView)findViewById(R.id.rvimage);
         rv.setLayoutManager(new LinearLayoutManager(getBaseContext()));
         rv.addItemDecoration(new SimpleDividerItemDecoration(getBaseContext()));
         rv.setAdapter(adapter);
-        //temporary album ID
-
-        slider = (Slider) findViewById(R.id.slider_sl_discrete);
-
-
     }
+
+
 
     @Override
     public void onResume() {
         super.onResume();
-
+/*------Grabbing data passed from mainLibraryActivity.class----*/
         Bundle b = getIntent().getExtras();
         albumID ="";
-         albumID = b.getString("ALBUM_ID");
+        albumID = b.getString("ALBUM_ID");//grabbing the AlbumID we clicked on MainLibraryActivity.java
 
-      RealmResults<ImgurAlbum> albumQuery = realm.where(ImgurAlbum.class)
+
+  /*--Grabbing the exact album and images based on information passed from mainLibraryActivity.class----*/
+        RealmResults<ImgurAlbum> albumQuery = realm.where(ImgurAlbum.class)
                                                  .equalTo("id", albumID)
                                                  .findAll();
-
-
         final RealmResults<ImgurImage> albumImages = realm.where(ImgurImage.class)
                 .contains("album",albumID, false)
                 .findAll();
+
+        //The total # of images in our playlist album
         albumSize = albumImages.size();
 
+        //set toolbarTitle
         this.getSupportActionBar().setTitle(albumQuery.get(0).getTitle());
 
+        //Adding all of the images in our album to our Realm adapter and connecting it with our RecyclerviewAdapter.
         RealmImgurImageModelAdapter realmAdapter = new RealmImgurImageModelAdapter(getBaseContext(), albumImages, true);
-        // Set the data and tell the RecyclerView to draw
         adapter.setRealmAdapter(realmAdapter);
         adapter.notifyDataSetChanged();
-
     }
 
     @Override
@@ -88,25 +92,50 @@ public class LibraryAlbumViewerActivity extends BaseActivity {
 
 
 
+
+
+
+
+ // This method prepares the data that will be sent to PlaylistActivity.java for initialization of its viewpages.
     public void play(View view){
        Context context= view.getContext();
-       String albumIdIntentString = albumID;
-       String ALBUM_ID = "ALBUM_ID";
-       String CHRONO_TIME = "CHRONO_TIME";
-        int chronoTime = slider.getValue();
-        int totalSecs = slider.getValue()*albumSize;
 
+  /*---Breaking down the total seconds that the album will take into hours, minutes, seconds for formatting.--*/
+        int totalSecs = slider.getValue()*albumSize;
         int hours = totalSecs / 3600;
         int  minutes = (totalSecs % 3600) / 60;
         int seconds = totalSecs % 60;
 
+  /*----HERE WE SET THE VALUES BEING PASSED ON TO PlaylistActivity.java------*/
+        String albumIdIntentString = albumID;
         String timeString = String.format("%02d : %02d : %02d", hours, minutes, seconds);
-        Toast.makeText(getBaseContext(),""+ timeString ,Toast.LENGTH_LONG).show();
+        int chronoTime = slider.getValue();
+
+
+   /*---Bundling up the values to pass onto PlaylistActivity.class----*/
         final Intent intent = new Intent(this,PlaylistActivity.class);
-        intent.putExtra(ALBUM_ID, albumIdIntentString);
-        intent.putExtra(CHRONO_TIME, chronoTime);
-        intent.putExtra("timestring", timeString);
+        intent.putExtra("ALBUM_ID", albumIdIntentString); // albumID for playlistAcitivty to lookup.
+        intent.putExtra("CHRONO_TIME", chronoTime); // the time that each viewpager will countdown from.
+        intent.putExtra("timestring", timeString); // the value of the total time the workout will last to be anounced via toast.
         context.startActivity(intent);
 
+       //Toast of the total time the excercise will take
+        Toast.makeText(getBaseContext(),""+ timeString ,Toast.LENGTH_LONG).show();
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

@@ -34,16 +34,29 @@
                 android:background="@color/toolbarcolor"
                 android:padding="5dp"
                 />
-            <TextView
+            <LinearLayout
+                android:id="@+id/card_view_image_options"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/imgur_img_album_description_cv"
-                android:lines="1"
-                android:singleLine="true"
+                android:orientation="horizontal"
                 android:layout_weight="1"
-                android:gravity="left"
                 android:background="@color/toolbarcolor"
-                android:padding="5dp"/>
+                android:padding="5dp">
+
+                <com.rey.material.widget.Switch
+                    style="@style/Material.Widget.Switch"
+                    android:id="@+id/switch_cv_image_time_or_rep"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="5dp"/>
+                <TextView
+                    android:id="@+id/switch_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+        </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </android.support.v7.widget.CardView>

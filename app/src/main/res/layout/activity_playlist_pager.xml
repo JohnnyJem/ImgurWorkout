@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -6,15 +6,23 @@
     tools:context="com.johnnymolina.ImgurWorkout.activities.PlaylistActivity"
     android:keepScreenOn="true">
 
-
+<ScrollView
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fillViewport="true">
         <com.johnnymolina.ImgurWorkout.customViews.CustomViewPager
             android:id="@+id/view_pager"
             android:keepScreenOn="true"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
+</ScrollView>
 
+    <include
+        android:id="@+id/fab_go_next"
+        layout="@layout/fab_go_next">
+    </include>
 
-</LinearLayout>
+</RelativeLayout>
 
 
 
