@@ -6,4 +6,34 @@
         <item>@color/indicator_3</item>
         <item>@color/indicator_4</item>
     </array>
+
+
+
+    <array name="spinner_labels">
+        <item>@string/one</item>
+        <item>@string/two</item>
+        <item>@string/three</item>
+        <item>@string/four</item>
+        <item>@string/five</item>
+        <item>@string/six</item>
+        <item>@string/seven</item>
+        <item>@string/eight</item>
+        <item>@string/nine</item>
+        <item>@string/ten</item>
+    </array>
+
+    <array name="spinner_values">
+        <item>@integer/one</item>
+        <item>@integer/two</item>
+        <item>@integer/three</item>
+        <item>@integer/four</item>
+        <item>@integer/five</item>
+        <item>@integer/six</item>
+        <item>@integer/seven</item>
+        <item>@integer/eight</item>
+        <item>@integer/nine</item>
+        <item>@integer/ten</item>
+    </array>
+
+
 </resources>

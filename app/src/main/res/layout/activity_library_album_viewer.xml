@@ -22,7 +22,8 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:gravity="center"
-    android:text="Slide to set seconds per Exercise"/>
+    android:text="Slide to set seconds per Exercise"
+    android:visibility="gone"/>
                 <com.rey.material.widget.Slider
                     xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/slider_sl_discrete"
@@ -33,9 +34,10 @@
                     app:sl_stepValue="10"
                     app:sl_minValue = "10"
                     app:sl_maxValue = "100"
-                    app:sl_value="50"
+                    app:sl_value="10"
                     app:sl_primaryColor= "@color/fab_material_green_500"
                     app:sl_discreteMode = "true"
+                    android:visibility="gone"
                     />
 
             <android.support.v7.widget.RecyclerView

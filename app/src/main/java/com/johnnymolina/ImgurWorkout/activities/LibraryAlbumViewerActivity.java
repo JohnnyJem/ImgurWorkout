@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -19,6 +20,7 @@ import com.johnnymolina.ImgurWorkout.customViews.SimpleDividerItemDecoration;
 import com.johnnymolina.ImgurWorkout.network.model.ImgurAlbum;
 import com.johnnymolina.ImgurWorkout.network.model.ImgurImage;
 import com.rey.material.widget.Slider;
+import com.rey.material.widget.Spinner;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -82,6 +84,9 @@ public class LibraryAlbumViewerActivity extends BaseActivity {
         RealmImgurImageModelAdapter realmAdapter = new RealmImgurImageModelAdapter(getBaseContext(), albumImages, true);
         adapter.setRealmAdapter(realmAdapter);
         adapter.notifyDataSetChanged();
+
+
+
     }
 
     @Override

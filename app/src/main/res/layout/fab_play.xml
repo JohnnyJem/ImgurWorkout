@@ -10,7 +10,7 @@
     fab:fab_colorPressed="@color/fab_material_green_900"
     android:layout_alignParentBottom="true"
     android:layout_centerHorizontal="true"
-    android:layout_marginBottom="16dp"
+    android:layout_marginBottom="32dp"
     android:layout_marginRight="16dp"
     android:layout_marginEnd="16dp"
     android:layout_alignParentRight="true"
