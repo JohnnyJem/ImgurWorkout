@@ -58,6 +58,7 @@ public class PlaylistActivity extends BaseActivity {
     String countDownText;
     TextView toolbarRightTextView;
     View fabGoNext;
+    int timesCalled = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,9 +155,16 @@ public class PlaylistActivity extends BaseActivity {
         fabGoNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                closeCountDown();
-                closeCountDown();
-                changePage(pager.getCurrentItem());
+                if (pager.getCurrentItem() + 1 == pager.getAdapter().getCount()) {
+                   closeCountDown();
+                    changePage(pager.getCurrentItem());
+                    closeCountDown();
+                }else {
+                    closeCountDown();
+                    changePage(pager.getCurrentItem());
+                }
+
+
 
             }
         });
@@ -216,12 +224,9 @@ public class PlaylistActivity extends BaseActivity {
 
         int position = pager.getCurrentItem();
         int totalPositions = pager.getAdapter().getCount();
-        if (position + 1 == totalPositions) {
+        if (position + 1 == totalPositions && timesCalled < 1) {
+            timesCalled++;
             Toast.makeText(this, "Workout Complete", Toast.LENGTH_LONG).show();
-
-
-
-
             Intent intent = new Intent(getBaseContext(),LogActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.putExtra("WORKOUT_COMPLETE", "Workout Complete");
@@ -233,12 +238,12 @@ public class PlaylistActivity extends BaseActivity {
             b.putString("lengthTime", timeString);
             intent.putExtra("Playlist Bundle", b);
             startActivity(intent);
-
             finish();
 
 
         } else {
             if (currentPosition == pager.getCurrentItem())
+
             pager.setCurrentItem(pager.getCurrentItem() + 1);
         }
     }
@@ -290,6 +295,7 @@ public class PlaylistActivity extends BaseActivity {
                         * checks if all sets have been completed.
                         * */
                         changePage(currentPosition);
+                        closeCountDown();
                     }
                 }.start();
             }
@@ -303,9 +309,9 @@ public class PlaylistActivity extends BaseActivity {
     //Still very buggy. Need to learn about Handlers and how to properly shut them down.
     public void closeCountDown(){
         if (timer!=null)
-            timer.cancel();
+            this.timer.cancel();
         if (timer2!=null)
-            timer2.cancel();
+            this.timer2.cancel();
     }
 
 

@@ -32,7 +32,6 @@ public class LibraryAlbumViewerActivity extends BaseActivity {
     FrameLayout parent;
     RelativeLayout activityLibraryAlbumViewer;
     String albumID;
-    Slider slider;
     int albumSize;
 
     @Override
@@ -43,7 +42,7 @@ public class LibraryAlbumViewerActivity extends BaseActivity {
         parent = (FrameLayout) findViewById(R.id.placeholder);
         activityLibraryAlbumViewer= (RelativeLayout) LayoutInflater.from(getBaseContext()).inflate(R.layout.activity_library_album_viewer, null);
         parent.addView(activityLibraryAlbumViewer);
-        slider = (Slider) findViewById(R.id.slider_sl_discrete);
+
 
 
         //setting up our realm adapter
@@ -106,7 +105,7 @@ public class LibraryAlbumViewerActivity extends BaseActivity {
        Context context= view.getContext();
 
   /*---Breaking down the total seconds that the album will take into hours, minutes, seconds for formatting.--*/
-        int totalSecs = slider.getValue()*albumSize;
+        int totalSecs = 120;
         int hours = totalSecs / 3600;
         int  minutes = (totalSecs % 3600) / 60;
         int seconds = totalSecs % 60;
@@ -114,7 +113,7 @@ public class LibraryAlbumViewerActivity extends BaseActivity {
   /*----HERE WE SET THE VALUES BEING PASSED ON TO PlaylistActivity.java------*/
         String albumIdIntentString = albumID;
         String timeString = String.format("%02d : %02d : %02d", hours, minutes, seconds);
-        int chronoTime = slider.getValue();
+        int chronoTime = 10;
 
 
    /*---Bundling up the values to pass onto PlaylistActivity.class----*/

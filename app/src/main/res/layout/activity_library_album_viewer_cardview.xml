@@ -23,6 +23,9 @@
             android:orientation="vertical"
             android:background="@color/toolbarcolor"
             >
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -35,20 +38,20 @@
                 android:gravity="left"
                 android:background="@color/toolbarcolor"
                 android:padding="5dp"
-                />
+                android:layout_alignParentTop="true"
+                android:layout_toLeftOf="@+id/switch_cv_image_time_or_rep"
+                android:layout_toStartOf="@+id/switch_cv_image_time_or_rep" />
+                <com.rey.material.widget.Switch
+                    style="@style/Material.Widget.Switch"
+                    android:id="@+id/switch_cv_image_time_or_rep"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:layout_alignParentRight="true"
+                    android:background="@color/toolbarcolor"
+                  />
+            </RelativeLayout>
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:background="@color/toolbarcolor"
-    >
-               <LinearLayout
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:orientation="vertical"
-                   android:background="@color/toolbarcolor"
-                   android:paddingRight="5dp">
                    <TextView
                        android:id="@+id/switch_text"
                        android:layout_width="wrap_content"
@@ -57,16 +60,23 @@
                        android:background="@color/toolbarcolor"
                        android:text=""/>
 
-                        <com.rey.material.widget.Switch
-                            style="@style/Material.Widget.Switch"
-                            android:id="@+id/switch_cv_image_time_or_rep"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:gravity="left"
-                            android:layout_gravity="center"
-                            android:layout_weight="1"
-                            android:background="@color/toolbarcolor" />
-               </LinearLayout>
+                   <RelativeLayout
+                       android:id="@+id/switch_relative_layout"
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       android:background="@color/toolbarcolor">
+
+                   <LinearLayout
+                       android:id="@+id/spinners_layout"
+                       android:layout_alignParentRight="true"
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       android:orientation="horizontal"
+                       android:background="@color/toolbarcolor"
+                       android:visibility="invisible"
+                       >
+
+
                         <com.rey.material.widget.Spinner
                             android:id="@+id/spinner1"
                             app:spn_labelEnable="true"
@@ -108,6 +118,7 @@
                             android:dropDownWidth="wrap_content"
                             android:layout_weight="1"
                             android:background="@color/toolbarcolor"/>
+
                         <com.rey.material.widget.Spinner
                             android:id="@+id/spinner4"
                             app:spn_labelEnable="true"
@@ -121,7 +132,60 @@
                             android:dropDownWidth="wrap_content"
                             android:layout_weight="1"
                             android:background="@color/toolbarcolor"/>
-                          </LinearLayout>
+
+                       <com.rey.material.widget.Spinner
+                           android:id="@+id/spinner5"
+                           app:spn_labelEnable="true"
+                           app:spn_label="     Set 5"
+                           android:textAlignment="center"
+                           app:spn_arrowSize="0dp"
+                           style="@style/Material.Widget.Spinner"
+                           app:spn_dividerColor="@color/tool_bar_color"
+                           android:layout_width="wrap_content"
+                           android:layout_height="match_parent"
+                           android:dropDownWidth="wrap_content"
+                           android:layout_weight="1"
+                           android:background="@color/toolbarcolor"/>
+
+                             </LinearLayout>
+                       <LinearLayout
+                           android:id="@+id/slide_layout"
+                           android:layout_alignParentRight="true"
+                           android:layout_width="match_parent"
+                           android:layout_height="wrap_content"
+                           android:orientation="horizontal"
+                           android:background="@color/toolbarcolor"
+                           android:visibility="invisible"
+                           >
+
+                           <com.rey.material.widget.Slider
+                               xmlns:app="http://schemas.android.com/apk/res-auto"
+                               android:id="@+id/slider_sl_discrete"
+                               android:layout_width="match_parent"
+                               android:layout_height="wrap_content"
+                               android:gravity="left"
+                               android:layout_gravity="left"
+                               app:sl_stepValue="10"
+                               app:sl_minValue = "10"
+                               app:sl_maxValue = "120"
+                               app:sl_value="60"
+                               app:sl_primaryColor= "@color/fab_material_green_500"
+                               app:sl_discreteMode = "false"
+                               android:layout_weight="3"
+                               />
+                           <TextView
+                               android:layout_width="wrap_content"
+                               android:layout_height="match_parent"
+                               android:layout_weight="1"
+                               android:layout_gravity="right"
+                               android:layout_marginLeft="-8dp"
+                               android:text="120   "/>
+
+                               </LinearLayout>
+
+
+
+                   </RelativeLayout>
         </LinearLayout>
     </LinearLayout>
 </android.support.v7.widget.CardView>

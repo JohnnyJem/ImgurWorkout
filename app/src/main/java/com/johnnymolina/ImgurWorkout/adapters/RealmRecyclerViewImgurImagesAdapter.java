@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Space;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +35,9 @@ public class RealmRecyclerViewImgurImagesAdapter extends RealmRecyclerViewAdapte
         public Spinner spinner2;
         public Spinner spinner3;
         public Spinner spinner4;
+        public Spinner spinner5;
+        public LinearLayout layoutSpinner;
+        public LinearLayout layoutSlider;
         public Space spaceForFAB;
 
 
@@ -47,17 +51,23 @@ public class RealmRecyclerViewImgurImagesAdapter extends RealmRecyclerViewAdapte
 
             //Todo: get the default switch value from our realm image object.
 
+            layoutSlider = (LinearLayout) view.findViewById(R.id.slide_layout);
+            layoutSpinner = (LinearLayout) view.findViewById(R.id.spinners_layout);
+
             spaceForFAB = (Space) view.findViewById(R.id.space_for_fab);
             spinner1 = (Spinner) view.findViewById(R.id.spinner1);
             spinner2 = (Spinner) view.findViewById(R.id.spinner2);
             spinner3 = (Spinner) view.findViewById(R.id.spinner3);
             spinner4 = (Spinner) view.findViewById(R.id.spinner4);
+            spinner5 = (Spinner) view.findViewById(R.id.spinner5);
+
              String[] state= {"0 reps","1 reps","2 reps","3 reps","4 reps","5 reps","6 reps","7 reps","8 reps","9 reps","10 reps"};
             ArrayAdapter<String> adapter_state = new ArrayAdapter<String>( context,android.R.layout.simple_spinner_item,state);
             spinner1.setAdapter(adapter_state);
             spinner2.setAdapter(adapter_state);
             spinner3.setAdapter(adapter_state);
             spinner4.setAdapter(adapter_state);
+            spinner5.setAdapter(adapter_state);
 
 
             timeOrRepSwitch.setOnClickListener(new View.OnClickListener() {
@@ -65,17 +75,13 @@ public class RealmRecyclerViewImgurImagesAdapter extends RealmRecyclerViewAdapte
                 public void onClick(View v) {
                     if (timeOrRepSwitch.isChecked()){
                         timeOrRepTextviewValue.setText("Sets");
-                        spinner1.setVisibility(View.VISIBLE);
-                        spinner2.setVisibility(View.VISIBLE);
-                        spinner3.setVisibility(View.VISIBLE);
-                        spinner4.setVisibility(View.VISIBLE);
+                        layoutSpinner.setVisibility(View.VISIBLE);
+                        layoutSlider.setVisibility(View.INVISIBLE);
 
                     }else{
-                        timeOrRepTextviewValue.setText("time");
-                        spinner1.setVisibility(View.INVISIBLE);
-                        spinner2.setVisibility(View.INVISIBLE);
-                        spinner3.setVisibility(View.INVISIBLE);
-                        spinner4.setVisibility(View.INVISIBLE);
+                        timeOrRepTextviewValue.setText("Timed");
+                      layoutSlider.setVisibility(View.VISIBLE);
+                        layoutSpinner.setVisibility(View.INVISIBLE);
                     }
 
                 }
