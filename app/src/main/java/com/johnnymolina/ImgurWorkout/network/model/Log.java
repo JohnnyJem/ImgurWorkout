@@ -1,5 +1,7 @@
 package com.johnnymolina.ImgurWorkout.network.model;
 
+import java.util.List;
+
 import io.realm.RealmObject;
 
 /**
@@ -30,7 +32,7 @@ public class Log extends RealmObject{
 
 
 
-//Start getters and setters
+    //Start getters and setters
 
     public int getLogID() {
         return logID;
@@ -79,5 +81,7 @@ public class Log extends RealmObject{
     public void setNote(String note) {
         this.note = note;
     }
+
+
 
 }

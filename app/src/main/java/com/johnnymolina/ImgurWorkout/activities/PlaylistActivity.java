@@ -60,6 +60,7 @@ public class PlaylistActivity extends BaseActivity {
     View fabGoNext;
     int timesCalled = 0;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

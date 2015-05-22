@@ -72,8 +72,7 @@ public class RealmRecyclerViewImgurAlbumAdapter extends RealmRecyclerViewAdapter
             //delete the long clicked album
             ImgurAlbum album = getItem(getPosition());
             Toast.makeText(v.getContext(), "Deleted "+ album.getTitle(), Toast.LENGTH_SHORT).show();
-            Realm realm;
-            realm = Realm.getInstance(context);
+            Realm realm= Realm.getInstance(context);
 
             RealmResults<ImgurAlbum> albumToDelete= realm.where(ImgurAlbum.class)
                     .equalTo("id", album.getId())

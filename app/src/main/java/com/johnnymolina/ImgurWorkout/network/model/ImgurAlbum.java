@@ -13,9 +13,8 @@ public class ImgurAlbum extends RealmObject {
     private String link;
     private String tags;
     private int length;
-
-
     private RealmList<ImgurImage> images;
+
 
     public String getId() {
         return id;
