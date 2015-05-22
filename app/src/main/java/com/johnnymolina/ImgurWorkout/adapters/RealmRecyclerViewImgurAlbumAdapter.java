@@ -46,9 +46,7 @@ public class RealmRecyclerViewImgurAlbumAdapter extends RealmRecyclerViewAdapter
             //get the views context
             context = view.getContext();
 
-
             image = (ImageView) view.findViewById(R.id.imgur_img_cv);
-            image.setMinimumHeight(600);
             title = (TextView) view.findViewById(R.id.imgur_title_cv);
             description = (TextView) view.findViewById(R.id.imgur_img_description_cv);
             //make the view from the viewholder clickable.
@@ -119,7 +117,6 @@ public class RealmRecyclerViewImgurAlbumAdapter extends RealmRecyclerViewAdapter
         avh.description.setText(album.getDescription());
 
         albumID = album.getId();
-            avh.image.setMinimumHeight(600);
         String imageId = album.getImages().get(0).getId();
         String imageLink = album.getImages().get(0).getLink().substring(album.getImages().get(0).getLink().lastIndexOf('/') + 1);
         String imageSmallUrl = "http://i.imgur.com/" + imageId + "t.png";
@@ -133,7 +130,7 @@ public class RealmRecyclerViewImgurAlbumAdapter extends RealmRecyclerViewAdapter
                 .load("file:///data/data/com.johnnymolina.nextphase/files/"+imageLink)
                 .asBitmap()
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                .placeholder(android.R.drawable.progress_indeterminate_horizontal)
+                .placeholder(R.drawable.placeholderdrawable)
                 .error(R.drawable.imageplaceholder)
                 .into(avh.image);
     }

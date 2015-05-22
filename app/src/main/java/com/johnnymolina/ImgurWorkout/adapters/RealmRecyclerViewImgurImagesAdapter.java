@@ -56,7 +56,6 @@ public class RealmRecyclerViewImgurImagesAdapter extends RealmRecyclerViewAdapte
             super(view);
             context= view.getContext();
             image = (ImageView) view.findViewById(R.id.imgur_img_album_cv);
-            image.setMinimumHeight(600);
             title = (TextView) view.findViewById(R.id.imgur_album_title_cv);;
             sliderTextProgress= (TextView) view.findViewById(R.id.slider_text_view);
             timeOrRepTextviewValue = (TextView) view.findViewById(R.id.switch_text);
@@ -267,7 +266,6 @@ public class RealmRecyclerViewImgurImagesAdapter extends RealmRecyclerViewAdapte
             avh.title.setText(image.getTitle());
         }
 
-        avh.image.setMinimumHeight(600);
         String imageUrl = image.getLink();
         String imageId = image.getId();
         String imageLink = image.getLink().substring(image.getLink().lastIndexOf('/') + 1);
@@ -281,9 +279,8 @@ public class RealmRecyclerViewImgurImagesAdapter extends RealmRecyclerViewAdapte
 
                 .load("file:///data/data/com.johnnymolina.nextphase/files/"+imageLink )
                 .asBitmap()
-                .thumbnail(1f)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                .placeholder(android.R.drawable.progress_indeterminate_horizontal)
+                .placeholder(R.drawable.placeholderdrawable)
                 .error(R.drawable.imageplaceholder)
                 .into(avh.image);
     }
