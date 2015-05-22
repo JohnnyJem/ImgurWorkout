@@ -45,7 +45,6 @@ public class BaseActivity extends ActionBarActivity{
 
 
     protected Toolbar toolbar;              // Declaring the Toolbar Object
-
     RecyclerView mRecyclerView;                           // Declaring RecyclerView
     RecyclerView.Adapter mAdapter;                        // Declaring Adapter For Recycler View
     RecyclerView.LayoutManager mLayoutManager;            // Declaring Layout Manager as a linear layout manager
@@ -66,8 +65,7 @@ public class BaseActivity extends ActionBarActivity{
 
 
 
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
+        toolbar = (Toolbar) findViewById(R.id.tool_bar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
 

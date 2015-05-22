@@ -47,7 +47,7 @@ public class RealmRecyclerViewImgurImagesAdapter extends RealmRecyclerViewAdapte
         public LinearLayout layoutSpinner;
         public LinearLayout layoutSlider;
         public SeekBar slider;
-        public Space spaceForFAB;
+
         RelativeLayout slideMarkers;
         public TextView sliderTextProgress;
 
@@ -56,6 +56,7 @@ public class RealmRecyclerViewImgurImagesAdapter extends RealmRecyclerViewAdapte
             super(view);
             context= view.getContext();
             image = (ImageView) view.findViewById(R.id.imgur_img_album_cv);
+            image.setMinimumHeight(600);
             title = (TextView) view.findViewById(R.id.imgur_album_title_cv);;
             sliderTextProgress= (TextView) view.findViewById(R.id.slider_text_view);
             timeOrRepTextviewValue = (TextView) view.findViewById(R.id.switch_text);
@@ -66,7 +67,7 @@ public class RealmRecyclerViewImgurImagesAdapter extends RealmRecyclerViewAdapte
             slider = (SeekBar) view.findViewById(R.id.slider);
             layoutSpinner = (LinearLayout) view.findViewById(R.id.spinners_layout);
 
-            spaceForFAB = (Space) view.findViewById(R.id.space_for_fab);
+
             spinner1 = (Spinner) view.findViewById(R.id.spinner1);
             spinner2 = (Spinner) view.findViewById(R.id.spinner2);
             spinner3 = (Spinner) view.findViewById(R.id.spinner3);
@@ -265,6 +266,8 @@ public class RealmRecyclerViewImgurImagesAdapter extends RealmRecyclerViewAdapte
         }else {
             avh.title.setText(image.getTitle());
         }
+
+        avh.image.setMinimumHeight(600);
         String imageUrl = image.getLink();
         String imageId = image.getId();
         String imageLink = image.getLink().substring(image.getLink().lastIndexOf('/') + 1);
@@ -276,9 +279,9 @@ public class RealmRecyclerViewImgurImagesAdapter extends RealmRecyclerViewAdapte
         Glide.with(context)
 
 
-        .load("file:///data/data/com.johnnymolina.nextphase/files/"+imageLink )
+                .load("file:///data/data/com.johnnymolina.nextphase/files/"+imageLink )
                 .asBitmap()
-                .thumbnail(0.3f)
+                .thumbnail(1f)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .placeholder(android.R.drawable.progress_indeterminate_horizontal)
                 .error(R.drawable.imageplaceholder)

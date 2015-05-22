@@ -1,9 +1,11 @@
-    <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:elevation="4dp"
-        android:paddingTop="@dimen/tool_bar_top_padding"
-        android:background="@color/toolbarcolor">
+<android.support.v7.widget.Toolbar
+    style="@style/ToolBarStyle"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    android:background="@color/toolbarcolor"
+    android:minHeight="@dimen/abc_action_bar_default_height_material">
 
         <TextView
             android:id="@+id/tool_bar_right_text_view"

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -31,12 +32,13 @@ public class MainLibraryActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
+
         parent = (FrameLayout) findViewById(R.id.placeholder);
         activityLibrary= (RelativeLayout) LayoutInflater.from(getBaseContext()).inflate(R.layout.activity_library, null);
         parent.addView(activityLibrary);
         realm = Realm.getInstance(this);
+
 
         adapter = new RealmRecyclerViewImgurAlbumAdapter();
         RecyclerView rv = (RecyclerView)findViewById(R.id.rv);
