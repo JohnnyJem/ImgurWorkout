@@ -43,7 +43,7 @@
                  android:textSize="25sp"/>
 
                 <TextView
-                    android:id="@+id/slide_Position"
+                    android:id="@+id/rep_position"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="25sp"

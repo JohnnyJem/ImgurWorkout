@@ -100,16 +100,16 @@ public class PlaylistActivity extends BaseActivity {
         //total numer of images we will be displaying. 1 page per image.
         albumSize = albumImages.size();
 
-        //set the
-        toolbarRightTextView.setText(1 +" of "+albumSize );
-        CharSequence albumTitle = albumQuery.get(0).getTitle().toString();
+        //set the amount of reps
 
+        toolbarRightTextView.setText(1 +" of "+albumSize );
+
+        CharSequence albumTitle = albumQuery.get(0).getTitle().toString();
         albumTitleIntent = albumTitle.toString();
 
 //Making the layout that displays our updating slide position/total where the total is based on the amount of images we have.
         toolbarRightTextView.setVisibility(View.VISIBLE);
         this.getSupportActionBar().setTitle(albumTitle);
-
 
 
         //SETTING UP VIEWPAGER AND ADAPTER
@@ -164,9 +164,6 @@ public class PlaylistActivity extends BaseActivity {
                     closeCountDown();
                     changePage(pager.getCurrentItem());
                 }
-
-
-
             }
         });
 

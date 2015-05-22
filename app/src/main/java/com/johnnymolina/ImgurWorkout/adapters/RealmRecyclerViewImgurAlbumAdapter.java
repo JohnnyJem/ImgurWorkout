@@ -35,7 +35,6 @@ public class RealmRecyclerViewImgurAlbumAdapter extends RealmRecyclerViewAdapter
 
     private class AlbumViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
-
         public ImageView image;
         public TextView title;
         public TextView description;

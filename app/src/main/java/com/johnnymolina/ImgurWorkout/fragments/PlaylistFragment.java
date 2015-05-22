@@ -63,7 +63,7 @@ int imagesFragmentPosition;
         imageTitle = (TextView) cardViewFragment.findViewById(R.id.card_title_text);
         TextView imageDescription = (TextView) cardViewFragment.findViewById(R.id.card_description_text);
         image = (ImageView) cardViewFragment.findViewById(R.id.card_image_view);
-        TextView slidePosition =(TextView) cardViewFragment.findViewById(R.id.slide_Position);
+        TextView repPosition =(TextView) cardViewFragment.findViewById(R.id.rep_position);
         countDownTimer = (TextView) cardViewFragment.findViewById(R.id.count_down_timer);
         countDownText = (TextView) cardViewFragment.findViewById(R.id.count_down_text);
 
@@ -79,19 +79,39 @@ int imagesFragmentPosition;
                 .contains("album",imagesAlbumID, false)
                 .findAll();
 
+
+        //setting image Title
         if(albumImages.get(imagesFragmentPosition).getTitle().contains("null")){
             imageTitle.setText("");
         }else {
             imageTitle.setText(albumImages.get(imagesFragmentPosition).getTitle());
         }
 
+
+        //Settng image Description
         if (albumImages.get(imagesFragmentPosition).getDescription().contains("null")){
             imageDescription.setText("");
         }else {
             imageDescription.setText(albumImages.get(imagesFragmentPosition).getDescription());
         }
 
-        slidePosition.setText(String.valueOf(imagesFragmentPosition+ 1)+"\\" + albumQuery.get(0).getImages().size() );
+
+        int setSpinnerCount = 0;
+        int setCurrentCount = 1;
+        if (albumImages.get(imagesFragmentPosition).getSpinner1() != 0)
+            setSpinnerCount++;
+        if (albumImages.get(imagesFragmentPosition).getSpinner2() != 0)
+            setSpinnerCount++;
+        if (albumImages.get(imagesFragmentPosition).getSpinner3() != 0)
+            setSpinnerCount++;
+        if (albumImages.get(imagesFragmentPosition).getSpinner4() != 0)
+            setSpinnerCount++;
+        if (albumImages.get(imagesFragmentPosition).getSpinner5() != 0)
+            setSpinnerCount++;
+
+        repPosition.setText("Set"+ setCurrentCount +"of"+setSpinnerCount);
+
+
 
         String imageLink;
 
@@ -112,7 +132,7 @@ int imagesFragmentPosition;
                 .error(R.drawable.imageplaceholder)
                 .into(image);
 
-
+//test
 //setting up the timers
 
 
