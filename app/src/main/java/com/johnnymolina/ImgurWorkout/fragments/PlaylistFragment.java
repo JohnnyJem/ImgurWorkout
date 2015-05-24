@@ -6,7 +6,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,7 +38,9 @@ int imagesFragmentPosition;
     CardView cardViewFragment;
     TextView imageTitle;
     ImageView image;
-
+    int setSpinnerCount;
+    int spinnerInitial;
+    RealmResults<ImgurImage> albumImages;
 
     public PlaylistFragment(){
 
@@ -52,7 +53,7 @@ int imagesFragmentPosition;
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-//TODO: find out where this bundle comes from
+
         Bundle args = getArguments();
         imagesFragmentPosition = args.getInt("POSITION");
         imagesAlbumID = args.getString("ALBUM_ID");
@@ -63,19 +64,17 @@ int imagesFragmentPosition;
         imageTitle = (TextView) cardViewFragment.findViewById(R.id.card_title_text);
         TextView imageDescription = (TextView) cardViewFragment.findViewById(R.id.card_description_text);
         image = (ImageView) cardViewFragment.findViewById(R.id.card_image_view);
-        TextView repPosition =(TextView) cardViewFragment.findViewById(R.id.rep_position);
         countDownTimer = (TextView) cardViewFragment.findViewById(R.id.count_down_timer);
-        countDownText = (TextView) cardViewFragment.findViewById(R.id.count_down_text);
-
+        countDownText = (TextView) cardViewFragment.findViewById(R.id.count_down_rest);
 
         context = cardViewFragment.getContext();
         realm = Realm.getInstance(context);
         RealmResults<ImgurAlbum> albumQuery = realm.where(ImgurAlbum.class)
-                .equalTo("id",imagesAlbumID )
+                .equalTo("id", imagesAlbumID)
                 .findAll();
 
 
-        RealmResults<ImgurImage> albumImages = realm.where(ImgurImage.class)
+         albumImages = realm.where(ImgurImage.class)
                 .contains("album",imagesAlbumID, false)
                 .findAll();
 
@@ -96,23 +95,6 @@ int imagesFragmentPosition;
         }
 
 
-        int setSpinnerCount = 0;
-        int setCurrentCount = 1;
-        if (albumImages.get(imagesFragmentPosition).getSpinner1() != 0)
-            setSpinnerCount++;
-        if (albumImages.get(imagesFragmentPosition).getSpinner2() != 0)
-            setSpinnerCount++;
-        if (albumImages.get(imagesFragmentPosition).getSpinner3() != 0)
-            setSpinnerCount++;
-        if (albumImages.get(imagesFragmentPosition).getSpinner4() != 0)
-            setSpinnerCount++;
-        if (albumImages.get(imagesFragmentPosition).getSpinner5() != 0)
-            setSpinnerCount++;
-
-        repPosition.setText("Set"+ setCurrentCount +"of"+setSpinnerCount);
-
-
-
         String imageLink;
 
         if (albumImages.get(imagesFragmentPosition).getSysLink() != "null"){
@@ -122,7 +104,6 @@ int imagesFragmentPosition;
         }
 
         //start with Glide
-
         //start with Glide
         Glide.with(context)
                 .load(imageLink)
@@ -135,20 +116,36 @@ int imagesFragmentPosition;
 //test
 //setting up the timers
 
-
     return cardViewFragment;
 
     }
 
-
+/*--------------------------------Very important method that executes on each page---------------*/
     @Override
     public void onResume() {
         super.onResume();
-
-        ((PlaylistActivity) getActivity()).firstExecution();
-
+        ((PlaylistActivity) getActivity()).firstExecution((albumImages));
 
     }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        // Make sure that we are currently visiblea
+        if (this.isVisible()) {
+
+            ((PlaylistActivity) getActivity()).firstExecution((albumImages));
+
+            //START TEXT TO SPEECH ON WINDOW CHANGE
+            String title = this.imageTitle.getText().toString();
+            ((PlaylistActivity) getActivity()).announceTitle(title);
+
+        }
+    }
+
+    /*-------------------------End of methods that we can use at the very start--------------*/
+
+
 
     @Override
     public void onDestroy() {
@@ -162,31 +159,7 @@ int imagesFragmentPosition;
 
     }
 
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
 
-        // Make sure that we are currently visible
-        if (this.isVisible()) {
-
-            //START TEXT TO SPEECH ON WINDOW CHANGE
-            String title = this.imageTitle.getText().toString();
-            ((PlaylistActivity) getActivity()).announceTitle(title);
-
-            //START COUNTDOWN
-             TextView countDownTime = this.countDownTimer;
-            TextView countDownText = this.countDownText;
-            ((PlaylistActivity) getActivity()).countDown(countDownTime, countDownText);
-
-            // If we are becoming invisible, then...
-            if (!isVisibleToUser) {
-                Log.d("MyFragment", "Not visible anymore.  Stopping audio.");
-                // TODO stop countdown
-                ((PlaylistActivity) getActivity()).closeCountDown();
-
-            }
-        }
-    }
 
 
     //Used to setup each new fragment created.
@@ -203,5 +176,14 @@ int imagesFragmentPosition;
         //return a set-up fragment
         return(frag);
     }
+
+    /*--------------------Some methods called from the PlaylistActivity to update views--*/
+
+
+
+
+
+
+
 
 }

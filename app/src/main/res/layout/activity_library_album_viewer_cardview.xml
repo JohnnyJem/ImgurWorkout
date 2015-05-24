@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/toolbarcolor">
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/imgur_album_title_cv"
                 android:text="title"
@@ -42,8 +42,32 @@
                 android:background="@color/toolbarcolor"
                 android:padding="5dp"
                 android:layout_alignParentTop="true"
-                android:layout_toLeftOf="@+id/switch_text"
-                android:layout_toStartOf="@+id/switch_text" />
+                android:layout_toLeftOf="@+id/rest_text"
+                android:layout_toStartOf="@+id/rest_text" />
+
+
+
+                <TextView
+                    android:id="@+id/rest_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@color/toolbarcolor"
+                    android:layout_toLeftOf="@+id/spinnerRest"
+                    android:layout_toStartOf="@+id/spinnerRest"
+                    android:text="Rest "/>
+
+                <com.rey.material.widget.Spinner
+                    android:id="@+id/spinnerRest"
+                    android:textAlignment="center"
+                    app:spn_arrowSize="0dp"
+                    app:spn_dividerColor="@color/tool_bar_color"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:dropDownWidth="wrap_content"
+                    android:layout_toLeftOf="@id/switch_text"
+                    android:layout_toStartOf="@id/switch_text"
+                    android:background="@color/toolbarcolor"/>
                 <TextView
                     android:id="@+id/switch_text"
                     android:layout_width="wrap_content"
@@ -53,7 +77,6 @@
                     android:padding="5dp"
                     android:layout_toLeftOf="@+id/switch_cv_image_time_or_rep"
                     android:layout_toStartOf="@+id/switch_cv_image_time_or_rep"
-
                     android:text=""/>
                 <com.rey.material.widget.Switch
                     style="@style/Material.Widget.Switch"

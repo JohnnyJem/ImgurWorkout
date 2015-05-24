@@ -21,6 +21,10 @@
         android:id="@+id/fab_go_next"
         layout="@layout/fab_go_next">
     </include>
+    <include
+        android:id="@+id/fab_play_playlist_next"
+        layout="@layout/fab_play_playlist">
+    </include>
 
 </RelativeLayout>
 

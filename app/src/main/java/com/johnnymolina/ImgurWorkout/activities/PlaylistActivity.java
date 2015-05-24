@@ -1,8 +1,6 @@
 package com.johnnymolina.ImgurWorkout.activities;
 
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.speech.tts.TextToSpeech;
@@ -10,13 +8,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.text.format.Time;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,13 +21,10 @@ import com.johnnymolina.ImgurWorkout.customViews.CustomViewPager;
 import com.johnnymolina.ImgurWorkout.fragments.PlaylistFragment;
 import com.johnnymolina.ImgurWorkout.network.model.ImgurAlbum;
 import com.johnnymolina.ImgurWorkout.network.model.ImgurImage;
-import com.johnnymolina.ImgurWorkout.network.model.Log;
 
 import org.w3c.dom.Text;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -53,13 +45,26 @@ public class PlaylistActivity extends BaseActivity {
     TextToSpeech tts;
     String textTitle;
     CountDownTimer timer;
-    CountDownTimer timer2;
    public String albumTitleIntent;
     String countDownText;
     TextView toolbarRightTextView;
+    View fabPlayNow;
     View fabGoNext;
     int timesCalled = 0;
-
+    TextView setCount;
+    TextView setTotal;
+    TextView currentSetReps;
+    int spinnerTotal;
+    int spinnerCount;
+    boolean spinner1Miss = false;
+    boolean spinner2Miss = false;
+    boolean spinner3Miss = false;
+    boolean spinner4Miss = false;
+    boolean spinner5Miss = false;
+    int spinnerSwitch = 2;
+    int insideSpinnerCount;
+    RealmResults<ImgurImage> albumImages;
+    RealmResults<ImgurAlbum> albumQuery;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,8 +75,13 @@ public class PlaylistActivity extends BaseActivity {
         parent = (FrameLayout) findViewById(R.id.placeholder);
         thisActivity = (RelativeLayout) LayoutInflater.from(getBaseContext()).inflate(R.layout.activity_playlist_pager, null);
         parent.addView(thisActivity);
+        fabPlayNow = findViewById(R.id.fab_play_playlist_next);
         fabGoNext = findViewById(R.id.fab_go_next);
         toolbarRightTextView = (TextView) findViewById(R.id.tool_bar_right_text_view);
+         spinnerCount = 1;
+         spinnerTotal = 0;
+
+
     }
 
 
@@ -79,6 +89,7 @@ public class PlaylistActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
 
 /*--Grabbing the bundle from libraryAlbumViewerActivity.class ---*/
         Bundle b = getIntent().getExtras();
@@ -93,9 +104,10 @@ public class PlaylistActivity extends BaseActivity {
                 .equalTo("id", albumID)
                 .findAll();
 
-        RealmResults<ImgurImage> albumImages = realm.where(ImgurImage.class)
+       albumImages = realm.where(ImgurImage.class)
                 .contains("album", albumID, false)
                 .findAll();
+
 
         //total numer of images we will be displaying. 1 page per image.
         albumSize = albumImages.size();
@@ -118,7 +130,7 @@ public class PlaylistActivity extends BaseActivity {
         pager.setAdapter(playlistFragmentAdapter);
         playlistFragmentAdapter.notifyDataSetChanged();
         pager.setPagingEnabled(false);
-        pager.setOffscreenPageLimit(2);
+        pager.setOffscreenPageLimit(5);
 
 
         //initialize text-to-speech
@@ -139,13 +151,19 @@ public class PlaylistActivity extends BaseActivity {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             }
+
             @Override
             public void onPageSelected(int position) {
-                int countDown1 = pager.getCurrentItem()+1;
+                //this spinnerSwitch value is restarted everytime the page changes
+                //in order for our countdown timer inner methods to work on every new slide.
+                spinnerSwitch = 2;
+                //setting up the total page countdown on the toolbar
+                int countDown1 = pager.getCurrentItem() + 1;
                 int countDown2 = albumSize;
-                countDownText = countDown1+" of "+countDown2;
+                countDownText = countDown1 + " of " + countDown2;
                 toolbarRightTextView.setText(countDownText);
             }
+
             @Override
             public void onPageScrollStateChanged(int state) {
             }
@@ -153,23 +171,34 @@ public class PlaylistActivity extends BaseActivity {
 
 
         /*-----SETUP ON CLICK LISTENERS----*/
-        fabGoNext.setOnClickListener(new View.OnClickListener() {
+        fabPlayNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (pager.getCurrentItem() + 1 == pager.getAdapter().getCount()) {
-                   closeCountDown();
-                    changePage(pager.getCurrentItem());
-                    closeCountDown();
-                }else {
-                    closeCountDown();
-                    changePage(pager.getCurrentItem());
+
+                if(albumImages.get(pager.getCurrentItem()).isSwitchValue()) {
+                    spinnerCount++;
+                    setCount.setText("Set " + spinnerCount + " of ");
+                    final ImageView image = (ImageView) pager.getChildAt(pager.getCurrentItem()).findViewById(R.id.card_image_view);
+                    final TextView restCountDown = (TextView) pager.getChildAt(pager.getCurrentItem()).findViewById(R.id.count_down_rest);
+                    image.setVisibility(View.INVISIBLE);
+                    countDownRest(restCountDown, image);
+                }else{
+                   final TextView timerCountDown = (TextView) pager.getChildAt(pager.getCurrentItem()).findViewById(R.id.count_down_timer);
+                    countDownTimerTimed(timerCountDown);
                 }
+
+
             }
         });
 
+        fabGoNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    changePage(pager.getCurrentItem());
+            }
+        });
 
     }
-
 
     @Override
     protected void onDestroy() {
@@ -185,14 +214,8 @@ public class PlaylistActivity extends BaseActivity {
            tts.stop();
            tts.shutdown();
        }
-
         finish();
-
     }
-
-
-
-
 
 /*--Settting our Fragment Adapter class--------------------------------------*/
     class PlaylistFragmentAdapter extends FragmentStatePagerAdapter {
@@ -211,15 +234,94 @@ public class PlaylistActivity extends BaseActivity {
         }
     }
 
+/*--------------------Countdown timer method--------------------------------------------*/
+
+/*----------------------------------UTILITY METHODS---------------------------------------------*/
+    //Announces the title of each Image with text-to-speech
+    public void announceTitle(String title){
+        textTitle = title;
+        if (ttsValue == true) {
+            tts.speak(textTitle, TextToSpeech.QUEUE_FLUSH, null);
+        }
+    }
+
+
+    //special method that Forces Countdown start for first pageview
+    public void firstExecution(RealmResults<ImgurImage> albumImages){
+
+
+        if (albumImages.get(pager.getCurrentItem()).isSwitchValue()) {
+                fabGoNext.setVisibility(View.INVISIBLE);
+                fabPlayNow.setVisibility(View.VISIBLE);
+        }else{
+                fabGoNext.setVisibility(View.VISIBLE);
+                fabPlayNow.setVisibility(View.INVISIBLE);
+            }
+
+        if (albumImages.get(pager.getCurrentItem()).isSwitchValue()) {
+            spinnerTotal = 0;
+            spinnerCount = 1;
+
+            if (albumImages.get(pager.getCurrentItem()).getSpinner1() != 0){
+                spinnerTotal++;}
+            else{
+                spinner1Miss = true;
+            }
+            if (albumImages.get(pager.getCurrentItem()).getSpinner2() != 0) {
+                spinnerTotal++;
+            }else{
+                spinner2Miss= true;
+            }
+            if (albumImages.get(pager.getCurrentItem()).getSpinner3() != 0) {
+                spinnerTotal++;
+            }else{
+                spinner3Miss= true;
+            }
+            if (albumImages.get(pager.getCurrentItem()).getSpinner4() != 0) {
+                spinnerTotal++;
+            }else{
+                spinner4Miss = true;
+            }
+            if (albumImages.get(pager.getCurrentItem()).getSpinner5() != 0) {
+                spinnerTotal++;
+            }else{
+                spinner5Miss = true;
+            }
+            //THIS IS THE KEY TO GETTING THE VIEWS FROM THE CURRENT FRAGMENT. USE PAGER.GETCHILDAT.
+            //TO SET A NEW ID TO THE TEXTVIEW THE PLAYLISTACTIVITY HAS REGISTERED. THE NEW ID WILL
+            //NOW EQUAL THE ONE OF THE CURRENT PAGE!!
+            setCount =(TextView) pager.getChildAt(pager.getCurrentItem()).findViewById(R.id.rep_count);
+            setTotal =(TextView) pager.getChildAt(pager.getCurrentItem()).findViewById(R.id.rep_total);
+            currentSetReps = (TextView) pager.getChildAt(pager.getCurrentItem()).findViewById(R.id.count_down_timer);
+
+
+            if (albumImages.get(pager.getCurrentItem()).getSpinner1() == 0) {
+                currentSetReps.setText(albumImages.get(pager.getCurrentItem()).getSpinner1() + " Reps");
+                spinnerTotal++;
+            }else{
+                currentSetReps.setText(albumImages.get(pager.getCurrentItem()).getSpinner1() + " Reps");
+
+            }
+
+            setCount.setText("Set " + spinnerCount + " of ");
+            setTotal.setText("" + spinnerTotal);
+        }else {
+            fabPlayNow.setVisibility(View.VISIBLE);
+            fabGoNext.setVisibility(View.INVISIBLE);
+        }
+
+
+    }
 
 
 
+/*------------------------END UTILITY METHODS-------------------------------------------------*/
+
+ /*--------------------------METHODS CALLED FROM THE FRAGMENT-------------------------------*/
 
 
-//Huge method that intializes each pages actions after each page change.
-//Called at the end of our countdown Timer from method Countdown
+
     public void changePage(int currentPosition) {
-
         int position = pager.getCurrentItem();
         int totalPositions = pager.getAdapter().getCount();
         if (position + 1 == totalPositions && timesCalled < 1) {
@@ -237,89 +339,102 @@ public class PlaylistActivity extends BaseActivity {
             intent.putExtra("Playlist Bundle", b);
             startActivity(intent);
             finish();
-
-
         } else {
             if (currentPosition == pager.getCurrentItem())
-
-            pager.setCurrentItem(pager.getCurrentItem() + 1);
+                pager.setCurrentItem(pager.getCurrentItem() + 1);
         }
     }
 
 
 
 
-
-
-    //Announces the title of each Image with text-to-speech
-    public void announceTitle(String title){
-          textTitle = title;
-        if (ttsValue == true) {
-            tts.speak(textTitle, TextToSpeech.QUEUE_FLUSH, null);
-        }
-    }
-
-
-
-
-    public void countDown(TextView tv, TextView tvt){
-        final TextView countDownText = tvt;
-        final TextView countDownTimer2 = tv ;
-        final int currentPosition = pager.getCurrentItem();
-      timer= new CountDownTimer(6000, 350) {
-
+    public void countDownRest(TextView tv, ImageView img){
+        final TextView countDownTimer = tv;
+        final ImageView imageHideShow = img;
+        int time = albumImages.get(pager.getCurrentItem()).getRestValue()*1000;
+        fabPlayNow.setVisibility(View.INVISIBLE);
+        fabGoNext.setVisibility(View.INVISIBLE);
+        currentSetReps.setText("");
+        timer= new CountDownTimer(time, 350) {
             public void onTick(long millisUntilFinished) {
-                countDownTimer2.setText("" + millisUntilFinished / 1000);
-                if (countDownTimer2.getText().equals("2"))
-                countDownText.setText("SET");
+                countDownTimer.setText("Resting for " + String.valueOf(Math.round(millisUntilFinished * 0.001f)));
             }
             public void onFinish() {
-               countDownText.setText("GO!");
+              imageHideShow.setVisibility(View.VISIBLE);
+                countDownTimer.setText("");
 
-             timer2 =  new CountDownTimer(chronoTime*1000, 500) {
-                    public void onTick(long millisUntilFinished) {
-                        performTick(millisUntilFinished);
-                    }
+                switch (spinnerSwitch) {
+                    case 1:
+                        if (albumImages.get(pager.getCurrentItem()).getSpinner1() != 0){
+                        currentSetReps.setText(albumImages.get(pager.getCurrentItem()).getSpinner1()+" Reps");
+                        break;}
 
-                    private void performTick(long millisUntilFinished) {
-                        countDownTimer2.setText("" + String.valueOf(Math.round(millisUntilFinished * 0.001f)));
-                    }
+                    case 2:
+                        if (albumImages.get(pager.getCurrentItem()).getSpinner2() != 0){
+                        currentSetReps.setText(albumImages.get(pager.getCurrentItem()).getSpinner2()+" Reps");
+                            spinnerSwitch++;
+                        break;}else {
+                            spinnerSwitch = 3;
+                        }
 
-                    public void onFinish() {
-                        /*TODO: Create and IF else statement here
-                        *to change position based on our images attribute
-                        * IF the image has a SET attribute do not allow this method to run.
-                        * The user will have to manually move on to the next page via a button that
-                        * checks if all sets have been completed.
-                        * */
-                        changePage(currentPosition);
-                        closeCountDown();
-                    }
-                }.start();
+                    case 3:
+                        if (albumImages.get(pager.getCurrentItem()).getSpinner3() != 0 ){
+                        currentSetReps.setText(albumImages.get(pager.getCurrentItem()).getSpinner3()+" Reps");
+                            spinnerSwitch++;
+                        break;}else{
+                            spinnerSwitch++;
+                        }
+
+                    case 4:
+                        if (albumImages.get(pager.getCurrentItem()).getSpinner4() != 0 ){
+                            currentSetReps.setText(albumImages.get(pager.getCurrentItem()).getSpinner4()+" Reps");
+                            spinnerSwitch++;
+                            break;}else{
+                            spinnerSwitch++;
+                        }
+
+                    case 5:
+                        if (albumImages.get(pager.getCurrentItem()).getSpinner5() != 0){
+                            currentSetReps.setText(albumImages.get(pager.getCurrentItem()).getSpinner5()+" Reps");
+                            break;}
+
+                    default: currentSetReps.setText("");
+                        break;
+                }
+
+
+
+
+
+                if ( spinnerCount >= spinnerTotal ){
+                    fabPlayNow.setVisibility(View.INVISIBLE);
+                    fabGoNext.setVisibility(View.VISIBLE);
+                }else{
+                    fabPlayNow.setVisibility(View.VISIBLE);
+                }
             }
         }.start();
+    }
 
+    public void countDownTimerTimed(TextView tv){
+        fabPlayNow.setVisibility(View.INVISIBLE);
+        final TextView countDownTimer = tv;
+        int time = albumImages.get(pager.getCurrentItem()).getSlideValue();
+        if (time == 0 )
+            time = 10;
+
+        timer= new CountDownTimer(time*1000, 350) {
+            public void onTick(long millisUntilFinished) {
+                countDownTimer.setText("" + String.valueOf(Math.round(millisUntilFinished * 0.001f)));
+            }
+            public void onFinish() {
+                countDownTimer.setText("");
+                fabGoNext.setVisibility(View.VISIBLE);
+            }
+        }.start();
     }
 
 
-
-    //forces each countDown methods dismissal once a page is not in a users view.
-    //Still very buggy. Need to learn about Handlers and how to properly shut them down.
-    public void closeCountDown(){
-        if (timer!=null)
-            this.timer.cancel();
-        if (timer2!=null)
-            this.timer2.cancel();
-    }
-
-
-    //special method that Forces Countdown start for first pageview
-    public void firstExecution(){
-        if (pager.getCurrentItem() == 0) {
-            countDown((TextView) pager.getChildAt(0).findViewById(R.id.count_down_timer),(TextView) pager.getChildAt(0).findViewById(R.id.count_down_text));
-
-        }
-    }
 
 }
 

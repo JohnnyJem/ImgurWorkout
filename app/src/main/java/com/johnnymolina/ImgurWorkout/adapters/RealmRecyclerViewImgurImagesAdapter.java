@@ -44,9 +44,11 @@ public class RealmRecyclerViewImgurImagesAdapter extends RealmRecyclerViewAdapte
         public Spinner spinner3;
         public Spinner spinner4;
         public Spinner spinner5;
+        public Spinner spinnerRest;
         public LinearLayout layoutSpinner;
         public LinearLayout layoutSlider;
         public SeekBar slider;
+        public TextView timerCountDown;
 
         RelativeLayout slideMarkers;
         public TextView sliderTextProgress;
@@ -65,6 +67,7 @@ public class RealmRecyclerViewImgurImagesAdapter extends RealmRecyclerViewAdapte
             layoutSlider = (LinearLayout) view.findViewById(R.id.slide_layout);
             slider = (SeekBar) view.findViewById(R.id.slider);
             layoutSpinner = (LinearLayout) view.findViewById(R.id.spinners_layout);
+            timerCountDown = (TextView) view.findViewById(R.id.count_down_timer);
 
 
             spinner1 = (Spinner) view.findViewById(R.id.spinner1);
@@ -82,10 +85,17 @@ public class RealmRecyclerViewImgurImagesAdapter extends RealmRecyclerViewAdapte
             spinner5.setAdapter(adapter_state);
 
 
+
+            spinnerRest = (Spinner) view.findViewById(R.id.spinnerRest);
+            Integer[] restTimes= {0,30,60,90,120,150,180,210,240};
+            ArrayAdapter<Integer> adapter_restTimes = new ArrayAdapter<Integer>( context,android.R.layout.simple_spinner_item,restTimes);
+            spinnerRest.setAdapter(adapter_restTimes);
+
+
             slider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 @Override
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                    sliderTextProgress.setText(""+ progress +" seconds");
+                    sliderTextProgress.setText("" + progress + " seconds");
                 }
 
                 @Override
@@ -101,6 +111,21 @@ public class RealmRecyclerViewImgurImagesAdapter extends RealmRecyclerViewAdapte
                             .findFirst();
                     realm.beginTransaction();
                     imagetoUpdate.setSlideValue(slider.getProgress());
+                    realm.commitTransaction();
+                    realm.close();
+                }
+            });
+
+
+            spinnerRest.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(Spinner spinner, View view, int i, long l) {
+                    Realm realm = Realm.getInstance(context);
+                    ImgurImage imagetoUpdate = realm.where(ImgurImage.class)
+                            .equalTo("id", getItem(getPosition()).getId())
+                            .findFirst();
+                    realm.beginTransaction();
+                    imagetoUpdate.setRestValue(spinnerRest.getSelectedItemPosition() * 30);
                     realm.commitTransaction();
                     realm.close();
                 }

@@ -25,6 +25,8 @@ public class ImgurImage extends RealmObject {
     private int spinner4;
     private int spinner5;
 
+
+    private int restValue;
     private int slideValue; // from 0 - 120 s's
 
 
@@ -101,6 +103,13 @@ public class ImgurImage extends RealmObject {
         this.switchValue = switchValue;
     }
 
+    public int getRestValue() {
+        return restValue;
+    }
+
+    public void setRestValue(int restValue) {
+        this.restValue = restValue;
+    }
 
 
     public int getSpinner1() {
