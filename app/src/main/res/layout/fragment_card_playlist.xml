@@ -44,15 +44,15 @@
                     android:layout_centerHorizontal="true" />
 
                 <TextView
-                    android:id="@+id/rep_count"
+                    android:id="@+id/set_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="25sp"
                     android:layout_alignParentTop="true"
-                    android:layout_toLeftOf="@+id/rep_total"
-                    android:layout_toStartOf="@+id/rep_total" />
+                    android:layout_toLeftOf="@+id/set_total"
+                    android:layout_toStartOf="@+id/set_total" />
                 <TextView
-                    android:id="@+id/rep_total"
+                    android:id="@+id/set_total"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"

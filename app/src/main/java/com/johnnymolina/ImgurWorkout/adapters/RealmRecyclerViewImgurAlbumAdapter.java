@@ -113,7 +113,12 @@ public class RealmRecyclerViewImgurAlbumAdapter extends RealmRecyclerViewAdapter
         ImgurAlbum album = getItem(i);
         avh.title.setText(album.getTitle());
 
-        avh.description.setText(album.getDescription());
+
+        if (album.getDescription().contains("null")) {
+            avh.description.setText(album.getDescription());
+        }else{
+            avh.description.setText("");
+        }
 
         albumID = album.getId();
         String imageId = album.getImages().get(0).getId();
