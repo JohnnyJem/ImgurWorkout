@@ -105,14 +105,15 @@ public class LibraryAlbumViewerActivity extends BaseActivity {
        Context context= view.getContext();
 
   /*---Breaking down the total seconds that the album will take into hours, minutes, seconds for formatting.--*/
-        int totalSecs = 120;
-        int hours = totalSecs / 3600;
-        int  minutes = (totalSecs % 3600) / 60;
-        int seconds = totalSecs % 60;
+        long time= System.currentTimeMillis()*1000;
+        int startTime = (int) time;
+       // int hours = totalSecs / 3600;
+        //int  minutes = (totalSecs % 3600) / 60;
+        //int seconds = totalSecs % 60;
 
   /*----HERE WE SET THE VALUES BEING PASSED ON TO PlaylistActivity.java------*/
         String albumIdIntentString = albumID;
-        String timeString = String.format("%02d : %02d : %02d", hours, minutes, seconds);
+       // String timeString = String.format("%02d : %02d : %02d", hours, minutes, seconds);
         int chronoTime = 10;
 
 
@@ -120,11 +121,9 @@ public class LibraryAlbumViewerActivity extends BaseActivity {
         final Intent intent = new Intent(this,PlaylistActivity.class);
         intent.putExtra("ALBUM_ID", albumIdIntentString); // albumID for playlistAcitivty to lookup.
         intent.putExtra("CHRONO_TIME", chronoTime); // the time that each viewpager will countdown from.
-        intent.putExtra("timestring", timeString); // the value of the total time the workout will last to be anounced via toast.
+        intent.putExtra("startTime", startTime); // the value of the total time the workout will last to be anounced via toast.
         context.startActivity(intent);
 
-       //Toast of the total time the excercise will take
-        Toast.makeText(getBaseContext(),""+ timeString ,Toast.LENGTH_LONG).show();
     }
 
 

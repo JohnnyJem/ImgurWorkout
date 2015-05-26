@@ -44,7 +44,7 @@ public class PlaylistActivity extends BaseActivity {
     private Realm realm;
     int albumSize;
     int chronoTime;
-    String timeString;
+    int startTime;
     TextToSpeech tts;
     String textTitle;
 
@@ -91,7 +91,7 @@ public class PlaylistActivity extends BaseActivity {
         albumID = "";
         albumID = b.getString("ALBUM_ID");
         chronoTime = b.getInt("CHRONO_TIME");
-        timeString = b.getString("timestring");
+        startTime = b.getInt("startTime");
 
   //using the Bundle info to lookup the appropriate album and its images we will be using.
         RealmResults<ImgurAlbum> albumQuery = realm.where(ImgurAlbum.class)
@@ -171,6 +171,7 @@ public class PlaylistActivity extends BaseActivity {
 
                 if(albumImages.get(pager.getCurrentItem()).isSwitchValue()) {
                     fragment.countDownRest();
+
                 }else{
                   fragment.countDownTimerTimed();
                 }
@@ -183,8 +184,7 @@ public class PlaylistActivity extends BaseActivity {
                 int index = pager.getCurrentItem();
                 PlaylistFragmentAdapter adapter = ((PlaylistFragmentAdapter)pager.getAdapter());
                 PlaylistFragment fragment = adapter.getFragment(index);
-                    fragment.countDownRest();
-                    changePage(pager.getCurrentItem());
+                    fragment.countDownRestLast();
             }
         });
 
@@ -306,7 +306,7 @@ public class PlaylistActivity extends BaseActivity {
             String day = currentDate;
             b.putString("dateTime", day);
             b.putString("albumName", albumTitleIntent);
-            b.putString("lengthTime", timeString);
+            b.putInt("startTime", startTime);
             intent.putExtra("Playlist Bundle", b);
             startActivity(intent);
             finish();

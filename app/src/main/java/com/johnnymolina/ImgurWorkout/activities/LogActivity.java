@@ -194,7 +194,6 @@ public class LogActivity extends BaseActivity {
                     //increment index
                     int nextID = (int) (realm.where(Log.class).maximumInt("logID") + 1);
 
-
                     realmLogObject.setLogID(nextID);
                     realmLogObject.setDateTime(dateTime.getText().toString());
                     realmLogObject.setAlbumCompletedName(albumName.getText().toString());
@@ -268,16 +267,20 @@ public class LogActivity extends BaseActivity {
 
             String dateTimeIntent = b.getString("dateTime");
             String albumNameIntent = b.getString("albumName");
-            String lengthTimeIntent = b.getString("lengthTime");
-
-
-            Toast.makeText(getBaseContext(),dateTimeIntent+albumNameIntent+lengthTimeIntent, Toast.LENGTH_LONG).show();
+            int timeStart = b.getInt("timeStart");
+            long time= System.currentTimeMillis()*1000;
+            int endTime = (int) time;
+            int totalTime = endTime - timeStart;
+            int hours = totalTime / 3600;
+            int  minutes = (totalTime % 3600) / 60;
+            int seconds = totalTime % 60;
+            String timeString = String.format("%02d : %02d : %02d", hours, minutes, seconds);
 
             fabLogOpen.callOnClick();
 
             dateTime.setText(dateTimeIntent);
             albumName.setText(albumNameIntent);
-            timeLength.setText(lengthTimeIntent);
+            timeLength.setText(""+timeString);
             workoutType.setText("");
             notes.setText("");
         }

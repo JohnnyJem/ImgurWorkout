@@ -34,7 +34,8 @@ Context context;
 String imagesAlbumID;
 int chronoTime;
 int imagesFragmentPosition;
-    TextView countDownTimer;
+int startTime;
+    TextView repsAndTimeCountDown;
     TextView restCountDown;
     CardView cardViewFragment;
     TextView imageTitle;
@@ -60,14 +61,13 @@ int imagesFragmentPosition;
         Bundle args = getArguments();
         imagesFragmentPosition = args.getInt("POSITION");
         imagesAlbumID = args.getString("ALBUM_ID");
-        chronoTime = args.getInt("CHRONO_TIME");
-
+        startTime = args.getInt("startTime");
 
         cardViewFragment =(CardView) inflater.inflate(R.layout.fragment_card_playlist, container, false);
         imageTitle = (TextView) cardViewFragment.findViewById(R.id.card_title_text);
         TextView imageDescription = (TextView) cardViewFragment.findViewById(R.id.card_description_text);
         image = (ImageView) cardViewFragment.findViewById(R.id.card_image_view);
-        countDownTimer = (TextView) cardViewFragment.findViewById(R.id.count_down_timer);
+        repsAndTimeCountDown = (TextView) cardViewFragment.findViewById(R.id.count_down_timer);
         restCountDown = (TextView) cardViewFragment.findViewById(R.id.count_down_rest);
         setCount = (TextView) cardViewFragment.findViewById(R.id.set_count);
         setTotal = (TextView) cardViewFragment.findViewById(R.id.set_total);
@@ -198,12 +198,12 @@ int imagesFragmentPosition;
     public void countDownRest(){
 
         image.setVisibility(View.INVISIBLE);
-        int time = albumImages.get(imagesFragmentPosition).getRestValue()*1000;
+        int time = albumImages.get(imagesFragmentPosition).getRestValue()*30*1000;
 
         ((PlaylistActivity) getActivity()).findViewById(R.id.fab_play_playlist_next).setVisibility(View.INVISIBLE);
 
         ((PlaylistActivity) getActivity()).findViewById(R.id.fab_go_next).setVisibility(View.INVISIBLE);
-        countDownTimer.setText("");
+        repsAndTimeCountDown.setText("");
 
         timer= new CountDownTimer(time, 350) {
             public void onTick(long millisUntilFinished) {
@@ -214,15 +214,16 @@ int imagesFragmentPosition;
                 image.setVisibility(View.VISIBLE);
                 restCountDown.setText("");
 
+
                 switch (spinnerSwitch) {
                     case 1:
                         if (albumImages.get(imagesFragmentPosition).getSpinner1() != 0){
-                            setCount.setText(albumImages.get(imagesFragmentPosition).getSpinner1() + " Reps");
+                            repsAndTimeCountDown.setText(albumImages.get(imagesFragmentPosition).getSpinner1() + " Reps");
                             break;}
 
                     case 2:
                         if (albumImages.get(imagesFragmentPosition).getSpinner2() != 0){
-                            setCount.setText(albumImages.get(imagesFragmentPosition).getSpinner2() + " Reps");
+                            repsAndTimeCountDown.setText(albumImages.get(imagesFragmentPosition).getSpinner2() + " Reps");
                             spinnerSwitch++;
                             break;}else {
                             spinnerSwitch = 3;
@@ -230,7 +231,7 @@ int imagesFragmentPosition;
 
                     case 3:
                         if (albumImages.get(imagesFragmentPosition).getSpinner3() != 0 ){
-                            setCount.setText(albumImages.get(imagesFragmentPosition).getSpinner3() + " Reps");
+                            repsAndTimeCountDown.setText(albumImages.get(imagesFragmentPosition).getSpinner3() + " Reps");
                             spinnerSwitch++;
                             break;}else{
                             spinnerSwitch++;
@@ -238,7 +239,7 @@ int imagesFragmentPosition;
 
                     case 4:
                         if (albumImages.get(imagesFragmentPosition).getSpinner4() != 0 ){
-                            setCount.setText(albumImages.get(imagesFragmentPosition).getSpinner4() + " Reps");
+                            repsAndTimeCountDown.setText(albumImages.get(imagesFragmentPosition).getSpinner4() + " Reps");
                             spinnerSwitch++;
                             break;}else{
                             spinnerSwitch++;
@@ -246,28 +247,59 @@ int imagesFragmentPosition;
 
                     case 5:
                         if (albumImages.get(imagesFragmentPosition).getSpinner5() != 0){
-                            setCount.setText(albumImages.get(imagesFragmentPosition).getSpinner5() + " Reps");
+                            repsAndTimeCountDown.setText(albumImages.get(imagesFragmentPosition).getSpinner5() + " Reps");
                             break;}
 
-                    default: setCount.setText("");
+                    default: repsAndTimeCountDown.setText("");
                         break;
                 }
 
-
-
-
-
+                    spinnerCount++;
                 if ( spinnerCount >= spinnerTotal ){
                     ((PlaylistActivity) getActivity()).findViewById(R.id.fab_play_playlist_next).setVisibility(View.INVISIBLE);
-
                     ((PlaylistActivity) getActivity()).findViewById(R.id.fab_go_next).setVisibility(View.VISIBLE);
 
+                  if (spinnerTotal!= 1  && spinnerCount !=0)
+                    setCountText();
                 }else{
-                    ((PlaylistActivity) getActivity()).findViewById(R.id.fab_play_playlist_next).setVisibility(View.INVISIBLE);
+                    setCountText();
+                    ((PlaylistActivity) getActivity()).findViewById(R.id.fab_play_playlist_next).setVisibility(View.VISIBLE);
                 }
+
             }
         }.start();
     }
+
+
+    public void countDownRestLast(){
+        if(spinnerTotal!=1 && spinnerTotal !=0) {
+            image.setVisibility(View.INVISIBLE);
+            int time = albumImages.get(imagesFragmentPosition).getRestValue() * 30 * 1000;
+
+            ((PlaylistActivity) getActivity()).findViewById(R.id.fab_go_next).setVisibility(View.INVISIBLE);
+            repsAndTimeCountDown.setText("");
+
+            timer = new CountDownTimer(time, 350) {
+                public void onTick(long millisUntilFinished) {
+                    restCountDown.setText("Resting for " + String.valueOf(Math.round(millisUntilFinished * 0.001f)));
+                }
+
+                public void onFinish() {
+                    image.setVisibility(View.VISIBLE);
+                    restCountDown.setText("");
+                    ((PlaylistActivity) getActivity()).findViewById(R.id.fab_go_next).setVisibility(View.VISIBLE);
+                    ((PlaylistActivity) getActivity()).changePage(imagesFragmentPosition);
+                }
+            }.start();
+        }else{
+            ((PlaylistActivity) getActivity()).changePage(imagesFragmentPosition);
+        }
+    }
+
+
+
+
+
 
     public void countDownTimerTimed(){
         ((PlaylistActivity) getActivity()).findViewById(R.id.fab_play_playlist_next).setVisibility(View.INVISIBLE);
@@ -278,10 +310,10 @@ int imagesFragmentPosition;
 
         timer= new CountDownTimer(time*1000, 350) {
             public void onTick(long millisUntilFinished) {
-                countDownTimer.setText("" + String.valueOf(Math.round(millisUntilFinished * 0.001f)));
+                repsAndTimeCountDown.setText("" + String.valueOf(Math.round(millisUntilFinished * 0.001f)));
             }
             public void onFinish() {
-                countDownTimer.setText("");
+                repsAndTimeCountDown.setText("");
                 ((PlaylistActivity) getActivity()).findViewById(R.id.fab_go_next).setVisibility(View.VISIBLE);
 
             }
@@ -317,18 +349,24 @@ public void firstFragmentExecution(){
         if (albumImages.get(imagesFragmentPosition).getSpinner5() != 0)
             spinnerTotal++;
 
+            repsAndTimeCountDown.setText(albumImages.get(imagesFragmentPosition).getSpinner1() + " Reps");
 
-        if (albumImages.get(imagesFragmentPosition).getSpinner1() == 0) {
-            countDownTimer.setText(albumImages.get(imagesFragmentPosition).getSpinner1() + " Reps");
-            spinnerTotal++;
-        }else{
-            countDownTimer.setText(albumImages.get(imagesFragmentPosition).getSpinner1() + " Reps");
 
+        //this part needs to be better made IF ONLY REALM COULD ACCEPT LISTS.
+        //I NEED TO LEARN HOW TO USE ITERABLE INSTEAD OF USING ALL THESE IF ELSES.
+        if (albumImages.get(imagesFragmentPosition).getSpinner1() != 0){
+            repsAndTimeCountDown.setText(albumImages.get(imagesFragmentPosition).getSpinner1() + " Reps");
+        }else {
+            repsAndTimeCountDown.setText(albumImages.get(imagesFragmentPosition).getSpinner2() + " Reps");
         }
+
+
 
         setCount.setText("Set " + spinnerCount + " of ");
         setTotal.setText("" + spinnerTotal);
     }else {
+
+
         ((PlaylistActivity) getActivity()).findViewById(R.id.fab_play_playlist_next).setVisibility(View.VISIBLE);
         ((PlaylistActivity) getActivity()).findViewById(R.id.fab_go_next).setVisibility(View.INVISIBLE);
 
@@ -337,7 +375,7 @@ public void firstFragmentExecution(){
 
 
     public void setCountText(){
-        spinnerCount++;
+
         setCount.setText("Set " + spinnerCount + " of ");
 
     }

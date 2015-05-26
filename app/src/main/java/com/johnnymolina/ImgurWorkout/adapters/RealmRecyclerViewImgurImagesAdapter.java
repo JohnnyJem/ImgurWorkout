@@ -125,7 +125,7 @@ public class RealmRecyclerViewImgurImagesAdapter extends RealmRecyclerViewAdapte
                             .equalTo("id", getItem(getPosition()).getId())
                             .findFirst();
                     realm.beginTransaction();
-                    imagetoUpdate.setRestValue(spinnerRest.getSelectedItemPosition() * 30);
+                    imagetoUpdate.setRestValue(spinnerRest.getSelectedItemPosition());
                     realm.commitTransaction();
                     realm.close();
                 }
@@ -216,6 +216,7 @@ public class RealmRecyclerViewImgurImagesAdapter extends RealmRecyclerViewAdapte
                             .findFirst();
                     realm.beginTransaction();
                     imagetoUpdate.setSwitchValue(timeOrRepSwitch.isChecked());
+                    imagetoUpdate.setRestValue(spinnerRest.getSelectedItemPosition());
                     realm.commitTransaction();
                     realm.close();
 
@@ -274,15 +275,15 @@ public class RealmRecyclerViewImgurImagesAdapter extends RealmRecyclerViewAdapte
 
         //set our Viewholders data
         avh.timeOrRepSwitch.setChecked(imagetoUpdate.isSwitchValue());
-        avh.timeOrRepSwitch.callOnClick();
+
         avh.spinner1.setSelection(imagetoUpdate.getSpinner1());
         avh.spinner2.setSelection(imagetoUpdate.getSpinner2());
         avh.spinner3.setSelection(imagetoUpdate.getSpinner3());
         avh.spinner4.setSelection(imagetoUpdate.getSpinner4());
         avh.spinner5.setSelection(imagetoUpdate.getSpinner5());
-
+        avh.spinnerRest.setSelection(imagetoUpdate.getRestValue());
         avh.slider.setProgress(imagetoUpdate.getSlideValue());
-
+        avh.timeOrRepSwitch.callOnClick();
 
         //setting up the Imageview
         if (image.getTitle().contains("null")){
