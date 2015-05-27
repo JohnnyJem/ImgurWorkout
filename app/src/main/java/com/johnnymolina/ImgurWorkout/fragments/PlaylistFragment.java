@@ -20,6 +20,9 @@ import com.johnnymolina.ImgurWorkout.activities.PlaylistActivity;
 import com.johnnymolina.ImgurWorkout.network.model.ImgurAlbum;
 import com.johnnymolina.ImgurWorkout.network.model.ImgurImage;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import io.realm.Realm;
 import io.realm.RealmResults;
 
@@ -335,6 +338,9 @@ public void firstFragmentExecution(){
         ((PlaylistActivity) getActivity()).findViewById(R.id.fab_play_playlist_next).setVisibility(View.INVISIBLE);
 
     }
+
+    Map<Boolean,Integer> mRepsReferenceMap = new HashMap<Boolean, Integer>();
+
     if (albumImages.get(imagesFragmentPosition).isSwitchValue()) {
         spinnerTotal = 0;
         spinnerCount = 1;
@@ -354,6 +360,12 @@ public void firstFragmentExecution(){
 
         //this part needs to be better made IF ONLY REALM COULD ACCEPT LISTS.
         //I NEED TO LEARN HOW TO USE ITERABLE INSTEAD OF USING ALL THESE IF ELSES.
+
+
+
+
+
+
         if (albumImages.get(imagesFragmentPosition).getSpinner1() != 0){
             repsAndTimeCountDown.setText(albumImages.get(imagesFragmentPosition).getSpinner1() + " Reps");
         }else {
