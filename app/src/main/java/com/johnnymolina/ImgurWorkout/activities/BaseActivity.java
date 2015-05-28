@@ -105,9 +105,26 @@ public class BaseActivity extends ActionBarActivity{
                 // Code here will execute once drawer is closed
             }
 
+
+
+
+
         }; // Drawer Toggle Object Made
         Drawer.setDrawerListener(mDrawerToggle); // Drawer Listener set to the Drawer toggle
+
         mDrawerToggle.syncState();
+    }
+
+public void closeDrawer(){
+    Drawer.closeDrawers();
+}
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        closeDrawer();
+
     }
 
     /**Called to start the Playlist **/
