@@ -44,6 +44,7 @@ int startTime;
     TextView restCountDown;
     CardView cardViewFragment;
     TextView imageTitle;
+    TextView imageDescription;
     ImageView image;
     TextView setCount;
     TextView setTotal;
@@ -71,7 +72,7 @@ int startTime;
 
         cardViewFragment =(CardView) inflater.inflate(R.layout.fragment_card_playlist, container, false);
         imageTitle = (TextView) cardViewFragment.findViewById(R.id.card_title_text);
-        TextView imageDescription = (TextView) cardViewFragment.findViewById(R.id.card_description_text);
+        imageDescription = (TextView) cardViewFragment.findViewById(R.id.card_description_text);
         image = (ImageView) cardViewFragment.findViewById(R.id.card_image_view);
         repsAndTimeCountDown = (TextView) cardViewFragment.findViewById(R.id.count_down_timer);
         restCountDown = (TextView) cardViewFragment.findViewById(R.id.count_down_rest);
@@ -264,10 +265,12 @@ int startTime;
 
             if (imagesFragmentPosition + 1 != albumImages.size()) {
                 imageTitle.setText("Up Next: " + (albumImages.get(imagesFragmentPosition + 1).getTitle()));
+
             }
             timer = new CountDownTimer(time, 350) {
                 public void onTick(long millisUntilFinished) {
                     restCountDown.setText("Resting for " + String.valueOf(Math.round(millisUntilFinished * 0.001f)));
+                    imageDescription.setText("");
                 }
 
                 public void onFinish() {
