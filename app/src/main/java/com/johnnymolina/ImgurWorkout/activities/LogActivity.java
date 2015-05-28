@@ -5,6 +5,7 @@ import android.speech.tts.TextToSpeech;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,9 @@ import com.johnnymolina.ImgurWorkout.adapters.RealmLogModelAdapter;
 import com.johnnymolina.ImgurWorkout.adapters.RealmRecyclerViewLogAdapter;
 import com.johnnymolina.ImgurWorkout.customViews.SimpleDividerItemDecoration;
 import com.johnnymolina.ImgurWorkout.network.model.Log;
+
+import java.util.Calendar;
+import java.util.Date;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -267,13 +271,16 @@ public class LogActivity extends BaseActivity {
 
             String dateTimeIntent = b.getString("dateTime");
             String albumNameIntent = b.getString("albumName");
-            int timeStart = b.getInt("timeStart");
-            long time= System.currentTimeMillis()*1000;
-            int endTime = (int) time;
-            int totalTime = endTime - timeStart;
-            int hours = totalTime / 3600;
-            int  minutes = (totalTime % 3600) / 60;
-            int seconds = totalTime % 60;
+            int timeStart = b.getInt("startTime");
+
+
+            int endTime = (int) (System.currentTimeMillis()/1000);
+            int differenceTime = (endTime - timeStart);
+            int totalSecs = differenceTime;
+            int hours = totalSecs / 3600;
+            int  minutes = (totalSecs % 3600) / 60;
+            int seconds = totalSecs % 60;
+
             String timeString = String.format("%02d : %02d : %02d", hours, minutes, seconds);
 
             fabLogOpen.callOnClick();

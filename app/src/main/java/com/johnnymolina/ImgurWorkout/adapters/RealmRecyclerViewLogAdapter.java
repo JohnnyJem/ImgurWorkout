@@ -114,7 +114,7 @@ public class RealmRecyclerViewLogAdapter extends RealmRecyclerViewAdapter<Log> {
 /*----SETup textdrawable--------------*/
         if (log.getWorkoutType() != null && log.getWorkoutType().toString().length() > 0) {
 
-            String workoutTypeFirstLetter = log.getWorkoutType();
+            String workoutTypeFirstLetter = log.getWorkoutType().toUpperCase();
 
             ColorGenerator generator = ColorGenerator.MATERIAL;
             int color = generator.getColor(workoutTypeFirstLetter);

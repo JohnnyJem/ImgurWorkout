@@ -21,6 +21,8 @@ import com.johnnymolina.ImgurWorkout.network.model.ImgurAlbum;
 import com.johnnymolina.ImgurWorkout.network.model.ImgurImage;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import io.realm.Realm;
@@ -50,11 +52,12 @@ int startTime;
     int spinnerSwitch = 2;
     CountDownTimer timer;
     RealmResults<ImgurImage> albumImages;
+    Map<Integer,Integer> mRepsReferenceMap;
+    Iterator it;
 
     public PlaylistFragment(){
 
     }
-
 
 
     @Override
@@ -217,46 +220,19 @@ int startTime;
                 image.setVisibility(View.VISIBLE);
                 restCountDown.setText("");
 
+                it = mRepsReferenceMap.entrySet().iterator();
+                while (it.hasNext()){
+                    Map.Entry pair = (Map.Entry)it.next();
+                   int value = (int) pair.getValue();
 
-                switch (spinnerSwitch) {
-                    case 1:
-                        if (albumImages.get(imagesFragmentPosition).getSpinner1() != 0){
-                            repsAndTimeCountDown.setText(albumImages.get(imagesFragmentPosition).getSpinner1() + " Reps");
-                            break;}
-
-                    case 2:
-                        if (albumImages.get(imagesFragmentPosition).getSpinner2() != 0){
-                            repsAndTimeCountDown.setText(albumImages.get(imagesFragmentPosition).getSpinner2() + " Reps");
-                            spinnerSwitch++;
-                            break;}else {
-                            spinnerSwitch = 3;
-                        }
-
-                    case 3:
-                        if (albumImages.get(imagesFragmentPosition).getSpinner3() != 0 ){
-                            repsAndTimeCountDown.setText(albumImages.get(imagesFragmentPosition).getSpinner3() + " Reps");
-                            spinnerSwitch++;
-                            break;}else{
-                            spinnerSwitch++;
-                        }
-
-                    case 4:
-                        if (albumImages.get(imagesFragmentPosition).getSpinner4() != 0 ){
-                            repsAndTimeCountDown.setText(albumImages.get(imagesFragmentPosition).getSpinner4() + " Reps");
-                            spinnerSwitch++;
-                            break;}else{
-                            spinnerSwitch++;
-                        }
-
-                    case 5:
-                        if (albumImages.get(imagesFragmentPosition).getSpinner5() != 0){
-                            repsAndTimeCountDown.setText(albumImages.get(imagesFragmentPosition).getSpinner5() + " Reps");
-                            break;}
-
-                    default: repsAndTimeCountDown.setText("");
+                    if (value != 0){
+                        repsAndTimeCountDown.setText(pair.getValue() + " Reps");
+                        it.remove();
+                        mRepsReferenceMap.remove(pair.getKey());
                         break;
-                }
+                    }
 
+                }
                     spinnerCount++;
                 if ( spinnerCount >= spinnerTotal ){
                     ((PlaylistActivity) getActivity()).findViewById(R.id.fab_play_playlist_next).setVisibility(View.INVISIBLE);
@@ -275,13 +251,20 @@ int startTime;
 
 
     public void countDownRestLast(){
-        if(spinnerTotal!=1 && spinnerTotal !=0) {
+
+        if(spinnerTotal!=1 && spinnerTotal !=0 || !albumImages.get(imagesFragmentPosition).isSwitchValue()) {
             image.setVisibility(View.INVISIBLE);
+
             int time = albumImages.get(imagesFragmentPosition).getRestValue() * 30 * 1000;
 
             ((PlaylistActivity) getActivity()).findViewById(R.id.fab_go_next).setVisibility(View.INVISIBLE);
             repsAndTimeCountDown.setText("");
+            setCount.setText("");
+            setTotal.setText("");
 
+            if (imagesFragmentPosition + 1 != albumImages.size()) {
+                imageTitle.setText("Up Next: " + (albumImages.get(imagesFragmentPosition + 1).getTitle()));
+            }
             timer = new CountDownTimer(time, 350) {
                 public void onTick(long millisUntilFinished) {
                     restCountDown.setText("Resting for " + String.valueOf(Math.round(millisUntilFinished * 0.001f)));
@@ -290,6 +273,7 @@ int startTime;
                 public void onFinish() {
                     image.setVisibility(View.VISIBLE);
                     restCountDown.setText("");
+
                     ((PlaylistActivity) getActivity()).findViewById(R.id.fab_go_next).setVisibility(View.VISIBLE);
                     ((PlaylistActivity) getActivity()).changePage(imagesFragmentPosition);
                 }
@@ -300,9 +284,13 @@ int startTime;
     }
 
 
-
-
-
+    @Override
+    public void onPause() {
+        super.onPause();
+        if(timer!=null){
+            timer.cancel();
+        }
+    }
 
     public void countDownTimerTimed(){
         ((PlaylistActivity) getActivity()).findViewById(R.id.fab_play_playlist_next).setVisibility(View.INVISIBLE);
@@ -317,6 +305,7 @@ int startTime;
             }
             public void onFinish() {
                 repsAndTimeCountDown.setText("");
+
                 ((PlaylistActivity) getActivity()).findViewById(R.id.fab_go_next).setVisibility(View.VISIBLE);
 
             }
@@ -339,21 +328,49 @@ public void firstFragmentExecution(){
 
     }
 
-    Map<Boolean,Integer> mRepsReferenceMap = new HashMap<Boolean, Integer>();
 
     if (albumImages.get(imagesFragmentPosition).isSwitchValue()) {
         spinnerTotal = 0;
         spinnerCount = 1;
-        if (albumImages.get(imagesFragmentPosition).getSpinner1() != 0)
+
+        //Mapping in references of whether or not each spinner holds a rep higher than 0. To be pulled out later.
+        mRepsReferenceMap = new LinkedHashMap<Integer, Integer>();
+
+        if (albumImages.get(imagesFragmentPosition).getSpinner1() != 0){
             spinnerTotal++;
-        if (albumImages.get(imagesFragmentPosition).getSpinner2() != 0)
+            mRepsReferenceMap.put(1, Integer.valueOf(albumImages.get(imagesFragmentPosition).getSpinner1()));
+        }else{
+            mRepsReferenceMap.put(1, Integer.valueOf(albumImages.get(imagesFragmentPosition).getSpinner1()));
+        }
+        if (albumImages.get(imagesFragmentPosition).getSpinner2() != 0){
             spinnerTotal++;
-        if (albumImages.get(imagesFragmentPosition).getSpinner3() != 0)
+            mRepsReferenceMap.put(2, Integer.valueOf(albumImages.get(imagesFragmentPosition).getSpinner2()));
+        }else{
+            mRepsReferenceMap.put(2, Integer.valueOf(albumImages.get(imagesFragmentPosition).getSpinner2()));
+        }
+        if (albumImages.get(imagesFragmentPosition).getSpinner3() != 0){
             spinnerTotal++;
-        if (albumImages.get(imagesFragmentPosition).getSpinner4() != 0)
+            mRepsReferenceMap.put(3, Integer.valueOf(albumImages.get(imagesFragmentPosition).getSpinner3()));
+        }else{
+            mRepsReferenceMap.put(3, Integer.valueOf(albumImages.get(imagesFragmentPosition).getSpinner3()));
+        }
+        if (albumImages.get(imagesFragmentPosition).getSpinner4() != 0){
             spinnerTotal++;
-        if (albumImages.get(imagesFragmentPosition).getSpinner5() != 0)
+            mRepsReferenceMap.put(4, Integer.valueOf(albumImages.get(imagesFragmentPosition).getSpinner4()));
+        }else{
+            mRepsReferenceMap.put(4, Integer.valueOf(albumImages.get(imagesFragmentPosition).getSpinner4()));
+        }
+        if (albumImages.get(imagesFragmentPosition).getSpinner5() != 0){
             spinnerTotal++;
+            mRepsReferenceMap.put(5, Integer.valueOf(albumImages.get(imagesFragmentPosition).getSpinner5()));
+        }else{
+            mRepsReferenceMap.put(5, Integer.valueOf(albumImages.get(imagesFragmentPosition).getSpinner5()));
+        }
+
+
+
+
+
 
             repsAndTimeCountDown.setText(albumImages.get(imagesFragmentPosition).getSpinner1() + " Reps");
 
@@ -363,14 +380,31 @@ public void firstFragmentExecution(){
 
 
 
-
-
-
-        if (albumImages.get(imagesFragmentPosition).getSpinner1() != 0){
-            repsAndTimeCountDown.setText(albumImages.get(imagesFragmentPosition).getSpinner1() + " Reps");
-        }else {
-            repsAndTimeCountDown.setText(albumImages.get(imagesFragmentPosition).getSpinner2() + " Reps");
+/*Iterates through insertion order(from last inserted to first inserted) CAnnot change items mid iteration
+        for(Map.Entry<Boolean,Integer> entry : mRepsReferenceMap.entrySet()){
+                if (entry.getKey() == true){
+                    repsAndTimeCountDown.setText(entry.getValue() + " Reps");
+                    break;
+                }
         }
+*/
+        //goes through the Map and sets the Rep amount in the textview and then removes the key&value from the map.
+        //An iterator goes through order...
+        it = mRepsReferenceMap.entrySet().iterator();
+        while (it.hasNext()){
+            Map.Entry pair = (Map.Entry)it.next();
+            int value = (int) pair.getValue();
+
+            if ( value != 0){
+                repsAndTimeCountDown.setText(pair.getValue() + " Reps");
+                it.remove();
+                mRepsReferenceMap.remove(pair.getKey());
+                break;
+            }
+
+        }
+
+
 
 
 
@@ -378,7 +412,7 @@ public void firstFragmentExecution(){
         setTotal.setText("" + spinnerTotal);
     }else {
 
-
+        repsAndTimeCountDown.setText("Ready to Countdown");
         ((PlaylistActivity) getActivity()).findViewById(R.id.fab_play_playlist_next).setVisibility(View.VISIBLE);
         ((PlaylistActivity) getActivity()).findViewById(R.id.fab_go_next).setVisibility(View.INVISIBLE);
 

@@ -259,6 +259,7 @@ public class PlaylistActivity extends BaseActivity {
            tts.shutdown();
        }
         finish();
+
     }
 
 

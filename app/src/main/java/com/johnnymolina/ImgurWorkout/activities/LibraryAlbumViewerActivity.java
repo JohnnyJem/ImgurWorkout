@@ -22,6 +22,9 @@ import com.johnnymolina.ImgurWorkout.network.model.ImgurImage;
 import com.rey.material.widget.Slider;
 import com.rey.material.widget.Spinner;
 
+import java.util.Calendar;
+import java.util.Date;
+
 import io.realm.Realm;
 import io.realm.RealmResults;
 
@@ -105,15 +108,19 @@ public class LibraryAlbumViewerActivity extends BaseActivity {
        Context context= view.getContext();
 
   /*---Breaking down the total seconds that the album will take into hours, minutes, seconds for formatting.--*/
-        long time= System.currentTimeMillis()*1000;
-        int startTime = (int) time;
+
+
+
+
+        int startTime = (int) (System.currentTimeMillis()/1000);
+
        // int hours = totalSecs / 3600;
         //int  minutes = (totalSecs % 3600) / 60;
         //int seconds = totalSecs % 60;
 
   /*----HERE WE SET THE VALUES BEING PASSED ON TO PlaylistActivity.java------*/
         String albumIdIntentString = albumID;
-       // String timeString = String.format("%02d : %02d : %02d", hours, minutes, seconds);
+
         int chronoTime = 10;
 
 
