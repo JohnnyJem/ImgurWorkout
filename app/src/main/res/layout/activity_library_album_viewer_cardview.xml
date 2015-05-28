@@ -51,6 +51,7 @@
                     android:id="@+id/rest_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingTop="5dp"
                     android:layout_gravity="center"
                     android:background="@color/toolbarcolor"
                     android:layout_toLeftOf="@+id/spinnerRest"
@@ -60,6 +61,7 @@
                 <com.rey.material.widget.Spinner
                     android:id="@+id/spinnerRest"
                     android:textAlignment="center"
+                    android:paddingTop="5dp"
                     app:spn_arrowSize="0dp"
                     app:spn_dividerColor="@color/tool_bar_color"
                     android:layout_width="wrap_content"
