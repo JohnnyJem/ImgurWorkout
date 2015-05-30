@@ -56,14 +56,16 @@
     <string name="powered_by_library_list">"\nPowered By:
       \n<a href="http://imgur.com">Imgur</a> Imgur is the Internets visual storytelling community. Millions of people visit Imgur every day to explore, share and discuss the best visual stories the Internet has to offer.\n
        \n<a href="https://github.com/bumptech/glide">Glide</a> An image loading and caching library for Android focused on smooth scrolling\n
-        \n<a href="https://github.com/futuresimple/android-floating-action-button">Floating Action Button </a>by chalup\n
+        \n<a href="https://github.com/futuresimple/android-floating-action-button">Floating Action Button</a> by chalup\n
         \n<a href="http://rey5137.com/material/">Material</a> by rey5137\n
         \n<a href="https://github.com/koush/ion">Ion</a> by Koush\n
         \n<a href="https://github.com/fabiendevos/nanotasks">Nanotasks</a> by fabiendevos\n
         \n<a href="https://code.google.com/p/google-gson/">Google-gson</a>\n
-        \n<a href="https://github.com/amulyakhare/TextDrawable">TextDrawable</a> by amulyakhare\n"
+        \n<a href="https://github.com/amulyakhare/TextDrawable">TextDrawable</a> by amulyakhare\n
+        \n“IMGUR” is a trademark of Imgur LLC and is used here for informational purposes only. "Imgur Workout" is not affiliated with Imgur and has not been reviewed or approved by Imgur LLC.\n\n Please send any feedback/feature request/bug report to JohnnyJemDeveloper@gmail.com!
+        \n\nPlease consult your physician before attempting any workout routines. Software is provided as-is and in no event shall the author be liable for any special, direct, indirect, or consequential damages or any damages whatsoever resulting from injury, loss of use, data or profits, whether in action of contract, negligence or other tortious action, arising out or in connection with the use or performance of this software."
         </string>
-    <string name="thanks_to">"\n This app was made by Johnny Molina.\nThanks to:\n \nMy Family for their support. Including Michael for his feedback and ideas.\n \nThe users over at StackOverflow for helping me out with my newbie questions.\n \nManelsen from reddit for important feedback."</string>
+    <string name="thanks_to">"\nThis app was made by Johnny Molina.\n\nThanks to:\n \nMy Family for their support. Including Michael for his feedback and ideas.\n \nThe users over at StackOverflow for helping me out with my newbie questions.\n \nManelsen from reddit for important feedback."</string>
 
 
 </resources>

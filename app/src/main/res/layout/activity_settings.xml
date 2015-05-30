@@ -20,7 +20,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Clear the app cache. This WILL delete ALL ALBUMS,LOGS, and offline content."/>
+        android:text="Clear the app cache. This WILL delete ALL ALBUMS, LOGS, and offline content."/>
     <com.rey.material.widget.Button
         android:id="@+id/button_clear_cache"
         android:layout_width="wrap_content"
