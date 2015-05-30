@@ -26,8 +26,8 @@ import com.nanotasks.Completion;
 public class BaseActivity extends ActionBarActivity{
 
     //Declare Titles And Icons in their respective Arrays For Our Navigation Drawer List View
-    String TITLES[] = {"Playlists","Log","Import","Settings","Tutorial"};
-    int ICONS[] = {R.drawable.ic_grid,R.drawable.ic_playlist_add,R.drawable.fab_import_white,R.drawable.ic_settings,R.drawable.ic_help};
+    String TITLES[] = {"Albums","Log","Import","Settings","Tutorial","About"};
+    int ICONS[] = {R.drawable.ic_grid,R.drawable.ic_playlist_add,R.drawable.fab_import_white,R.drawable.ic_settings,R.drawable.ic_help, R.drawable.ic_about};
     public CharSequence defaultTitle = "IMGUR WORKOUT";
 
 

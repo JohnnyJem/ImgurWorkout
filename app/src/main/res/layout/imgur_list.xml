@@ -97,6 +97,12 @@
         />
 </LinearLayout>
 
+<TextView
+    android:id="@+id/website_link"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="@string/websiteLink"
+    />
 
     <ListView
         android:id="@+id/imgur_list"

@@ -1,6 +1,7 @@
 package com.johnnymolina.ImgurWorkout.activities;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.speech.tts.TextToSpeech;
@@ -86,6 +87,9 @@ public class PlaylistActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+
 /*--Grabbing the bundle from libraryAlbumViewerActivity.class ---*/
         Bundle b = getIntent().getExtras();
         albumID = "";
@@ -274,15 +278,12 @@ public class PlaylistActivity extends BaseActivity {
         }
     }
 
-
     //special method that Forces Countdown start for first pageview
     public void firstExecution(){
-
         int index = pager.getCurrentItem();
         PlaylistFragmentAdapter adapter = ((PlaylistFragmentAdapter)pager.getAdapter());
         PlaylistFragment fragment = adapter.getFragment(index);
         fragment.firstFragmentExecution();
-
     }
 
 

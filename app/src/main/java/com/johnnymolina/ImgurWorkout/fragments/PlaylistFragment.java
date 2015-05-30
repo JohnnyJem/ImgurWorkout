@@ -50,7 +50,6 @@ int startTime;
     TextView setTotal;
     int spinnerTotal;
     int spinnerCount;
-    int spinnerSwitch = 2;
     CountDownTimer timer;
     RealmResults<ImgurImage> albumImages;
     Map<Integer,Integer> mRepsReferenceMap;
@@ -164,18 +163,12 @@ int startTime;
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        // Make sure that we are currently visiblea
+        // Make sure that we are currently visible
         if (this.isVisible()) {
-
             ((PlaylistActivity) getActivity()).firstExecution();
-
-            spinnerSwitch = 2;
-
-
             //START TEXT TO SPEECH ON WINDOW CHANGE
             String title = this.imageTitle.getText().toString();
             ((PlaylistActivity) getActivity()).announceTitle(title);
-
         }
     }
 
@@ -299,8 +292,6 @@ int startTime;
         ((PlaylistActivity) getActivity()).findViewById(R.id.fab_play_playlist_next).setVisibility(View.INVISIBLE);
 
         int time = albumImages.get(imagesFragmentPosition).getSlideValue();
-        if (time == 0 )
-            time = 10;
 
         timer= new CountDownTimer(time*1000, 350) {
             public void onTick(long millisUntilFinished) {

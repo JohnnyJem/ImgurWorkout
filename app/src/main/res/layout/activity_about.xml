@@ -1,0 +1,36 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="fill_parent"
+    android:layout_width="fill_parent"
+    android:layout_weight="1"
+    android:id="@+id/about_activity"
+    tools:context="com.johnnymolina.ImgurWorkout.activities.AboutActivity">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true"
+    android:id="@+id/about_thanks_to"
+    android:padding="5dp"
+    android:text="@string/thanks_to"
+    />
+
+
+  <TextView
+      android:layout_below="@id/about_thanks_to"
+      android:paddingTop="10dp"
+      android:paddingRight="5dp"
+      android:paddingLeft="5dp"
+      android:paddingBottom="5dp"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:id="@+id/about_powered_by"
+      android:text="@string/powered_by_library_list"/>
+</RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

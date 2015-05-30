@@ -28,12 +28,13 @@
                    android:id="@+id/log_edit_text_DateTime"
                    android:layout_width="match_parent"
                    android:layout_height="wrap_content"
-                   android:hint="Day Month 00th, 0pm"/>
+                   android:hint="Date Completed"/>
                 <EditText
                     android:id="@+id/log_edit_text_workout_type"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Workout Type. Arms. Chest. Legs etc"/>
+                    android:maxLength="7"
+                    android:hint="Workout Type"/>
 
                 <EditText
                     android:id="@+id/log_edit_text_album_name"
@@ -44,13 +45,13 @@
                     android:id="@+id/log_edit_text_time_length"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="length of time 00:00:00"/>
+                    android:hint="Workout Length"/>
 
                 <EditText
                     android:id="@+id/log_edit_text_notes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Write your notes here"/>
+                    android:hint="Notes"/>
                 </LinearLayout>
 
                 <android.support.v7.widget.RecyclerView

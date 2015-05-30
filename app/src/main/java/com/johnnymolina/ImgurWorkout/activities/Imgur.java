@@ -2,6 +2,7 @@ package com.johnnymolina.ImgurWorkout.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -32,6 +33,8 @@ import com.koushikdutta.ion.Ion;
 import com.koushikdutta.ion.ProgressCallback;
 import com.rey.material.widget.ProgressView;
 
+import org.w3c.dom.Text;
+
 import java.io.File;
 import java.math.BigInteger;
 import java.security.SecureRandom;
@@ -49,6 +52,7 @@ public class Imgur extends BaseActivity {
     protected EditText editText;
     protected JsonObject album;
     protected String imgurImportLink = "";
+    protected TextView websiteLink;
 
     /* --------------progress bar declarations---------*/
     View fabImportToDatabase;
@@ -96,7 +100,8 @@ public class Imgur extends BaseActivity {
         });
  /*--------------------------------OFFLINE DOWNLOAD SETUP FINISHED--------------------------*/
 
-
+        websiteLink = (TextView) findViewById(R.id.website_link);
+        websiteLink.setMovementMethod(LinkMovementMethod.getInstance());
 
         //our submit button
         playlistSubmitButton = (ImageButton) findViewById(R.id.playlist_submit_button);
@@ -206,7 +211,9 @@ public class Imgur extends BaseActivity {
     private void load() {
         if (loading != null && !loading.isDone() && !loading.isCancelled())
             return;
-
+        downloadLayout.setVisibility(View.VISIBLE);
+        downloadLayout.setOrientation(LinearLayout.VERTICAL);
+        progressView.setVisibility(View.VISIBLE);
         final String enteredUrl = "https://api.imgur.com/3/album/"+imgurImportLink+".json";
         final String CLIENTID = "3b78168400c66fd";
         // This request loads a URL as JsonObject and invokes
@@ -255,7 +262,9 @@ public class Imgur extends BaseActivity {
                             Toast.makeText(Imgur.this, "Failed to connect. " +
                                     "Please try again." + "Make sure capitalization is correct", Toast.LENGTH_LONG).show();
                         }
-
+                        downloadLayout.setOrientation(LinearLayout.HORIZONTAL);
+                        progressView.setVisibility(View.INVISIBLE);
+                        downloadLayout.setVisibility(View.GONE);
 
                     }
                 });
@@ -291,9 +300,12 @@ public class Imgur extends BaseActivity {
             for (int i = 0; i < imgurAdapter.getCount(); i++) {
                 ImgurImage realmImgurImage = realm.createObject(ImgurImage.class);
                 realmImgurImage.setId(imgurAdapter.getItem(i).get("id").toString().replace("\"", ""));
-                realmImgurImage.setTitle(imgurAdapter.getItem(i).get("title").toString().replace("\"", ""));
-                String imageDescription = imgurAdapter.getItem(i).get("description").toString().replace("\\n", "");
-                realmImgurImage.setDescription(imageDescription.replace("\"", ""));
+                String imageTitle = imgurAdapter.getItem(i).get("title").toString().replace("\\n", "\n");
+                String imageTitle2 = imageTitle.replace("\\t", "\t");
+                realmImgurImage.setTitle(imageTitle2.replace("\"", ""));
+                String imageDescription = imgurAdapter.getItem(i).get("description").toString().replace("\\n", "\n");
+                String imageDescription2 = imageDescription.replace("\\t","\t");
+                realmImgurImage.setDescription(imageDescription2.replace("\"", ""));
                 realmImgurImage.setLink(imgurAdapter.getItem(i).get("link").toString().replace("\"", ""));
                 realmImgurImage.setAlbum(album.get("id").toString().replace("\"", "") + albumUnique);
                 realmImgurAlbum.getImages().add(realmImgurImage);

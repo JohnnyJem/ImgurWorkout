@@ -72,7 +72,6 @@ public class BaseActivityAdapter extends RecyclerView.Adapter<BaseActivityAdapte
                 case 1:
                     Intent intent = new Intent(context,MainLibraryActivity.class);
                     context.startActivity(intent);
-
                     break;
                 case 2:
                     Intent intent2 = new Intent(context,LogActivity.class);
@@ -89,6 +88,10 @@ public class BaseActivityAdapter extends RecyclerView.Adapter<BaseActivityAdapte
                 case 5:
                     Intent intent5 = new Intent(context,Tutorial.class);
                     context.startActivity(intent5);
+                    break;
+                case 6:
+                    Intent intent6 = new Intent(context, AboutActivity.class);
+                    context.startActivity(intent6);
                     break;
             }
 
