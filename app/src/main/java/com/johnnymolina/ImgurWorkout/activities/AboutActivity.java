@@ -28,7 +28,7 @@ public class AboutActivity extends BaseActivity {
 
         aboutThanks.setMovementMethod(LinkMovementMethod.getInstance());
         aboutPoweredBy.setMovementMethod(LinkMovementMethod.getInstance());
-
+///Test comit
     }
 
 
