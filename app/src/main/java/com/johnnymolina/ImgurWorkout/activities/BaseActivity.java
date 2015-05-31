@@ -186,7 +186,6 @@ public void closeDrawer(){
             for (String s : children) {
                 if (!s.equals("lib")) {
                     deleteDir(new File(appDir, s));
-                    Log.i("TAG", "**************** File /data/data/APP_PACKAGE/" + s + " DELETED *******************");
                     Intent i = getBaseContext().getPackageManager()
                             .getLaunchIntentForPackage(getBaseContext().getPackageName() );
                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

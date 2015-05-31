@@ -85,7 +85,7 @@ public class RealmRecyclerViewImgurAlbumAdapter extends RealmRecyclerViewAdapter
 
             for (int i = 0; i < imagesToDelete.size(); i++){
                 String imageLink = imagesToDelete.get(i).getLink().substring(imagesToDelete.get(i).getLink().lastIndexOf('/') + 1);
-                String filePath =  "data/data/com.johnnymolina.nextphase/files/"+imageLink;
+                String filePath =  "data/data/com.johnnymolina.imgurworkout/files/"+imageLink;
                 File file = new File(filePath);
                  file.delete();
             }
@@ -131,7 +131,7 @@ public class RealmRecyclerViewImgurAlbumAdapter extends RealmRecyclerViewAdapter
         Glide.with(context)
        // album.getImages().get(0).getSysLink()
        // context.getFilesDir().toString() + album.getImages().get(0).getId() + ".gif"
-                .load("file:///data/data/com.johnnymolina.nextphase/files/"+imageLink)
+                .load("file:///data/data/com.johnnymolina.imgurworkout/files/"+imageLink)
                 .asBitmap()
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .placeholder(R.drawable.placeholderdrawable)

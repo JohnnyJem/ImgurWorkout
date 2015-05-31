@@ -109,7 +109,7 @@ int startTime;
         String imageLink;
 
         if (albumImages.get(imagesFragmentPosition).getSysLink() != "null"){
-           imageLink ="file:///data/data/com.johnnymolina.nextphase/files/"+ albumImages.get(imagesFragmentPosition).getLink().substring(albumImages.get(imagesFragmentPosition).getLink().lastIndexOf('/') + 1);
+           imageLink ="file:///data/data/com.johnnymolina.imgurworkout/files/"+ albumImages.get(imagesFragmentPosition).getLink().substring(albumImages.get(imagesFragmentPosition).getLink().lastIndexOf('/') + 1);
         }else{
             imageLink= albumImages.get(imagesFragmentPosition).getLink().toString();
         }

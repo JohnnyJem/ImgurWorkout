@@ -224,7 +224,6 @@ public class Imgur extends BaseActivity {
         // a callback on completion.
         loading = Ion.with(this)
                 .load(enteredUrl)
-                .setLogging("ION_VERBOSE_LOGGING", Log.VERBOSE)
                 .setHeader("Authorization", "Client-ID " + CLIENTID)
                 .asJsonObject()
                 .setCallback(new FutureCallback<JsonObject>() {

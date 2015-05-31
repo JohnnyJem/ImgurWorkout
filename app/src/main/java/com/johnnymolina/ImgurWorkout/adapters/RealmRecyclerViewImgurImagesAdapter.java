@@ -303,7 +303,7 @@ public class RealmRecyclerViewImgurImagesAdapter extends RealmRecyclerViewAdapte
         Glide.with(context)
 
 
-                .load("file:///data/data/com.johnnymolina.nextphase/files/"+imageLink )
+                .load("file:///data/data/com.johnnymolina.imgurworkout/files/"+imageLink )
                 .asBitmap()
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .placeholder(R.drawable.placeholderdrawable)

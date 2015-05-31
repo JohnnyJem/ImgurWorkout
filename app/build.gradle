@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.zeroturnaround.jrebel.android'
+
 
 android {
     compileSdkVersion 21
     buildToolsVersion "21.1.2"
 
     defaultConfig {
-        applicationId "com.johnnymolina.nextphase"
+        applicationId "com.johnnymolina.imgurworkout"
         minSdkVersion 16
         targetSdkVersion 21
         versionCode 1
