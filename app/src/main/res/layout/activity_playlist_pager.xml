@@ -3,14 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.johnnymolina.ImgurWorkout.activities.PlaylistActivity"
+    tools:context="com.johnnymolina.imgurworkout.activities.PlaylistActivity"
     android:keepScreenOn="true">
 
 <ScrollView
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:fillViewport="true">
-        <com.johnnymolina.ImgurWorkout.customViews.CustomViewPager
+        <com.johnnymolina.imgurworkout.customViews.CustomViewPager
             android:id="@+id/view_pager"
             android:keepScreenOn="true"
             android:layout_width="match_parent"

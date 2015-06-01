@@ -4,7 +4,7 @@
     android:layout_width="fill_parent"
     android:layout_weight="1"
     android:id="@+id/about_activity"
-    tools:context="com.johnnymolina.ImgurWorkout.activities.AboutActivity">
+    tools:context="com.johnnymolina.imgurworkout.activities.AboutActivity">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">

@@ -1,9 +1,8 @@
-package com.johnnymolina.ImgurWorkout.activities;
+package com.johnnymolina.imgurworkout.activities;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.speech.tts.TextToSpeech;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -13,18 +12,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.johnnymolina.ImgurWorkout.R;
-import com.johnnymolina.ImgurWorkout.customViews.CustomViewPager;
-import com.johnnymolina.ImgurWorkout.fragments.PlaylistFragment;
-import com.johnnymolina.ImgurWorkout.network.model.ImgurAlbum;
-import com.johnnymolina.ImgurWorkout.network.model.ImgurImage;
-
-import org.w3c.dom.Text;
+import com.johnnymolina.imgurworkout.R;
+import com.johnnymolina.imgurworkout.customViews.CustomViewPager;
+import com.johnnymolina.imgurworkout.fragments.PlaylistFragment;
+import com.johnnymolina.imgurworkout.network.model.ImgurAlbum;
+import com.johnnymolina.imgurworkout.network.model.ImgurImage;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

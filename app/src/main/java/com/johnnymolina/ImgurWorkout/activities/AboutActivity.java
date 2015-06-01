@@ -1,13 +1,12 @@
-package com.johnnymolina.ImgurWorkout.activities;
+package com.johnnymolina.imgurworkout.activities;
 
 import android.os.Bundle;
-import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import com.johnnymolina.ImgurWorkout.R;
+import com.johnnymolina.imgurworkout.R;
 
 public class AboutActivity extends BaseActivity {
 

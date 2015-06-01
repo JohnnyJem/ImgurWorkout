@@ -1,4 +1,4 @@
-package com.johnnymolina.ImgurWorkout.activities;
+package com.johnnymolina.imgurworkout.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,12 +10,11 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.johnnymolina.ImgurWorkout.R;
+import com.johnnymolina.imgurworkout.R;
 import com.nanotasks.Tasks;
 
 import java.io.File;
@@ -28,7 +27,7 @@ public class BaseActivity extends ActionBarActivity{
     //Declare Titles And Icons in their respective Arrays For Our Navigation Drawer List View
     String TITLES[] = {"Albums","Log","Import","Settings","Tutorial","About"};
     int ICONS[] = {R.drawable.ic_grid,R.drawable.ic_playlist_add,R.drawable.fab_import_white,R.drawable.ic_settings,R.drawable.ic_help, R.drawable.ic_about};
-    public CharSequence defaultTitle = "IMGUR WORKOUT";
+    public CharSequence defaultTitle = "Workouts for Imgur";
 
 
     String ttsPreference = "TTS_PREFERENCE";
@@ -40,7 +39,7 @@ public class BaseActivity extends ActionBarActivity{
     //Similarly we Create a String Resource for the name and email in the header view
     //And we also create a int resource for profile picture in the header view
 
-    String TITLE = "Imgur Workout";
+    String TITLE = "Workouts for Imgur";
     String TITLE2 = "Your Custom Workout App";
 
 

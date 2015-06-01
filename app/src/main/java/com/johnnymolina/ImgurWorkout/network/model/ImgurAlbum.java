@@ -1,4 +1,4 @@
-package com.johnnymolina.ImgurWorkout.network.model;
+package com.johnnymolina.imgurworkout.network.model;
 
 import io.realm.RealmList;
 import io.realm.RealmObject;

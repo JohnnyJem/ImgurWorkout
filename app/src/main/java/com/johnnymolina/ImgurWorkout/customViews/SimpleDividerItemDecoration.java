@@ -1,4 +1,4 @@
-package com.johnnymolina.ImgurWorkout.customViews;
+package com.johnnymolina.imgurworkout.customViews;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -6,7 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.johnnymolina.ImgurWorkout.R;
+import com.johnnymolina.imgurworkout.R;
 
 /**
  * Created by Johnny Molina on 5/17/2015.

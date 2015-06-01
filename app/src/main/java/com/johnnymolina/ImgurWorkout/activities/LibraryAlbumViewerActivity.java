@@ -1,4 +1,4 @@
-package com.johnnymolina.ImgurWorkout.activities;
+package com.johnnymolina.imgurworkout.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -7,23 +7,15 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
-import com.johnnymolina.ImgurWorkout.R;
-import com.johnnymolina.ImgurWorkout.adapters.RealmRecyclerViewImgurImagesAdapter;
-import com.johnnymolina.ImgurWorkout.adapters.RealmRecyclerViewLogAdapter;
-import com.johnnymolina.ImgurWorkout.adapters.RealmImgurImageModelAdapter;
-import com.johnnymolina.ImgurWorkout.customViews.SimpleDividerItemDecoration;
-import com.johnnymolina.ImgurWorkout.network.model.ImgurAlbum;
-import com.johnnymolina.ImgurWorkout.network.model.ImgurImage;
-import com.rey.material.widget.Slider;
-import com.rey.material.widget.Spinner;
-
-import java.util.Calendar;
-import java.util.Date;
+import com.johnnymolina.imgurworkout.R;
+import com.johnnymolina.imgurworkout.adapters.RealmRecyclerViewImgurImagesAdapter;
+import com.johnnymolina.imgurworkout.adapters.RealmImgurImageModelAdapter;
+import com.johnnymolina.imgurworkout.customViews.SimpleDividerItemDecoration;
+import com.johnnymolina.imgurworkout.network.model.ImgurAlbum;
+import com.johnnymolina.imgurworkout.network.model.ImgurImage;
 
 import io.realm.Realm;
 import io.realm.RealmResults;

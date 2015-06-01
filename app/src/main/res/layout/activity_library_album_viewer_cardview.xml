@@ -57,7 +57,16 @@
                     android:layout_toLeftOf="@+id/spinnerRest"
                     android:layout_toStartOf="@+id/spinnerRest"
                     android:text="Rest "/>
-
+                <TextView
+                    android:id="@+id/switch_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@color/toolbarcolor"
+                    android:padding="5dp"
+                    android:layout_toLeftOf="@+id/switch_cv_image_time_or_rep"
+                    android:layout_toStartOf="@+id/switch_cv_image_time_or_rep"
+                    android:text=""/>
                 <com.rey.material.widget.Spinner
                     android:id="@+id/spinnerRest"
                     android:textAlignment="center"
@@ -70,16 +79,7 @@
                     android:layout_toLeftOf="@id/switch_text"
                     android:layout_toStartOf="@id/switch_text"
                     android:background="@color/toolbarcolor"/>
-                <TextView
-                    android:id="@+id/switch_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:background="@color/toolbarcolor"
-                    android:padding="5dp"
-                    android:layout_toLeftOf="@+id/switch_cv_image_time_or_rep"
-                    android:layout_toStartOf="@+id/switch_cv_image_time_or_rep"
-                    android:text=""/>
+
                 <com.rey.material.widget.Switch
                     style="@style/Material.Widget.Switch"
                     android:padding="5dp"

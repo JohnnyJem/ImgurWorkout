@@ -1,4 +1,4 @@
-package com.johnnymolina.ImgurWorkout.adapters;
+package com.johnnymolina.imgurworkout.adapters;
 
 import android.support.v7.widget.RecyclerView;
 

@@ -1,15 +1,15 @@
 <resources>
-    <string name="app_name">Imgur Workout</string>
+    <string name="app_name">Workouts for Imgur</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_playlist">Imgur Workout</string>
+    <string name="title_activity_playlist">Workouts for Imgur</string>
 
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Start Page</string>
     <string name="hello_blank_fragment2">Second Page</string>
-    <string name="title_activity_base">Imgur Workout</string>
+    <string name="title_activity_base">Workouts for Imgur</string>
     <string name="title_activity_import">ImportActivity</string>
     <string name="playlist_your">Playlists</string>
     <string name="resources_your">Resources</string>
@@ -62,7 +62,7 @@
         \n<a href="https://github.com/fabiendevos/nanotasks">Nanotasks</a> by fabiendevos\n
         \n<a href="https://code.google.com/p/google-gson/">Google-gson</a>\n
         \n<a href="https://github.com/amulyakhare/TextDrawable">TextDrawable</a> by amulyakhare\n
-        \n“IMGUR” is a trademark of Imgur LLC and is used here for informational purposes only. "Imgur Workout" is not affiliated with Imgur and has not been reviewed or approved by Imgur LLC.\n\n Please send any feedback/feature request/bug report to JohnnyJemDeveloper@gmail.com!
+        \n“IMGUR” is a trademark of Imgur LLC and is used here for informational purposes only. "Workouts for Imgur" is not affiliated with Imgur and has not been reviewed or approved by Imgur LLC.\n\n Please send any feedback/feature request/bug report to JohnnyJemDeveloper@gmail.com!
         \n\nPlease consult your physician before attempting any workout routines. Software is provided as-is and in no event shall the author be liable for any special, direct, indirect, or consequential damages or any damages whatsoever resulting from injury, loss of use, data or profits, whether in action of contract, negligence or other tortious action, arising out or in connection with the use or performance of this software."
         </string>
     <string name="thanks_to">"\nThis app was made by Johnny Molina.\n\nThanks to:\n \nMy Family for their support. Including Michael for his feedback and ideas.\n \nThe users over at StackOverflow for helping me out with my newbie questions.\n \nManelsen from reddit for important feedback."</string>

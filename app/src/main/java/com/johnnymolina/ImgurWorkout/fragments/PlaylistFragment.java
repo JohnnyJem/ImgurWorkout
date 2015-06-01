@@ -1,4 +1,4 @@
-package com.johnnymolina.ImgurWorkout.fragments;
+package com.johnnymolina.imgurworkout.fragments;
 
 
 import android.app.Activity;
@@ -15,12 +15,11 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.johnnymolina.ImgurWorkout.R;
-import com.johnnymolina.ImgurWorkout.activities.PlaylistActivity;
-import com.johnnymolina.ImgurWorkout.network.model.ImgurAlbum;
-import com.johnnymolina.ImgurWorkout.network.model.ImgurImage;
+import com.johnnymolina.imgurworkout.R;
+import com.johnnymolina.imgurworkout.activities.PlaylistActivity;
+import com.johnnymolina.imgurworkout.network.model.ImgurAlbum;
+import com.johnnymolina.imgurworkout.network.model.ImgurImage;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;

@@ -1,6 +1,4 @@
-package com.johnnymolina.ImgurWorkout.network.model;
-
-import java.util.List;
+package com.johnnymolina.imgurworkout.network.model;
 
 import io.realm.RealmObject;
 

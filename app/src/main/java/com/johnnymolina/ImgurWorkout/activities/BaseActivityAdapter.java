@@ -1,4 +1,4 @@
-package com.johnnymolina.ImgurWorkout.activities;
+package com.johnnymolina.imgurworkout.activities;
 
 /**
  * Created by Johnny Molina on 3/7/2015.
@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.johnnymolina.ImgurWorkout.R;
+import com.johnnymolina.imgurworkout.R;
 
 
 public class BaseActivityAdapter extends RecyclerView.Adapter<BaseActivityAdapter.ViewHolder> {

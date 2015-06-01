@@ -1,10 +1,8 @@
-package com.johnnymolina.ImgurWorkout.adapters;
+package com.johnnymolina.imgurworkout.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.view.DragEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -12,20 +10,16 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
-import android.widget.Space;
 import android.widget.TextView;
-import android.widget.Toast;
-import com.rey.material.widget.Slider;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.johnnymolina.ImgurWorkout.R;
-import com.johnnymolina.ImgurWorkout.network.model.ImgurImage;
+import com.johnnymolina.imgurworkout.R;
+import com.johnnymolina.imgurworkout.network.model.ImgurImage;
 import com.rey.material.widget.Spinner;
 import com.rey.material.widget.Switch;
 
 import io.realm.Realm;
-import io.realm.RealmQuery;
-import io.realm.RealmResults;
 
 
 public class RealmRecyclerViewImgurImagesAdapter extends RealmRecyclerViewAdapter<ImgurImage> implements View.OnClickListener, View.OnLongClickListener {

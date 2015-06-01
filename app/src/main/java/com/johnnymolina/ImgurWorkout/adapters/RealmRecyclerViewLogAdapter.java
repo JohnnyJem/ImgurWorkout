@@ -1,4 +1,4 @@
-package com.johnnymolina.ImgurWorkout.adapters;
+package com.johnnymolina.imgurworkout.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -11,16 +11,10 @@ import android.widget.Toast;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
-import com.bumptech.glide.Glide;
-import com.johnnymolina.ImgurWorkout.R;
-import com.johnnymolina.ImgurWorkout.network.model.ImgurAlbum;
-import com.johnnymolina.ImgurWorkout.network.model.ImgurImage;
-import com.johnnymolina.ImgurWorkout.network.model.Log;
-
-import java.io.File;
+import com.johnnymolina.imgurworkout.R;
+import com.johnnymolina.imgurworkout.network.model.Log;
 
 import io.realm.Realm;
-import io.realm.RealmResults;
 
 /**
  * Created by Johnny Molina on 5/15/2015.

@@ -1,4 +1,4 @@
-package com.johnnymolina.ImgurWorkout.adapters;
+package com.johnnymolina.imgurworkout.adapters;
 
 import android.content.Context;
 import android.view.View;

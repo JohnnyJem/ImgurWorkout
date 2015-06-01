@@ -1,11 +1,10 @@
-package com.johnnymolina.ImgurWorkout.activities;
+package com.johnnymolina.imgurworkout.activities;
 
 import android.content.Intent;
 import android.speech.tts.TextToSpeech;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.format.DateUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,15 +15,12 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.johnnymolina.ImgurWorkout.R;
+import com.johnnymolina.imgurworkout.R;
 
-import com.johnnymolina.ImgurWorkout.adapters.RealmLogModelAdapter;
-import com.johnnymolina.ImgurWorkout.adapters.RealmRecyclerViewLogAdapter;
-import com.johnnymolina.ImgurWorkout.customViews.SimpleDividerItemDecoration;
-import com.johnnymolina.ImgurWorkout.network.model.Log;
-
-import java.util.Calendar;
-import java.util.Date;
+import com.johnnymolina.imgurworkout.adapters.RealmLogModelAdapter;
+import com.johnnymolina.imgurworkout.adapters.RealmRecyclerViewLogAdapter;
+import com.johnnymolina.imgurworkout.customViews.SimpleDividerItemDecoration;
+import com.johnnymolina.imgurworkout.network.model.Log;
 
 import io.realm.Realm;
 import io.realm.RealmResults;

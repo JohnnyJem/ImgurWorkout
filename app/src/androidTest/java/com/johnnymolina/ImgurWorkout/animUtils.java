@@ -1,4 +1,4 @@
-package com.johnnymolina.ImgurWorkout;
+package com.johnnymolina.imgurworkout;
 
 /**
  * Created by Johnny Molina on 3/24/2015.

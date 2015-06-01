@@ -1,11 +1,9 @@
-package com.johnnymolina.ImgurWorkout.activities;
+package com.johnnymolina.imgurworkout.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -13,11 +11,11 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
-import com.johnnymolina.ImgurWorkout.R;
-import com.johnnymolina.ImgurWorkout.adapters.RealmRecyclerViewImgurAlbumAdapter;
-import com.johnnymolina.ImgurWorkout.adapters.RealmImgurAlbumModelAdapter;
-import com.johnnymolina.ImgurWorkout.customViews.SimpleDividerItemDecoration;
-import com.johnnymolina.ImgurWorkout.network.model.ImgurAlbum;
+import com.johnnymolina.imgurworkout.R;
+import com.johnnymolina.imgurworkout.adapters.RealmRecyclerViewImgurAlbumAdapter;
+import com.johnnymolina.imgurworkout.adapters.RealmImgurAlbumModelAdapter;
+import com.johnnymolina.imgurworkout.customViews.SimpleDividerItemDecoration;
+import com.johnnymolina.imgurworkout.network.model.ImgurAlbum;
 
 import io.realm.Realm;
 import io.realm.RealmResults;

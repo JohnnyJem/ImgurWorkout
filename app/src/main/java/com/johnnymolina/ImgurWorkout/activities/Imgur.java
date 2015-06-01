@@ -1,9 +1,8 @@
-package com.johnnymolina.ImgurWorkout.activities;
+package com.johnnymolina.imgurworkout.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,16 +23,14 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.johnnymolina.ImgurWorkout.R;
-import com.johnnymolina.ImgurWorkout.network.model.ImgurAlbum;
-import com.johnnymolina.ImgurWorkout.network.model.ImgurImage;
+import com.johnnymolina.imgurworkout.R;
+import com.johnnymolina.imgurworkout.network.model.ImgurAlbum;
+import com.johnnymolina.imgurworkout.network.model.ImgurImage;
 import com.koushikdutta.async.future.Future;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.koushikdutta.ion.ProgressCallback;
 import com.rey.material.widget.ProgressView;
-
-import org.w3c.dom.Text;
 
 import java.io.File;
 import java.math.BigInteger;

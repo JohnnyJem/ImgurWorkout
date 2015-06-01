@@ -1,4 +1,4 @@
-package com.johnnymolina.ImgurWorkout.adapters;
+package com.johnnymolina.imgurworkout.adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,12 +13,10 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.johnnymolina.ImgurWorkout.R;
-import com.johnnymolina.ImgurWorkout.activities.LibraryAlbumViewerActivity;
-import com.johnnymolina.ImgurWorkout.network.model.ImgurAlbum;
-import com.johnnymolina.ImgurWorkout.network.model.ImgurImage;
-
-import org.w3c.dom.Text;
+import com.johnnymolina.imgurworkout.R;
+import com.johnnymolina.imgurworkout.activities.LibraryAlbumViewerActivity;
+import com.johnnymolina.imgurworkout.network.model.ImgurAlbum;
+import com.johnnymolina.imgurworkout.network.model.ImgurImage;
 
 import java.io.File;
 
