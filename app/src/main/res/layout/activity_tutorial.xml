@@ -21,7 +21,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Please remember that this is my first app that I have created. Their are bound to be errors. " />
+                android:text="Please remember that this is my first app that I have created. There are bound to be errors. " />
 
             <Space
                 android:layout_width="wrap_content"
