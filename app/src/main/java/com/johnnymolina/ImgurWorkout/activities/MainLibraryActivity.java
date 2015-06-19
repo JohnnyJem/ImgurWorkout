@@ -90,6 +90,7 @@ public class MainLibraryActivity extends BaseActivity {
 
 
 
+    //Method init when text is changed in EditText
     @OnTextChanged(value = R.id.search_edit_text,callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     void OnAfterTextChanged(CharSequence text){
         RealmResults<ImgurAlbum> events = realm.where(ImgurAlbum.class)

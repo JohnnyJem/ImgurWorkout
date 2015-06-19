@@ -36,81 +36,88 @@ import java.io.File;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 
+import butterknife.InjectView;
+import butterknife.OnClick;
 import io.realm.Realm;
 
 public class Imgur extends BaseActivity {
-
-    public static final String TAG = Imgur.class.getName();
-
-
     protected FrameLayout parent;
     protected RelativeLayout imgurList;
-    protected ImageButton playlistSubmitButton;
-    protected EditText editText;
-    protected JsonObject album;
-    protected String imgurImportLink = "";
-    protected TextView websiteLink;
 
-    /* --------------progress bar declarations---------*/
-    View fabImportToDatabase;
-    LinearLayout downloadLayout;
-    TextView downloadInProgress;
-    TextView downloadCount;
-    ProgressBar progressBar;
+    //Object declarations
+    protected JsonObject album;
     Future<File> downloading;
+    ArrayAdapter<JsonObject> imgurAdapter;
+
+    //Variable declarations
+    public static final String TAG = Imgur.class.getName();
+    private String imgurImportLink = "";
     int count = 1;
     String filePath;
-    ProgressView progressView;
-    /* ------------------------------------------------*/
 
-    // adapter that holds imgur json object, obviously :)
-    ArrayAdapter<JsonObject> imgurAdapter;
+    //Butterknife View Injections
+    @InjectView(R.id.playlist_submit_button) ImageButton playlistSubmitButton;
+    @InjectView(R.id.import_Img_Link) EditText editText;
+    @InjectView(R.id.website_link) TextView websiteLink;
+    /* --------------progress bar declarations---------*/
+    @InjectView(R.id.fab_import_to_database) View fabImportToDatabase;
+    @InjectView(R.id.download_layout) LinearLayout downloadLayout;
+    @InjectView(R.id.download_progress) TextView downloadInProgress;
+    @InjectView(R.id.download_count) TextView downloadCount;
+    @InjectView(R.id.progress)ProgressBar progressBar;
+    @InjectView(R.id.progress_view)ProgressView progressView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        //Setup of our layout
         parent = (FrameLayout) findViewById(R.id.placeholder);
         imgurList = (RelativeLayout) LayoutInflater.from(getBaseContext()).inflate(R.layout.imgur_list, null);
         parent.addView(imgurList);
 
-        /*------------------------------------OFFLINE DOWNLOAD SETUP BEGIN--------------------------*/
-        fabImportToDatabase = findViewById(R.id.fab_import_to_database);
-        downloadLayout = (LinearLayout) findViewById(R.id.download_layout);
         downloadLayout.setVisibility(View.GONE);
-        downloadInProgress = (TextView)findViewById(R.id.download_progress);
-        downloadCount = (TextView)findViewById(R.id.download_count);
-        progressBar = (ProgressBar)findViewById(R.id.progress);
-        progressView = (ProgressView) findViewById(R.id.progress_view);
-        fabImportToDatabase.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               /* if (downloading != null && !downloading.isCancelled()) {
-                    resetDownload();
-                    return;
-                }
-                */
-                filePath = "null";
-                download(fabImportToDatabase);
-            }
-        });
- /*--------------------------------OFFLINE DOWNLOAD SETUP FINISHED--------------------------*/
-
-        websiteLink = (TextView) findViewById(R.id.website_link);
         websiteLink.setMovementMethod(LinkMovementMethod.getInstance());
 
-        //our submit button
-        playlistSubmitButton = (ImageButton) findViewById(R.id.playlist_submit_button);
-        playlistSubmitButton.setOnClickListener(new View.OnClickListener() {
+        // Setup of our adapter for our list view
+        imgurAdapter = new ArrayAdapter<JsonObject>(this, 0) {
             @Override
-            public void onClick(View v) {
-                submitImgurID();
+            public View getView(int position, View convertView, ViewGroup parent) {
+                if (convertView == null)
+                    convertView = getLayoutInflater().inflate(R.layout.imgur_row, null);
+                // grab the image object
+                JsonObject image = getItem(position);
+                // get the image id to load the thumbnail
+                String imageUrl = image.get("id").getAsString().replace("[()]", "");
+                String imageThumbnailUrl = "http://i.imgur.com/" + imageUrl + "t.png";
+                ImageView imageView = (ImageView)convertView.findViewById(R.id.image);
+                //start with Glide and load the imageThumbnail into the imageView
+                Glide.with(getContext())
+                        .load(imageThumbnailUrl)
+                        .placeholder(R.drawable.imageplaceholder)
+                        .error(R.drawable.imageplaceholder)
+                        .into(imageView);
+                // Set the Title and Description TextViews
+                // first checking if the json object has a value for title and description
+                TextView title = (TextView)convertView.findViewById(R.id.imgur_img_title);
+                if(image.get("title").isJsonNull()) {
+                    title.setText("");
+                }else{
+                    title.setText(image.get("title").getAsString());
+                }
+                TextView description = (TextView)convertView.findViewById(R.id.imgur_img_description);
+                if(image.get("description").isJsonNull()) {
+                    description.setText("");
+                }else{
+                    description.setText(image.get("description").getAsString());
+                }
+                return convertView;
             }
-        });
+        };
+        //Now that our Listview adapter is setup we initialize our Listview & Adapter
+        ListView listView = (ListView)findViewById(R.id.imgur_list);
+        listView.setAdapter(imgurAdapter);
+
 
         //our EditTextBox with an OnKey Listener for "enter" softKeypad event.
-        editText = (EditText) findViewById(R.id.import_Img_Link);
         editText.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -128,54 +135,9 @@ public class Imgur extends BaseActivity {
             }
         });
 
-        // Setup of our adapter for our list view
-        imgurAdapter = new ArrayAdapter<JsonObject>(this, 0) {
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                if (convertView == null)
-                    convertView = getLayoutInflater().inflate(R.layout.imgur_row, null);
-
-                // grab the image object
-                JsonObject image = getItem(position);
-
-                // get the image id to load the thumbnail
-                String imageUrl = image.get("id").getAsString().replace("[()]", "");
-                String imageThumbnailUrl = "http://i.imgur.com/" + imageUrl + "t.png";
-
-                ImageView imageView = (ImageView)convertView.findViewById(R.id.image);
-
-                //start with Glide and load the imageThumbnail into the imageView
-                Glide.with(getContext())
-                        .load(imageThumbnailUrl)
-                        .placeholder(R.drawable.imageplaceholder)
-                        .error(R.drawable.imageplaceholder)
-                        .into(imageView);
-
-
-                // Set the Title and Description TextViews
-                // first checking if the json object has a value for title and description
-                TextView title = (TextView)convertView.findViewById(R.id.imgur_img_title);
-                if(image.get("title").isJsonNull()) {
-                    title.setText("");
-                }else{
-                    title.setText(image.get("title").getAsString());
-                }
-
-                TextView description = (TextView)convertView.findViewById(R.id.imgur_img_description);
-                if(image.get("description").isJsonNull()) {
-                    description.setText("");
-                }else{
-                    description.setText(image.get("description").getAsString());
-                }
-
-                return convertView;
-            }
-        };
-
-        //Now that our Listview adapter is setup we initialize our Listview & Adapter
-        ListView listView = (ListView)findViewById(R.id.imgur_list);
-        listView.setAdapter(imgurAdapter);
     }
+
+
 
     void resetDownload(String filePathString) {
         // cancel any pending download
@@ -215,8 +177,6 @@ public class Imgur extends BaseActivity {
         final String CLIENTID = "3b78168400c66fd";
         // This request loads a URL as JsonObject and invokes
         // a callback on completion.
-
-
         // This request loads a URL as JsonObject and invokes
         // a callback on completion.
         loading = Ion.with(this)
@@ -349,7 +309,6 @@ public class Imgur extends BaseActivity {
 
                             }
                         });
-
                 //done Downloading now set the sysLink path:
                 realmImgurImage.setSysLink(filePath);
             }
@@ -359,14 +318,12 @@ public class Imgur extends BaseActivity {
             realm.close(); // Remember to close Realm when done.
             fab.setVisibility(View.INVISIBLE);
 
-
             playlistSubmitButton.setVisibility(View.INVISIBLE);
            } else {
             downloadLayout.setVisibility(View.INVISIBLE);
             Toast.makeText(Imgur.this, "Error saving", Toast.LENGTH_LONG).show();
             // Either gone or invisible
         }
-
     }
 
     //Method used to generate a Unique ID connecting the created Realm Image objects to their
@@ -376,14 +333,26 @@ public class Imgur extends BaseActivity {
         return new BigInteger(130, random).toString(32);
     }
 
-
-
     //Go to main library activity
     public void goToLibrary(View view){
     Intent intent = new Intent(getBaseContext(),MainLibraryActivity.class);
     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
     startActivity(intent);
     finish();
+    }
+
+
+
+    /*------Our OnClick Methods------------------------------------*/
+    @OnClick(R.id.fab_import_to_database)
+    public void onFabImportToDataBaseClick(View v) {
+        filePath = "null";
+        download(fabImportToDatabase);
+    }
+
+    @OnClick(R.id.playlist_submit_button)
+    public void onPlaylistSubmitClick(View v) {
+        submitImgurID();
     }
 
 }
