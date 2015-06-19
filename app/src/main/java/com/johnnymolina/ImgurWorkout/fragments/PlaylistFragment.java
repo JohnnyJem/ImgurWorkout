@@ -53,15 +53,14 @@ int startTime;
     RealmResults<ImgurImage> albumImages;
     Map<Integer,Integer> mRepsReferenceMap;
     Iterator it;
-
+    String imageLink;
     public PlaylistFragment(){
 
     }
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment using the arguments we retrieve from the bundle.
         Bundle args = getArguments();
         imagesFragmentPosition = args.getInt("POSITION");
@@ -79,6 +78,7 @@ int startTime;
 
         context = cardViewFragment.getContext();
         realm = Realm.getInstance(context);
+
         RealmResults<ImgurAlbum> albumQuery = realm.where(ImgurAlbum.class)
                 .equalTo("id", imagesAlbumID)
                 .findAll();
@@ -105,8 +105,6 @@ int startTime;
         }
 
 
-        String imageLink;
-
         if (albumImages.get(imagesFragmentPosition).getSysLink() != "null"){
            imageLink ="file:///data/data/com.johnnymolina.imgurworkout/files/"+ albumImages.get(imagesFragmentPosition).getLink().substring(albumImages.get(imagesFragmentPosition).getLink().lastIndexOf('/') + 1);
         }else{
@@ -128,16 +126,13 @@ int startTime;
     }
 
 
-
     //Used to setup each new fragment created.
     public static PlaylistFragment newInstance(int position,String albumID){
-
         PlaylistFragment frag = new PlaylistFragment();
         Bundle bundle = new Bundle();
         bundle.putString("ALBUM_ID", albumID);
         bundle.putInt("POSITION", position);
         frag.setArguments(bundle);
-
         //return a set-up fragment
         return(frag);
     }
@@ -149,9 +144,11 @@ int startTime;
 
 
     /*--------------------------------Very important method that executes on each page---------------*/
+    //Todo: Move all variable initilization here. To prevent crash during on Resume.
     @Override
     public void onResume() {
         super.onResume();
+
         ((PlaylistActivity) getActivity()).firstExecution();
 
         spinnerCount = 1;
@@ -160,18 +157,12 @@ int startTime;
     }
 
     @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        // Make sure that we are currently visible
-        if (this.isVisible()) {
-            ((PlaylistActivity) getActivity()).firstExecution();
-            //START TEXT TO SPEECH ON WINDOW CHANGE
-            String title = this.imageTitle.getText().toString();
-            ((PlaylistActivity) getActivity()).announceTitle(title);
-        }
+    public void onStop() {
+        super.onStop();
+
     }
 
-    /*-------------------------End of methods that we can use at the very start--------------*/
+    /*--------------------------------------------------------------------------------------------------------*/
 
 
 
@@ -306,6 +297,8 @@ int startTime;
     }
 
 
+
+  //  TODO: Make sure all the variables used here are initializedd during on Resume.
 public void firstFragmentExecution(){
 
     if (albumImages.get(imagesFragmentPosition).isSwitchValue()) {
@@ -360,27 +353,8 @@ public void firstFragmentExecution(){
             mRepsReferenceMap.put(5, Integer.valueOf(albumImages.get(imagesFragmentPosition).getSpinner5()));
         }
 
-
-
-
-
-
             repsAndTimeCountDown.setText(albumImages.get(imagesFragmentPosition).getSpinner1() + " Reps");
 
-
-        //this part needs to be better made IF ONLY REALM COULD ACCEPT LISTS.
-        //I NEED TO LEARN HOW TO USE ITERABLE INSTEAD OF USING ALL THESE IF ELSES.
-
-
-
-/*Iterates through insertion order(from last inserted to first inserted) CAnnot change items mid iteration
-        for(Map.Entry<Boolean,Integer> entry : mRepsReferenceMap.entrySet()){
-                if (entry.getKey() == true){
-                    repsAndTimeCountDown.setText(entry.getValue() + " Reps");
-                    break;
-                }
-        }
-*/
         //goes through the Map and sets the Rep amount in the textview and then removes the key&value from the map.
         //An iterator goes through order...
         it = mRepsReferenceMap.entrySet().iterator();
@@ -395,26 +369,18 @@ public void firstFragmentExecution(){
                 break;
             }
 
-        }
-
-
-
-
-
+          }
         setCount.setText("Set " + spinnerCount + " of ");
         setTotal.setText("" + spinnerTotal);
     }else {
-
         repsAndTimeCountDown.setText("Ready to Countdown");
         ((PlaylistActivity) getActivity()).findViewById(R.id.fab_play_playlist_next).setVisibility(View.VISIBLE);
         ((PlaylistActivity) getActivity()).findViewById(R.id.fab_go_next).setVisibility(View.INVISIBLE);
-
     }
 }
 
 
     public void setCountText(){
-
         setCount.setText("Set " + spinnerCount + " of ");
 
     }
