@@ -17,6 +17,9 @@ import com.johnnymolina.imgurworkout.adapters.RealmImgurAlbumModelAdapter;
 import com.johnnymolina.imgurworkout.customViews.SimpleDividerItemDecoration;
 import com.johnnymolina.imgurworkout.network.model.ImgurAlbum;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.OnTextChanged;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
@@ -29,73 +32,27 @@ public class MainLibraryActivity extends BaseActivity {
     TextToSpeech tts;
 
 
+    //Butterknife Injections
+    @InjectView(R.id.search_edit_text) EditText searchEditText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         parent = (FrameLayout) findViewById(R.id.placeholder);
         activityLibrary= (RelativeLayout) LayoutInflater.from(getBaseContext()).inflate(R.layout.activity_library, null);
         parent.addView(activityLibrary);
         realm = Realm.getInstance(this);
+        ButterKnife.inject(this);
 
-
+        //Adapter configuration
         adapter = new RealmRecyclerViewImgurAlbumAdapter();
         RecyclerView rv = (RecyclerView)findViewById(R.id.rv);
         rv.setLayoutManager(new LinearLayoutManager(getBaseContext()));
         rv.addItemDecoration(new SimpleDividerItemDecoration(getBaseContext()));
         rv.setAdapter(adapter);
 
-
-
-
-
-
-
         //SearchView configuration
-
-        final EditText searchEditText = (EditText) findViewById(R.id.search_edit_text);
-            searchEditText.clearFocus();
-
-
-        searchEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-                RealmResults<ImgurAlbum> events = realm.where(ImgurAlbum.class)
-                        .contains("title",searchEditText.getText().toString(),false)
-                        .findAll();
-
-                RealmImgurAlbumModelAdapter realmAdapter = new RealmImgurAlbumModelAdapter(getBaseContext(), events, true);
-                // Set the data and tell the RecyclerView to draw
-                adapter.setRealmAdapter(realmAdapter);
-                adapter.notifyDataSetChanged();
-
-                if (searchEditText.getText().toString().equals("")) {
-                    RealmResults<ImgurAlbum> events2 = realm.where(ImgurAlbum.class).findAll();
-                    RealmImgurAlbumModelAdapter realmAdapter2 = new RealmImgurAlbumModelAdapter(getBaseContext(), events2, true);
-                    // Set the data and tell the RecyclerView to draw
-                    adapter.setRealmAdapter(realmAdapter2);
-                    adapter.notifyDataSetChanged();
-                }
-
-            }
-        });
-
-
-
-
-
-
+        searchEditText.clearFocus();
     }
 
 
@@ -105,7 +62,6 @@ public class MainLibraryActivity extends BaseActivity {
     @Override
     public void onResume() {
         super.onResume();
-
         RealmResults<ImgurAlbum> events = realm.where(ImgurAlbum.class).findAll();
         RealmImgurAlbumModelAdapter realmAdapter = new RealmImgurAlbumModelAdapter(getBaseContext(), events, true);
         // Set the data and tell the RecyclerView to draw
@@ -124,10 +80,34 @@ public class MainLibraryActivity extends BaseActivity {
         }
     }
 
+
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         realm.close(); // Remember to close Realm when done.
+    }
+
+
+
+    @OnTextChanged(value = R.id.search_edit_text,callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
+    void OnAfterTextChanged(CharSequence text){
+        RealmResults<ImgurAlbum> events = realm.where(ImgurAlbum.class)
+                .contains("title",searchEditText.getText().toString(),false)
+                .findAll();
+
+        RealmImgurAlbumModelAdapter realmAdapter = new RealmImgurAlbumModelAdapter(getBaseContext(), events, true);
+        // Set the data and tell the RecyclerView to draw
+        adapter.setRealmAdapter(realmAdapter);
+        adapter.notifyDataSetChanged();
+
+        if (searchEditText.getText().toString().equals("")) {
+            RealmResults<ImgurAlbum> events2 = realm.where(ImgurAlbum.class).findAll();
+            RealmImgurAlbumModelAdapter realmAdapter2 = new RealmImgurAlbumModelAdapter(getBaseContext(), events2, true);
+            // Set the data and tell the RecyclerView to draw
+            adapter.setRealmAdapter(realmAdapter2);
+            adapter.notifyDataSetChanged();
+        }
     }
 
 }

@@ -22,6 +22,9 @@ import com.johnnymolina.imgurworkout.adapters.RealmRecyclerViewLogAdapter;
 import com.johnnymolina.imgurworkout.customViews.SimpleDividerItemDecoration;
 import com.johnnymolina.imgurworkout.network.model.Log;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.OnClick;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
@@ -33,35 +36,29 @@ public class LogActivity extends BaseActivity {
     FrameLayout parent;
     RelativeLayout activityLibrary;
     TextToSpeech tts;
-    View fabLogOpen;
-    View fabLogAdd;
 
-    LinearLayout editTextDrawer;
-    EditText dateTime;
-    EditText albumName;
-    EditText timeLength;
-    EditText workoutType;
-    EditText notes;
+
+    //ButterKnife Injections
+    @InjectView(R.id.log_edit_texts_drawer)      LinearLayout editTextDrawer;
+    @InjectView(R.id.log_edit_text_DateTime)     EditText dateTime;
+    @InjectView(R.id.log_edit_text_album_name)   EditText albumName;
+    @InjectView(R.id.log_edit_text_time_length)  EditText timeLength;
+    @InjectView(R.id.log_edit_text_workout_type) EditText workoutType;
+    @InjectView(R.id.log_edit_text_notes)        EditText notes;
+    @InjectView(R.id.fab_log_open)               View fabLogOpen;
+    @InjectView(R.id.fab_log_add)                View fabLogAdd;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
         parent = (FrameLayout) findViewById(R.id.placeholder);
         activityLibrary= (RelativeLayout) LayoutInflater.from(getBaseContext()).inflate(R.layout.activity_log, null);
         parent.addView(activityLibrary);
         realm = Realm.getInstance(getBaseContext());
+        ButterKnife.inject(this);
 
-        editTextDrawer = (LinearLayout) findViewById(R.id.log_edit_texts_drawer);
-        dateTime = (EditText) findViewById(R.id.log_edit_text_DateTime);
-        albumName = (EditText) findViewById(R.id.log_edit_text_album_name);
-        timeLength = (EditText) findViewById(R.id.log_edit_text_time_length);
-        workoutType = (EditText) findViewById(R.id.log_edit_text_workout_type);
-        notes= (EditText) findViewById(R.id.log_edit_text_notes);
-
-/*------SEtting all the edit text boxs to respond to the softkeyboard enter---*/
+/*------Setting all the edit text boxs to respond to the softkeyboard enter---*/
         dateTime.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -69,11 +66,8 @@ public class LogActivity extends BaseActivity {
                     switch (keyCode) {
                         case KeyEvent.KEYCODE_DPAD_CENTER:
                         case KeyEvent.KEYCODE_ENTER:
-
                             dateTime.clearFocus();
                             workoutType.requestFocus();
-
-
                             return true;
                         default:
                             break;
@@ -90,7 +84,7 @@ public class LogActivity extends BaseActivity {
                     switch (keyCode) {
                         case KeyEvent.KEYCODE_DPAD_CENTER:
                         case KeyEvent.KEYCODE_ENTER:
-                           workoutType.clearFocus();
+                            workoutType.clearFocus();
                             albumName.requestFocus();
                             return true;
                         default:
@@ -144,9 +138,8 @@ public class LogActivity extends BaseActivity {
                         case KeyEvent.KEYCODE_ENTER:
                             fabLogAdd.callOnClick();
                             //forces softkeyboard to close on submission
-                            InputMethodManager imm = (InputMethodManager)getSystemService(getBaseContext().INPUT_METHOD_SERVICE);
+                            InputMethodManager imm = (InputMethodManager) getSystemService(getBaseContext().INPUT_METHOD_SERVICE);
                             imm.hideSoftInputFromWindow(getWindow().getCurrentFocus().getWindowToken(), 0);
-
                             return true;
                         default:
                             break;
@@ -155,70 +148,11 @@ public class LogActivity extends BaseActivity {
                 return false;
             }
         });
-/*----------END SETTING UP EDIT TEXT BOXES ONCLICKS--------------*/
 
 
-        fabLogOpen = findViewById(R.id.fab_log_open);
-        fabLogAdd = findViewById(R.id.fab_log_add);
-
-        fabLogOpen.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editTextDrawer.setVisibility(View.VISIBLE);
-                fabLogOpen.setVisibility(View.GONE);
-                fabLogAdd.setVisibility(View.VISIBLE);
-                dateTime.setText("");
-                albumName.setText("");
-                timeLength.setText("");
-                workoutType.setText("");
-                notes.setText("");
-
-            }
-        });
-
-        fabLogAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editTextDrawer.setVisibility(View.GONE);
-                fabLogOpen.setVisibility(View.VISIBLE);
-                fabLogAdd.setVisibility(View.GONE);
-
-
-                if (dateTime.getText().toString().matches("") || albumName.getText().toString().matches("") || timeLength.getText().toString().matches("") || workoutType.getText().toString().matches("") || notes.getText().toString().matches("")) {
-                    Toast.makeText(getBaseContext(),"Please fill out all fields",Toast.LENGTH_SHORT).show();
-                }
-                else{
-                     /*----REALM WORK START. TO STORE EDIT TEXT VIEWS TEXT---*/
-                    realm.beginTransaction();
-                    Log realmLogObject = realm.createObject(Log.class);
-                    //increment index
-                    int nextID = (int) (realm.where(Log.class).maximumInt("logID") + 1);
-
-                    realmLogObject.setLogID(nextID);
-                    realmLogObject.setDateTime(dateTime.getText().toString());
-                    realmLogObject.setAlbumCompletedName(albumName.getText().toString());
-                    realmLogObject.setTimeLength(timeLength.getText().toString());
-                    realmLogObject.setWorkoutType(workoutType.getText().toString());
-                    realmLogObject.setNote(notes.getText().toString());
-                    realm.commitTransaction();
-                /*-----REALM WORK DONE so update the adapter and clear the Edit TextViews----*/
-                    dateTime.setText("");
-                    albumName.setText("");
-                    timeLength.setText("");
-                    workoutType.setText("");
-                    notes.setText("");
-                    adapter.notifyDataSetChanged();
-
-                }
-
-            }
-        });
-
-
-
+        //Adapter Setup
         adapter = new RealmRecyclerViewLogAdapter();
         RecyclerView rv = (RecyclerView)findViewById(R.id.rv_log_activity);
-
         LinearLayoutManager rvLayoutManager = new LinearLayoutManager(getBaseContext());
         rv.setLayoutManager(rvLayoutManager);
         rvLayoutManager.setReverseLayout(true);
@@ -241,9 +175,7 @@ public class LogActivity extends BaseActivity {
                 }
             }
         });
-
     }
-
 
 
     @Override
@@ -264,11 +196,9 @@ public class LogActivity extends BaseActivity {
 
 
         if (b != null){
-
             String dateTimeIntent = b.getString("dateTime");
             String albumNameIntent = b.getString("albumName");
             int timeStart = b.getInt("startTime");
-
 
             int endTime = (int) (System.currentTimeMillis()/1000);
             int differenceTime = (endTime - timeStart);
@@ -313,12 +243,50 @@ public class LogActivity extends BaseActivity {
     }
 
 
-    public void makeEditTextDrawerVisible(View view){
 
+        @OnClick(R.id.fab_log_open)
+        public void onLogOpenClick(View v) {
+            editTextDrawer.setVisibility(View.VISIBLE);
+            fabLogOpen.setVisibility(View.GONE);
+            fabLogAdd.setVisibility(View.VISIBLE);
+            dateTime.setText("");
+            albumName.setText("");
+            timeLength.setText("");
+            workoutType.setText("");
+            notes.setText("");
+        }
 
-    }
+       @OnClick(R.id.fab_log_add)
+        public void onLogAddClick(View v) {
+            editTextDrawer.setVisibility(View.GONE);
+            fabLogOpen.setVisibility(View.VISIBLE);
+            fabLogAdd.setVisibility(View.GONE);
 
+            if (dateTime.getText().toString().matches("") || albumName.getText().toString().matches("") || timeLength.getText().toString().matches("") || workoutType.getText().toString().matches("") || notes.getText().toString().matches("")) {
+                Toast.makeText(getBaseContext(),"Please fill out all fields",Toast.LENGTH_SHORT).show();
+            }
+            else{
+                /*----REALM WORK START. TO STORE EDIT TEXT VIEWS TEXT---*/
+                realm.beginTransaction();
+                Log realmLogObject = realm.createObject(Log.class);
+                //increment index
+                int nextID = (int) (realm.where(Log.class).maximumInt("logID") + 1);
 
-
+                realmLogObject.setLogID(nextID);
+                realmLogObject.setDateTime(dateTime.getText().toString());
+                realmLogObject.setAlbumCompletedName(albumName.getText().toString());
+                realmLogObject.setTimeLength(timeLength.getText().toString());
+                realmLogObject.setWorkoutType(workoutType.getText().toString());
+                realmLogObject.setNote(notes.getText().toString());
+                realm.commitTransaction();
+                /*-----REALM WORK DONE so update the adapter and clear the Edit TextViews----*/
+                dateTime.setText("");
+                albumName.setText("");
+                timeLength.setText("");
+                workoutType.setText("");
+                notes.setText("");
+                adapter.notifyDataSetChanged();
+            }
+        }
 
 }

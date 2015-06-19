@@ -8,12 +8,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.johnnymolina.imgurworkout.R;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 public class AboutActivity extends BaseActivity {
 
-   private FrameLayout parent;
-   private RelativeLayout aboutActivity;
-    private TextView aboutThanks;
-    private TextView aboutPoweredBy;
+    private FrameLayout parent;
+    private RelativeLayout aboutActivity;
+    //Butterknife Injections
+    @InjectView(R.id.about_thanks_to) TextView aboutThanks;
+    @InjectView(R.id.about_powered_by) TextView aboutPoweredBy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,15 +26,10 @@ public class AboutActivity extends BaseActivity {
         aboutActivity = (RelativeLayout) LayoutInflater.from(getBaseContext()).inflate(R.layout.activity_about, null);
         parent.addView(aboutActivity);
 
-        aboutThanks = (TextView) findViewById(R.id.about_thanks_to);
-        aboutPoweredBy = (TextView) findViewById(R.id.about_powered_by);
+        ButterKnife.inject(this);
 
         aboutThanks.setMovementMethod(LinkMovementMethod.getInstance());
         aboutPoweredBy.setMovementMethod(LinkMovementMethod.getInstance());
 
     }
-
-
-
-
 }

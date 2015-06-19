@@ -10,13 +10,16 @@ import com.johnnymolina.imgurworkout.R;
 import com.rey.material.widget.Button;
 import com.rey.material.widget.Switch;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 public class Settings extends BaseActivity {
     FrameLayout parent;
     RelativeLayout settingsActivity;
 
-    Button clearImageCache;
-    Button clearCache;
-    Switch ttsSwitch;
+    @InjectView(R.id.button_clear_image_cache) Button clearImageCache;
+    @InjectView(R.id.button_clear_cache) Button clearCache;
+    @InjectView(R.id.switch_turn_off_tts) Switch ttsSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,13 +27,11 @@ public class Settings extends BaseActivity {
         parent = (FrameLayout) findViewById(R.id.placeholder);
         settingsActivity= (RelativeLayout) LayoutInflater.from(getBaseContext()).inflate(R.layout.activity_settings, null);
         parent.addView(settingsActivity);
+        ButterKnife.inject(this);
 
-        clearImageCache = (Button) findViewById(R.id.button_clear_image_cache);
-        clearCache = (Button) findViewById(R.id.button_clear_cache);
-        ttsSwitch = (Switch) findViewById(R.id.switch_turn_off_tts);
+
         ttsSwitch.setChecked(ttsValue);
         settings = getSharedPreferences( ttsPreference, MODE_PRIVATE);
-
 
 
         clearImageCache.setOnClickListener(new View.OnClickListener() {
@@ -39,29 +40,18 @@ public class Settings extends BaseActivity {
                 deleteImageCache();
             }
         });
-
-
         clearCache.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 deleteCache();
             }
         });
-
         ttsSwitch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 switchTts(ttsSwitch.isChecked());
             }
         });
-
-
-
-}
-
-
-
-
-
+    }
 
 }

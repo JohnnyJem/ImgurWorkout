@@ -28,6 +28,9 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.OnClick;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
@@ -35,47 +38,40 @@ import io.realm.RealmResults;
 public class PlaylistActivity extends BaseActivity {
 
     private CustomViewPager pager;
-    FrameLayout parent;
-    RelativeLayout thisActivity;
-    String albumID;
+    private FrameLayout     parent;
+    private RelativeLayout  thisActivity;
+
+    //ButterKnife Injections
+   @InjectView(R.id.tool_bar_right_text_view)   TextView toolbarRightTextView;
+   @InjectView(R.id.fab_play_playlist_next)     View     fabPlayNow;
+   @InjectView(R.id.fab_go_next)                View     fabGoNext;
+
+
+    //objects
+    private TextToSpeech tts;
     private Realm realm;
-    int albumSize;
-    int chronoTime;
-    int startTime;
-    TextToSpeech tts;
-    String textTitle;
-
-   public String albumTitleIntent;
-    String countDownText;
-    TextView toolbarRightTextView;
-    View fabPlayNow;
-    View fabGoNext;
-    int timesCalled = 0;
-    TextView setCount;
-    TextView setTotal;
-    int spinnerTotal;
-    int spinnerCount;
-
-
-    //Fragment stuff
-
-    //end fragment stuff
-
-    int insideSpinnerCount;
     RealmResults<ImgurImage> albumImages;
-    RealmResults<ImgurAlbum> albumQuery;
+
+    //variables
+    private String albumID;
+    private String textTitle;
+    private String albumTitleIntent;
+    private String countDownText;
+
+    private int albumSize;
+            int chronoTime;
+    private int startTime;
+    private int timesCalled = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        realm = Realm.getInstance(this);
-        //setting up our layout
         parent = (FrameLayout) findViewById(R.id.placeholder);
         thisActivity = (RelativeLayout) LayoutInflater.from(getBaseContext()).inflate(R.layout.activity_playlist_pager, null);
         parent.addView(thisActivity);
-        fabPlayNow = findViewById(R.id.fab_play_playlist_next);
-        fabGoNext = findViewById(R.id.fab_go_next);
-        toolbarRightTextView = (TextView) findViewById(R.id.tool_bar_right_text_view);
+        realm = Realm.getInstance(this);
+        ButterKnife.inject(this);
+
     }
 
 
@@ -83,7 +79,6 @@ public class PlaylistActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
 
 /*--Grabbing the bundle from libraryAlbumViewerActivity.class ---*/
@@ -160,33 +155,6 @@ public class PlaylistActivity extends BaseActivity {
         });
 
 
-        /*-----SETUP ON CLICK LISTENERS----*/
-        fabPlayNow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                int index = pager.getCurrentItem();
-                PlaylistFragmentAdapter adapter = ((PlaylistFragmentAdapter)pager.getAdapter());
-                PlaylistFragment fragment = adapter.getFragment(index);
-
-                if(albumImages.get(pager.getCurrentItem()).isSwitchValue()) {
-                    fragment.countDownRest();
-
-                }else{
-                  fragment.countDownTimerTimed();
-                }
-            }
-        });
-
-        fabGoNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int index = pager.getCurrentItem();
-                PlaylistFragmentAdapter adapter = ((PlaylistFragmentAdapter)pager.getAdapter());
-                PlaylistFragment fragment = adapter.getFragment(index);
-                    fragment.countDownRestLast();
-            }
-        });
 
     }
 
@@ -315,10 +283,29 @@ public class PlaylistActivity extends BaseActivity {
     }
 
 
+    @OnClick(R.id.fab_go_next)
+    public void onGoNextClick(View v) {
+        int index = pager.getCurrentItem();
+        PlaylistFragmentAdapter adapter = ((PlaylistFragmentAdapter)pager.getAdapter());
+        PlaylistFragment fragment = adapter.getFragment(index);
+        fragment.countDownRestLast();
+    }
 
 
 
+    @OnClick(R.id.fab_play_playlist_next)
+    public void onPlayPlaylistNextClick(View v) {
+        int index = pager.getCurrentItem();
+        PlaylistFragmentAdapter adapter = ((PlaylistFragmentAdapter)pager.getAdapter());
+        PlaylistFragment fragment = adapter.getFragment(index);
 
+        if(albumImages.get(pager.getCurrentItem()).isSwitchValue()) {
+            fragment.countDownRest();
+
+        }else{
+            fragment.countDownTimerTimed();
+        }
+    }
 
 
 }

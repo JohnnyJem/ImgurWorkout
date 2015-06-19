@@ -12,7 +12,6 @@ public class Tutorial extends BaseActivity{
     FrameLayout parent;
     RelativeLayout tutorialActivity;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
