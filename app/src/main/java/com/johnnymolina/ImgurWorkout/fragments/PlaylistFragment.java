@@ -24,6 +24,10 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import icepick.Icepick;
+import icepick.Icicle;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
@@ -33,85 +37,82 @@ import io.realm.RealmResults;
  */
 public class PlaylistFragment extends Fragment {
 
-Realm realm;
-Context context;
-String imagesAlbumID;
-int chronoTime;
-int imagesFragmentPosition;
-int startTime;
-    TextView repsAndTimeCountDown;
-    TextView restCountDown;
-    CardView cardViewFragment;
-    TextView imageTitle;
-    TextView imageDescription;
-    ImageView image;
-    TextView setCount;
-    TextView setTotal;
-    int spinnerTotal;
-    int spinnerCount;
-    CountDownTimer timer;
+
+    //Objects
+    Realm realm;
+    Context context;
     RealmResults<ImgurImage> albumImages;
     Map<Integer,Integer> mRepsReferenceMap;
+    CountDownTimer timer;
     Iterator it;
+
+    //Variables
+    String imagesAlbumID;
+    int chronoTime;
+    int imagesFragmentPosition;
+    int startTime;
+    int spinnerTotal;
+    @Icicle int spinnerCount;
     String imageLink;
+
+    //Butterknife Injections
+    CardView cardViewFragment;
+    @InjectView(R.id.count_down_timer) TextView repsAndTimeCountDown;
+    @InjectView(R.id.count_down_rest) TextView restCountDown;
+    @InjectView(R.id.card_title_text) TextView imageTitle;
+    @InjectView(R.id.card_description_text) TextView imageDescription;
+    @InjectView(R.id.card_image_view) ImageView image;
+    @InjectView(R.id.set_count) TextView setCount;
+    @InjectView(R.id.set_total) TextView setTotal;
+
+
     public PlaylistFragment(){
-
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment using the arguments we retrieve from the bundle.
+        //Inflation of views
+        cardViewFragment =(CardView) inflater.inflate(R.layout.fragment_card_playlist, container, false);
+        ButterKnife.inject(this,cardViewFragment);
+        context = cardViewFragment.getContext();
+
+        //Variables
+        //TODO:
+        spinnerCount = 1;
+        spinnerTotal = 0;
+
+        //Grabbing bundle Args
         Bundle args = getArguments();
-        imagesFragmentPosition = args.getInt("POSITION");
+        imagesFragmentPosition = args.getInt("POSITION");  //where do we get this again?
         imagesAlbumID = args.getString("ALBUM_ID");
         startTime = args.getInt("startTime");
+        //tagging the image of this fragment for tts speech to access it from activity.
+        imageTitle.setTag(imagesFragmentPosition);
 
-        cardViewFragment =(CardView) inflater.inflate(R.layout.fragment_card_playlist, container, false);
-        imageTitle = (TextView) cardViewFragment.findViewById(R.id.card_title_text);
-        imageDescription = (TextView) cardViewFragment.findViewById(R.id.card_description_text);
-        image = (ImageView) cardViewFragment.findViewById(R.id.card_image_view);
-        repsAndTimeCountDown = (TextView) cardViewFragment.findViewById(R.id.count_down_timer);
-        restCountDown = (TextView) cardViewFragment.findViewById(R.id.count_down_rest);
-        setCount = (TextView) cardViewFragment.findViewById(R.id.set_count);
-        setTotal = (TextView) cardViewFragment.findViewById(R.id.set_total);
-
-        context = cardViewFragment.getContext();
+        //Find all realm image objects based on retrieved albumID
         realm = Realm.getInstance(context);
+        albumImages = realm.where(ImgurImage.class).contains("album",imagesAlbumID, false).findAll();
 
-        RealmResults<ImgurAlbum> albumQuery = realm.where(ImgurAlbum.class)
-                .equalTo("id", imagesAlbumID)
-                .findAll();
-
-
-         albumImages = realm.where(ImgurImage.class)
-                .contains("album",imagesAlbumID, false)
-                .findAll();
-
-
-        //setting image Title
+        //set image Title
         if(albumImages.get(imagesFragmentPosition).getTitle().contains("null")){
             imageTitle.setText("");
         }else {
             imageTitle.setText(albumImages.get(imagesFragmentPosition).getTitle());
         }
 
-
-        //Settng image Description
+        //Set image Description
         if (albumImages.get(imagesFragmentPosition).getDescription().contains("null")){
             imageDescription.setText("");
         }else {
             imageDescription.setText(albumImages.get(imagesFragmentPosition).getDescription());
         }
-
-
+        //grab sys image link
         if (albumImages.get(imagesFragmentPosition).getSysLink() != "null"){
            imageLink ="file:///data/data/com.johnnymolina.imgurworkout/files/"+ albumImages.get(imagesFragmentPosition).getLink().substring(albumImages.get(imagesFragmentPosition).getLink().lastIndexOf('/') + 1);
         }else{
             imageLink= albumImages.get(imagesFragmentPosition).getLink().toString();
         }
 
-        //start with Glide
         //start with Glide
         Glide.with(context)
                 .load(imageLink)
@@ -121,17 +122,16 @@ int startTime;
                 .error(R.drawable.imageplaceholder)
                 .into(image);
 
-    return cardViewFragment;
-
+        //Return the finished fragment
+          return cardViewFragment;
     }
-
 
     //Used to setup each new fragment created.
     public static PlaylistFragment newInstance(int position,String albumID){
         PlaylistFragment frag = new PlaylistFragment();
         Bundle bundle = new Bundle();
         bundle.putString("ALBUM_ID", albumID);
-        bundle.putInt("POSITION", position);
+        bundle.putInt("POSITION", position); //pass the position
         frag.setArguments(bundle);
         //return a set-up fragment
         return(frag);
@@ -139,27 +139,109 @@ int startTime;
 
 
 
-
-
-
-
     /*--------------------------------Very important method that executes on each page---------------*/
-    //Todo: Move all variable initilization here. To prevent crash during on Resume.
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Icepick.restoreInstanceState(this, savedInstanceState);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Icepick.saveInstanceState(this, outState);
+    }
+
     @Override
     public void onResume() {
         super.onResume();
 
-        ((PlaylistActivity) getActivity()).firstExecution();
 
-        spinnerCount = 1;
-        spinnerTotal = 0;
+        if (albumImages.get(imagesFragmentPosition).isSwitchValue()) {
+            ((PlaylistActivity) getActivity()).findViewById(R.id.fab_go_next).setVisibility(View.INVISIBLE);
+            ((PlaylistActivity) getActivity()).findViewById(R.id.fab_play_playlist_next).setVisibility(View.VISIBLE);
+        }else{
+            ((PlaylistActivity) getActivity()).findViewById(R.id.fab_go_next).setVisibility(View.VISIBLE);
+            ((PlaylistActivity) getActivity()).findViewById(R.id.fab_play_playlist_next).setVisibility(View.INVISIBLE);
+        }
+
+
+        if (albumImages.get(imagesFragmentPosition).isSwitchValue()) {
+            //Mapping in references of whether or not each spinner holds a rep higher than 0. To be pulled out later.
+            mRepsReferenceMap = new LinkedHashMap<Integer, Integer>();
+
+            if (albumImages.get(imagesFragmentPosition).getSpinner1() != 0){
+                spinnerTotal++;
+                mRepsReferenceMap.put(1, Integer.valueOf(albumImages.get(imagesFragmentPosition).getSpinner1()));
+            }else{
+                mRepsReferenceMap.put(1, Integer.valueOf(albumImages.get(imagesFragmentPosition).getSpinner1()));
+            }
+            if (albumImages.get(imagesFragmentPosition).getSpinner2() != 0){
+                spinnerTotal++;
+                mRepsReferenceMap.put(2, Integer.valueOf(albumImages.get(imagesFragmentPosition).getSpinner2()));
+            }else{
+                mRepsReferenceMap.put(2, Integer.valueOf(albumImages.get(imagesFragmentPosition).getSpinner2()));
+            }
+            if (albumImages.get(imagesFragmentPosition).getSpinner3() != 0){
+                spinnerTotal++;
+                mRepsReferenceMap.put(3, Integer.valueOf(albumImages.get(imagesFragmentPosition).getSpinner3()));
+            }else{
+                mRepsReferenceMap.put(3, Integer.valueOf(albumImages.get(imagesFragmentPosition).getSpinner3()));
+            }
+            if (albumImages.get(imagesFragmentPosition).getSpinner4() != 0){
+                spinnerTotal++;
+                mRepsReferenceMap.put(4, Integer.valueOf(albumImages.get(imagesFragmentPosition).getSpinner4()));
+            }else{
+                mRepsReferenceMap.put(4, Integer.valueOf(albumImages.get(imagesFragmentPosition).getSpinner4()));
+            }
+            if (albumImages.get(imagesFragmentPosition).getSpinner5() != 0){
+                spinnerTotal++;
+                mRepsReferenceMap.put(5, Integer.valueOf(albumImages.get(imagesFragmentPosition).getSpinner5()));
+            }else{
+                mRepsReferenceMap.put(5, Integer.valueOf(albumImages.get(imagesFragmentPosition).getSpinner5()));
+            }
+
+            //Todo: Write a method that setsText for last spinner used.
+            repsAndTimeCountDown.setText(albumImages.get(imagesFragmentPosition).getSpinner1() + " Reps");
+
+            //goes through the Map and sets the Rep amount in the textview and then removes the key&value from the map.
+            //An iterator goes through order...
+            it = mRepsReferenceMap.entrySet().iterator();
+            while (it.hasNext()){
+                Map.Entry pair = (Map.Entry)it.next();
+                int value = (int) pair.getValue();
+
+                if ( value != 0){
+                    repsAndTimeCountDown.setText(pair.getValue() + " Reps");
+                    it.remove();
+                    mRepsReferenceMap.remove(pair.getKey());
+                    break;
+                }
+
+            }
+            setCount.setText("Set " + spinnerCount + " of ");
+            setTotal.setText("" + spinnerTotal);
+        }else {
+            repsAndTimeCountDown.setText("Ready to Countdown");
+            ((PlaylistActivity) getActivity()).findViewById(R.id.fab_play_playlist_next).setVisibility(View.VISIBLE);
+            ((PlaylistActivity) getActivity()).findViewById(R.id.fab_go_next).setVisibility(View.INVISIBLE);
+        }
+
 
     }
 
     @Override
     public void onStop() {
         super.onStop();
+    }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        if(timer!=null){
+            timer.cancel();
+        }
     }
 
     /*--------------------------------------------------------------------------------------------------------*/
@@ -183,8 +265,6 @@ int startTime;
 
 
     /*--------------------Some methods called from the PlaylistActivity to update views--*/
-
-
     public void countDownRest(){
 
         image.setVisibility(View.INVISIBLE);
@@ -235,7 +315,6 @@ int startTime;
 
 
     public void countDownRestLast(){
-
         if(spinnerTotal!=1 && spinnerTotal !=0 || !albumImages.get(imagesFragmentPosition).isSwitchValue()) {
             image.setVisibility(View.INVISIBLE);
 
@@ -270,122 +349,27 @@ int startTime;
     }
 
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        if(timer!=null){
-            timer.cancel();
-        }
-    }
 
     public void countDownTimerTimed(){
-        ((PlaylistActivity) getActivity()).findViewById(R.id.fab_play_playlist_next).setVisibility(View.INVISIBLE);
-
         int time = albumImages.get(imagesFragmentPosition).getSlideValue();
 
-        timer= new CountDownTimer(time*1000, 350) {
-            public void onTick(long millisUntilFinished) {
-                repsAndTimeCountDown.setText("" + String.valueOf(Math.round(millisUntilFinished * 0.001f)));
-            }
-            public void onFinish() {
-                repsAndTimeCountDown.setText("");
-
-                ((PlaylistActivity) getActivity()).findViewById(R.id.fab_go_next).setVisibility(View.VISIBLE);
-
-            }
-        }.start();
-    }
-
-
-
-  //  TODO: Make sure all the variables used here are initializedd during on Resume.
-public void firstFragmentExecution(){
-
-    if (albumImages.get(imagesFragmentPosition).isSwitchValue()) {
-
-        //fabPlayNow = findViewById(R.id.fab_play_playlist_next);
-        ((PlaylistActivity) getActivity()).findViewById(R.id.fab_go_next).setVisibility(View.INVISIBLE);
-        ((PlaylistActivity) getActivity()).findViewById(R.id.fab_play_playlist_next).setVisibility(View.VISIBLE);
-
-    }else{
-
-        ((PlaylistActivity) getActivity()).findViewById(R.id.fab_go_next).setVisibility(View.VISIBLE);
         ((PlaylistActivity) getActivity()).findViewById(R.id.fab_play_playlist_next).setVisibility(View.INVISIBLE);
 
+        timer= new CountDownTimer(time*1000, 350) {
+             public void onTick(long millisUntilFinished) {
+                repsAndTimeCountDown.setText("" + String.valueOf(Math.round(millisUntilFinished * 0.001f)));
+             }
+             public void onFinish() {
+                repsAndTimeCountDown.setText("");
+                ((PlaylistActivity) getActivity()).findViewById(R.id.fab_go_next).setVisibility(View.VISIBLE);
+             }
+              }.start();
     }
-
-
-    if (albumImages.get(imagesFragmentPosition).isSwitchValue()) {
-        spinnerTotal = 0;
-        spinnerCount = 1;
-
-        //Mapping in references of whether or not each spinner holds a rep higher than 0. To be pulled out later.
-        mRepsReferenceMap = new LinkedHashMap<Integer, Integer>();
-
-        if (albumImages.get(imagesFragmentPosition).getSpinner1() != 0){
-            spinnerTotal++;
-            mRepsReferenceMap.put(1, Integer.valueOf(albumImages.get(imagesFragmentPosition).getSpinner1()));
-        }else{
-            mRepsReferenceMap.put(1, Integer.valueOf(albumImages.get(imagesFragmentPosition).getSpinner1()));
-        }
-        if (albumImages.get(imagesFragmentPosition).getSpinner2() != 0){
-            spinnerTotal++;
-            mRepsReferenceMap.put(2, Integer.valueOf(albumImages.get(imagesFragmentPosition).getSpinner2()));
-        }else{
-            mRepsReferenceMap.put(2, Integer.valueOf(albumImages.get(imagesFragmentPosition).getSpinner2()));
-        }
-        if (albumImages.get(imagesFragmentPosition).getSpinner3() != 0){
-            spinnerTotal++;
-            mRepsReferenceMap.put(3, Integer.valueOf(albumImages.get(imagesFragmentPosition).getSpinner3()));
-        }else{
-            mRepsReferenceMap.put(3, Integer.valueOf(albumImages.get(imagesFragmentPosition).getSpinner3()));
-        }
-        if (albumImages.get(imagesFragmentPosition).getSpinner4() != 0){
-            spinnerTotal++;
-            mRepsReferenceMap.put(4, Integer.valueOf(albumImages.get(imagesFragmentPosition).getSpinner4()));
-        }else{
-            mRepsReferenceMap.put(4, Integer.valueOf(albumImages.get(imagesFragmentPosition).getSpinner4()));
-        }
-        if (albumImages.get(imagesFragmentPosition).getSpinner5() != 0){
-            spinnerTotal++;
-            mRepsReferenceMap.put(5, Integer.valueOf(albumImages.get(imagesFragmentPosition).getSpinner5()));
-        }else{
-            mRepsReferenceMap.put(5, Integer.valueOf(albumImages.get(imagesFragmentPosition).getSpinner5()));
-        }
-
-            repsAndTimeCountDown.setText(albumImages.get(imagesFragmentPosition).getSpinner1() + " Reps");
-
-        //goes through the Map and sets the Rep amount in the textview and then removes the key&value from the map.
-        //An iterator goes through order...
-        it = mRepsReferenceMap.entrySet().iterator();
-        while (it.hasNext()){
-            Map.Entry pair = (Map.Entry)it.next();
-            int value = (int) pair.getValue();
-
-            if ( value != 0){
-                repsAndTimeCountDown.setText(pair.getValue() + " Reps");
-                it.remove();
-                mRepsReferenceMap.remove(pair.getKey());
-                break;
-            }
-
-          }
-        setCount.setText("Set " + spinnerCount + " of ");
-        setTotal.setText("" + spinnerTotal);
-    }else {
-        repsAndTimeCountDown.setText("Ready to Countdown");
-        ((PlaylistActivity) getActivity()).findViewById(R.id.fab_play_playlist_next).setVisibility(View.VISIBLE);
-        ((PlaylistActivity) getActivity()).findViewById(R.id.fab_go_next).setVisibility(View.INVISIBLE);
-    }
-}
 
 
     public void setCountText(){
         setCount.setText("Set " + spinnerCount + " of ");
-
     }
-
-
 
 
 }

@@ -37,15 +37,14 @@ import io.realm.RealmResults;
 
 public class PlaylistActivity extends BaseActivity {
 
-    private CustomViewPager pager;
-    private FrameLayout     parent;
-    private RelativeLayout  thisActivity;
+    public CustomViewPager pager;
+    private FrameLayout parent;
+    private RelativeLayout thisActivity;
 
     //ButterKnife Injections
-   @InjectView(R.id.tool_bar_right_text_view)   TextView toolbarRightTextView;
-   @InjectView(R.id.fab_play_playlist_next)     View     fabPlayNow;
-   @InjectView(R.id.fab_go_next)                View     fabGoNext;
-
+   @InjectView(R.id.tool_bar_right_text_view)TextView toolbarRightTextView;
+   @InjectView(R.id.fab_play_playlist_next) View fabPlayNow;
+   @InjectView(R.id.fab_go_next) View fabGoNext;
 
     //objects
     private TextToSpeech tts;
@@ -57,9 +56,8 @@ public class PlaylistActivity extends BaseActivity {
     private String textTitle;
     private String albumTitleIntent;
     private String countDownText;
-
     private int albumSize;
-            int chronoTime;
+    private int chronoTime;
     private int startTime;
     private int timesCalled = 0;
 
@@ -71,7 +69,6 @@ public class PlaylistActivity extends BaseActivity {
         parent.addView(thisActivity);
         realm = Realm.getInstance(this);
         ButterKnife.inject(this);
-
     }
 
 
@@ -79,7 +76,6 @@ public class PlaylistActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
 
 /*--Grabbing the bundle from libraryAlbumViewerActivity.class ---*/
         Bundle b = getIntent().getExtras();
@@ -92,11 +88,9 @@ public class PlaylistActivity extends BaseActivity {
         RealmResults<ImgurAlbum> albumQuery = realm.where(ImgurAlbum.class)
                 .equalTo("id", albumID)
                 .findAll();
-
        albumImages = realm.where(ImgurImage.class)
                 .contains("album", albumID, false)
                 .findAll();
-
 
         //total numer of images we will be displaying. 1 page per image.
         albumSize = albumImages.size();
@@ -117,7 +111,6 @@ public class PlaylistActivity extends BaseActivity {
         pager.setPagingEnabled(false);
         pager.setOffscreenPageLimit(2);
 
-
         //initialize text-to-speech
         tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
             @Override
@@ -136,7 +129,6 @@ public class PlaylistActivity extends BaseActivity {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             }
-
             @Override
             public void onPageSelected(int position) {
                 //this spinnerSwitch value is restarted everytime the page changes
@@ -147,28 +139,43 @@ public class PlaylistActivity extends BaseActivity {
                 int countDown2 = albumSize;
                 countDownText = countDown1 + " of " + countDown2;
                 toolbarRightTextView.setText(countDownText);
+                //Todo: Find a way to grab the title without it being null after the third item.
+               String title = ((TextView) pager.findViewWithTag(pager.getCurrentItem())).getText().toString();
+                tts.speak(title, TextToSpeech.QUEUE_FLUSH, null);
             }
-
             @Override
             public void onPageScrollStateChanged(int state) {
             }
         });
-
-
-
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        realm.close(); // Remember to close Realm when done.
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        //check if tts is enabled
+        if(tts!=null){
+            tts.stop();
+            tts.shutdown();
+        }
+    }
+
+
 
 
     //Here we call for our new fragments to be created.
     //We give them a position and albumID and use those parameters to create a new instance of Playlistfragment.
     class PlaylistFragmentAdapter extends FragmentStatePagerAdapter {
-
         private Map<Integer,PlaylistFragment> mPageReferenceMap = new HashMap<Integer, PlaylistFragment>();
 
         public PlaylistFragmentAdapter(FragmentManager fm) {
             super(fm);
         }
-
         @Override
         public Fragment getItem(int position) {
 
@@ -190,10 +197,8 @@ public class PlaylistActivity extends BaseActivity {
         }
 
         public PlaylistFragment getFragment(int key) {
-
             return mPageReferenceMap.get(key);
         }
-
         /**
          * After an orientation change, the fragments are saved in the adapter, and
          * I don't want to double save them: I will retrieve them and put them in my
@@ -203,64 +208,19 @@ public class PlaylistActivity extends BaseActivity {
         public Object instantiateItem(ViewGroup container, int position) {
             PlaylistFragment fragment = (PlaylistFragment) super.instantiateItem(container,
                     position);
+
             mPageReferenceMap.put(position, fragment);
             return fragment;
         }
-
-
     }
 
-
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        realm.close(); // Remember to close Realm when done.
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        //check if tts is enabled
-       if(tts!=null){
-           tts.stop();
-           tts.shutdown();
-       }
-        finish();
-
-    }
-
-
-/*--------------------Countdown timer method--------------------------------------------*/
-
-/*----------------------------------UTILITY METHODS---------------------------------------------*/
-    //Announces the title of each Image with text-to-speech
-    public void announceTitle(String title){
-        textTitle = title;
-        if (ttsValue == true) {
-            tts.speak(textTitle, TextToSpeech.QUEUE_FLUSH, null);
-        }
-    }
-
-    //special method that Forces Countdown start for first pageview
-    public void firstExecution(){
-        int index = pager.getCurrentItem();
-        PlaylistFragmentAdapter adapter = ((PlaylistFragmentAdapter)pager.getAdapter());
-        PlaylistFragment fragment = adapter.getFragment(index);
-        fragment.firstFragmentExecution();
-    }
-
-
-
-/*------------------------END UTILITY METHODS-------------------------------------------------*/
 
  /*--------------------------METHODS CALLED FROM THE FRAGMENT-------------------------------*/
-
-
-
     public void changePage(int currentPosition) {
         int position = pager.getCurrentItem();
         int totalPositions = pager.getAdapter().getCount();
+
+        //Check to see if we are on the last page or not
         if (position + 1 == totalPositions && timesCalled < 1) {
             timesCalled++;
             Toast.makeText(this, "Workout Complete", Toast.LENGTH_LONG).show();
@@ -282,7 +242,7 @@ public class PlaylistActivity extends BaseActivity {
         }
     }
 
-
+/*--ONCLICK METHODS----------------------------------------------------------------------------------------*/
     @OnClick(R.id.fab_go_next)
     public void onGoNextClick(View v) {
         int index = pager.getCurrentItem();
@@ -290,8 +250,6 @@ public class PlaylistActivity extends BaseActivity {
         PlaylistFragment fragment = adapter.getFragment(index);
         fragment.countDownRestLast();
     }
-
-
 
     @OnClick(R.id.fab_play_playlist_next)
     public void onPlayPlaylistNextClick(View v) {
@@ -301,12 +259,10 @@ public class PlaylistActivity extends BaseActivity {
 
         if(albumImages.get(pager.getCurrentItem()).isSwitchValue()) {
             fragment.countDownRest();
-
         }else{
             fragment.countDownTimerTimed();
         }
     }
-
 
 }
 

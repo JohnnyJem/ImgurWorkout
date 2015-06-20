@@ -36,6 +36,7 @@ import java.io.File;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 
+import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import io.realm.Realm;
@@ -73,6 +74,7 @@ public class Imgur extends BaseActivity {
         parent = (FrameLayout) findViewById(R.id.placeholder);
         imgurList = (RelativeLayout) LayoutInflater.from(getBaseContext()).inflate(R.layout.imgur_list, null);
         parent.addView(imgurList);
+        ButterKnife.inject(this);
 
         downloadLayout.setVisibility(View.GONE);
         websiteLink.setMovementMethod(LinkMovementMethod.getInstance());
