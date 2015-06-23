@@ -68,6 +68,8 @@ public class Imgur extends BaseActivity {
     @InjectView(R.id.progress)ProgressBar progressBar;
     @InjectView(R.id.progress_view)ProgressView progressView;
 
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

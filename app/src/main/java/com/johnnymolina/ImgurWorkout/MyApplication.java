@@ -3,6 +3,8 @@ package com.johnnymolina.imgurworkout;
 import android.app.Application;
 import android.content.Context;
 
+import com.squareup.leakcanary.LeakCanary;
+
 /**
  * Created by Johnny Molina on 3/27/2015.
  */
@@ -15,6 +17,7 @@ public class MyApplication extends Application {
     public void onCreate(){
         super.onCreate();
         MyApplication.context = getApplicationContext();
+        LeakCanary.install(this);
     }
 
     public static Context getAppContext() {

@@ -37,12 +37,13 @@ import io.realm.RealmResults;
 
 public class PlaylistActivity extends BaseActivity {
 
+    //Important
     public CustomViewPager pager;
     private FrameLayout parent;
     private RelativeLayout thisActivity;
 
     //ButterKnife Injections
-   @InjectView(R.id.tool_bar_right_text_view)TextView toolbarRightTextView;
+   @InjectView(R.id.tool_bar_right_text_view) TextView toolbarRightTextView;
    @InjectView(R.id.fab_play_playlist_next) View fabPlayNow;
    @InjectView(R.id.fab_go_next) View fabGoNext;
 
@@ -50,6 +51,7 @@ public class PlaylistActivity extends BaseActivity {
     private TextToSpeech tts;
     private Realm realm;
     RealmResults<ImgurImage> albumImages;
+    RealmResults<ImgurAlbum> albumQuery;
 
     //variables
     private String albumID;
@@ -67,7 +69,6 @@ public class PlaylistActivity extends BaseActivity {
         parent = (FrameLayout) findViewById(R.id.placeholder);
         thisActivity = (RelativeLayout) LayoutInflater.from(getBaseContext()).inflate(R.layout.activity_playlist_pager, null);
         parent.addView(thisActivity);
-        realm = Realm.getInstance(this);
         ButterKnife.inject(this);
     }
 
@@ -76,7 +77,7 @@ public class PlaylistActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
+        realm = Realm.getInstance(this);
 /*--Grabbing the bundle from libraryAlbumViewerActivity.class ---*/
         Bundle b = getIntent().getExtras();
         albumID = "";
@@ -85,13 +86,12 @@ public class PlaylistActivity extends BaseActivity {
         startTime = b.getInt("startTime");
 
   //using the Bundle info to lookup the appropriate album and its images we will be using.
-        RealmResults<ImgurAlbum> albumQuery = realm.where(ImgurAlbum.class)
+        albumQuery = realm.where(ImgurAlbum.class)
                 .equalTo("id", albumID)
                 .findAll();
-       albumImages = realm.where(ImgurImage.class)
+        albumImages = realm.where(ImgurImage.class)
                 .contains("album", albumID, false)
                 .findAll();
-
         //total numer of images we will be displaying. 1 page per image.
         albumSize = albumImages.size();
 
@@ -104,34 +104,34 @@ public class PlaylistActivity extends BaseActivity {
 
 
         //SETTING UP VIEWPAGER AND ADAPTER
-        pager = (CustomViewPager) findViewById(R.id.view_pager);
-        PlaylistFragmentAdapter playlistFragmentAdapter = new PlaylistFragmentAdapter(getSupportFragmentManager());
-        pager.setAdapter(playlistFragmentAdapter);
-        playlistFragmentAdapter.notifyDataSetChanged();
-        pager.setPagingEnabled(false);
-        pager.setOffscreenPageLimit(2);
+            pager = (CustomViewPager) findViewById(R.id.view_pager);
+            PlaylistFragmentAdapter playlistFragmentAdapter = new PlaylistFragmentAdapter(getSupportFragmentManager());
+            pager.setAdapter(playlistFragmentAdapter);
+            playlistFragmentAdapter.notifyDataSetChanged();
+            pager.setPagingEnabled(false);
+            pager.setOffscreenPageLimit(2);
 
-        //initialize text-to-speech
-        tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int status) {
-                if (pager.getCurrentItem() == 0) {
-                    if (ttsValue == true) {
-                        String title = ((TextView) pager.getChildAt(0).findViewById(R.id.card_title_text)).getText().toString();
-                        tts.speak(title, TextToSpeech.QUEUE_FLUSH, null);
+            //initialize text-to-speech
+            tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+                @Override
+                public void onInit(int status) {
+                    if (pager.getCurrentItem() == 0) {
+                        if (ttsValue == true) {
+                            String title = ((TextView) pager.getChildAt(0).findViewById(R.id.card_title_text)).getText().toString();
+                            tts.speak(title, TextToSpeech.QUEUE_FLUSH, null);
+                        }
                     }
                 }
-            }
-        });
+            });
 
-        //A listener that updates the textview in the toolbar on viewpager position out of total pages everytime we change pages.
-        pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            }
-            @Override
-            public void onPageSelected(int position) {
-                //this spinnerSwitch value is restarted everytime the page changes
+            //A listener that updates the textview in the toolbar on viewpager position out of total pages everytime we change pages.
+            pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                }
+                @Override
+                public void onPageSelected(int position) {
+                    //this spinnerSwitch value is restarted everytime the page changes
                 //in order for our countdown timer inner methods to work on every new slide.
 
                 //setting up the total page countdown on the toolbar
@@ -152,13 +152,14 @@ public class PlaylistActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        realm.close(); // Remember to close Realm when done.
-    }
+                   }
 
     @Override
     protected void onPause() {
         super.onPause();
         //check if tts is enabled
+        realm.close(); // Remember to close Realm when done.
+
         if(tts!=null){
             tts.stop();
             tts.shutdown();

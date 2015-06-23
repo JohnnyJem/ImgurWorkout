@@ -157,6 +157,9 @@ public class PlaylistFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
+        if(realm == null) {
+            realm = Realm.getInstance(context);
+        }
 
         if (albumImages.get(imagesFragmentPosition).isSwitchValue()) {
             ((PlaylistActivity) getActivity()).findViewById(R.id.fab_go_next).setVisibility(View.INVISIBLE);
@@ -239,6 +242,7 @@ public class PlaylistFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
+        realm.close(); // Remember to close Realm when done.
         if(timer!=null){
             timer.cancel();
         }
@@ -251,7 +255,6 @@ public class PlaylistFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        realm.close(); // Remember to close Realm when done.
     }
 
     @Override

@@ -56,9 +56,6 @@ public class MainLibraryActivity extends BaseActivity {
     }
 
 
-
-
-
     @Override
     public void onResume() {
         super.onResume();
@@ -73,6 +70,8 @@ public class MainLibraryActivity extends BaseActivity {
     @Override
     protected void onPause() {
         super.onPause();
+
+        realm.close(); // Remember to close Realm when done.
         //check if tts is enabled
         if(tts!=null){
             tts.stop();
@@ -85,7 +84,6 @@ public class MainLibraryActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        realm.close(); // Remember to close Realm when done.
     }
 
 
