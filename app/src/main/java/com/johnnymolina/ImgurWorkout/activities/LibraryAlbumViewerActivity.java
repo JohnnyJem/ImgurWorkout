@@ -17,6 +17,7 @@ import com.johnnymolina.imgurworkout.customViews.SimpleDividerItemDecoration;
 import com.johnnymolina.imgurworkout.network.model.ImgurAlbum;
 import com.johnnymolina.imgurworkout.network.model.ImgurImage;
 
+import butterknife.ButterKnife;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
@@ -24,7 +25,6 @@ public class LibraryAlbumViewerActivity extends BaseActivity {
 
     private Realm realm;
     private RealmRecyclerViewImgurImagesAdapter adapter;
-    private FrameLayout parent;
     private RelativeLayout activityLibraryAlbumViewer;
 
     //Variables
@@ -34,9 +34,9 @@ public class LibraryAlbumViewerActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        parent = (FrameLayout) findViewById(R.id.placeholder);
-        activityLibraryAlbumViewer= (RelativeLayout) LayoutInflater.from(getBaseContext()).inflate(R.layout.activity_library_album_viewer, null);
+        activityLibraryAlbumViewer= (RelativeLayout) getLayoutInflater().inflate(R.layout.activity_library_album_viewer, null);
         parent.addView(activityLibraryAlbumViewer);
+        ButterKnife.bind(this);
         realm = Realm.getInstance(this);
 
         //Adapter Setup
@@ -46,7 +46,6 @@ public class LibraryAlbumViewerActivity extends BaseActivity {
         rv.addItemDecoration(new SimpleDividerItemDecoration(getBaseContext()));
         rv.setAdapter(adapter);
     }
-
 
 
     @Override
@@ -80,6 +79,7 @@ public class LibraryAlbumViewerActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        ButterKnife.unbind(this);
         realm.close(); // Remember to close Realm when done.
     }
 

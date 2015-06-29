@@ -17,7 +17,7 @@ public class MyApplication extends Application {
     public void onCreate(){
         super.onCreate();
         MyApplication.context = getApplicationContext();
-        LeakCanary.install(this);
+        //LeakCanary.install(this);
     }
 
     public static Context getAppContext() {

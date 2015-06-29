@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -21,8 +22,14 @@ import java.io.File;
 import com.nanotasks.BackgroundWork;
 import com.nanotasks.Completion;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import icepick.Icepick;
+
 
 public class BaseActivity extends ActionBarActivity{
+
+
 
     //Declare Titles And Icons in their respective Arrays For Our Navigation Drawer List View
     String TITLES[] = {"Albums","Log","Import","Settings","Tutorial","About"};
@@ -42,13 +49,13 @@ public class BaseActivity extends ActionBarActivity{
     String TITLE = "Workouts for Imgur";
     String TITLE2 = "Your Custom Workout App";
 
+    FrameLayout parent;
 
     protected Toolbar toolbar;              // Declaring the Toolbar Object
     RecyclerView mRecyclerView;                           // Declaring RecyclerView
     RecyclerView.Adapter mAdapter;                        // Declaring Adapter For Recycler View
     RecyclerView.LayoutManager mLayoutManager;            // Declaring Layout Manager as a linear layout manager
     DrawerLayout Drawer;                                  // Declaring DrawerLayout
-
     ActionBarDrawerToggle mDrawerToggle;                  // Declaring Action Bar Drawer Toggle
 
 
@@ -57,8 +64,9 @@ public class BaseActivity extends ActionBarActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Icepick.restoreInstanceState(this, savedInstanceState);
         setContentView(R.layout.activity_base);
-
+        parent = (FrameLayout) findViewById(R.id.placeholder);
         settings = getSharedPreferences( ttsPreference, MODE_PRIVATE);
         ttsValue = settings.getBoolean(ttsPreference,true);
 
@@ -67,7 +75,6 @@ public class BaseActivity extends ActionBarActivity{
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
-
         }
 
 
@@ -105,18 +112,19 @@ public class BaseActivity extends ActionBarActivity{
             }
 
 
-
-
-
         }; // Drawer Toggle Object Made
         Drawer.setDrawerListener(mDrawerToggle); // Drawer Listener set to the Drawer toggle
-
         mDrawerToggle.syncState();
     }
 
-public void closeDrawer(){
+    @Override public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Icepick.saveInstanceState(this, outState);
+    }
+
+    public void closeDrawer(){
     Drawer.closeDrawers();
-}
+    }
 
 
     @Override

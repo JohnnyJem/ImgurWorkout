@@ -8,28 +8,30 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.johnnymolina.imgurworkout.R;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 public class AboutActivity extends BaseActivity {
 
-    private FrameLayout parent;
     private RelativeLayout aboutActivity;
     //Butterknife Injections
-    @InjectView(R.id.about_thanks_to) TextView aboutThanks;
-    @InjectView(R.id.about_powered_by) TextView aboutPoweredBy;
+    @Bind(R.id.about_thanks_to) TextView aboutThanks;
+    @Bind(R.id.about_powered_by) TextView aboutPoweredBy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        parent = (FrameLayout) findViewById(R.id.placeholder);
-        aboutActivity = (RelativeLayout) LayoutInflater.from(getBaseContext()).inflate(R.layout.activity_about, null);
+        aboutActivity = (RelativeLayout) getLayoutInflater().inflate(R.layout.activity_about, null);
         parent.addView(aboutActivity);
-
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         aboutThanks.setMovementMethod(LinkMovementMethod.getInstance());
         aboutPoweredBy.setMovementMethod(LinkMovementMethod.getInstance());
+    }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ButterKnife.unbind(this);
     }
 }

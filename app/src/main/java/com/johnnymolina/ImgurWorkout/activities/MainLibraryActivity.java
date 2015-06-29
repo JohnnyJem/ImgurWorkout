@@ -17,8 +17,8 @@ import com.johnnymolina.imgurworkout.adapters.RealmImgurAlbumModelAdapter;
 import com.johnnymolina.imgurworkout.customViews.SimpleDividerItemDecoration;
 import com.johnnymolina.imgurworkout.network.model.ImgurAlbum;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnTextChanged;
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -27,22 +27,22 @@ public class MainLibraryActivity extends BaseActivity {
 
     private Realm realm;
     private RealmRecyclerViewImgurAlbumAdapter adapter;
-    FrameLayout parent;
     RelativeLayout activityLibrary;
     TextToSpeech tts;
 
 
     //Butterknife Injections
-    @InjectView(R.id.search_edit_text) EditText searchEditText;
+    @Bind(R.id.search_edit_text) EditText searchEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        parent = (FrameLayout) findViewById(R.id.placeholder);
-        activityLibrary= (RelativeLayout) LayoutInflater.from(getBaseContext()).inflate(R.layout.activity_library, null);
+
+        activityLibrary= (RelativeLayout) getLayoutInflater().inflate(R.layout.activity_library, null);
         parent.addView(activityLibrary);
+
         realm = Realm.getInstance(this);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         //Adapter configuration
         adapter = new RealmRecyclerViewImgurAlbumAdapter();
@@ -71,7 +71,7 @@ public class MainLibraryActivity extends BaseActivity {
     protected void onPause() {
         super.onPause();
 
-        realm.close(); // Remember to close Realm when done.
+
         //check if tts is enabled
         if(tts!=null){
             tts.stop();
@@ -82,7 +82,10 @@ public class MainLibraryActivity extends BaseActivity {
 
 
     @Override
-    protected void onDestroy() {
+    protected void onDestroy()
+    {
+        realm.close(); // Remember to close Realm when done.
+        ButterKnife.unbind(this);
         super.onDestroy();
     }
 

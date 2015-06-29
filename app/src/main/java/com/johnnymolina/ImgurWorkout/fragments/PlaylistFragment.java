@@ -24,8 +24,8 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import icepick.Icepick;
 import icepick.Icicle;
 import io.realm.Realm;
@@ -57,13 +57,13 @@ public class PlaylistFragment extends Fragment {
 
     //Butterknife Injections
     CardView cardViewFragment;
-    @InjectView(R.id.count_down_timer) TextView repsAndTimeCountDown;
-    @InjectView(R.id.count_down_rest) TextView restCountDown;
-    @InjectView(R.id.card_title_text) TextView imageTitle;
-    @InjectView(R.id.card_description_text) TextView imageDescription;
-    @InjectView(R.id.card_image_view) ImageView image;
-    @InjectView(R.id.set_count) TextView setCount;
-    @InjectView(R.id.set_total) TextView setTotal;
+    @Bind(R.id.count_down_timer) TextView repsAndTimeCountDown;
+    @Bind(R.id.count_down_rest) TextView restCountDown;
+    @Bind(R.id.card_title_text) TextView imageTitle;
+    @Bind(R.id.card_description_text) TextView imageDescription;
+    @Bind(R.id.card_image_view) ImageView image;
+    @Bind(R.id.set_count) TextView setCount;
+    @Bind(R.id.set_total) TextView setTotal;
 
 
     public PlaylistFragment(){
@@ -73,7 +73,7 @@ public class PlaylistFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //Inflation of views
         cardViewFragment =(CardView) inflater.inflate(R.layout.fragment_card_playlist, container, false);
-        ButterKnife.inject(this,cardViewFragment);
+        ButterKnife.bind(this,cardViewFragment);
         context = cardViewFragment.getContext();
 
         //Variables
@@ -91,7 +91,9 @@ public class PlaylistFragment extends Fragment {
 
         //Find all realm image objects based on retrieved albumID
         realm = Realm.getInstance(context);
-        albumImages = realm.where(ImgurImage.class).contains("album",imagesAlbumID, false).findAll();
+        albumImages = realm.where(ImgurImage.class)
+                .contains("album",imagesAlbumID, false)
+                .findAll();
 
         //set image Title
         if(albumImages.get(imagesFragmentPosition).getTitle().contains("null")){
@@ -250,17 +252,15 @@ public class PlaylistFragment extends Fragment {
 
     /*--------------------------------------------------------------------------------------------------------*/
 
-
-
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDestroyView(){
+        super.onDestroyView();
+        ButterKnife.unbind(this);
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-
     }
 
 

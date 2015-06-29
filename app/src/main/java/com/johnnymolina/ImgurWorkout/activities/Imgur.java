@@ -36,13 +36,12 @@ import java.io.File;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 import io.realm.Realm;
 
 public class Imgur extends BaseActivity {
-    protected FrameLayout parent;
     protected RelativeLayout imgurList;
 
     //Object declarations
@@ -57,26 +56,26 @@ public class Imgur extends BaseActivity {
     String filePath;
 
     //Butterknife View Injections
-    @InjectView(R.id.playlist_submit_button) ImageButton playlistSubmitButton;
-    @InjectView(R.id.import_Img_Link) EditText editText;
-    @InjectView(R.id.website_link) TextView websiteLink;
+    @Bind(R.id.playlist_submit_button) ImageButton playlistSubmitButton;
+    @Bind(R.id.import_Img_Link) EditText editText;
+    @Bind(R.id.website_link) TextView websiteLink;
     /* --------------progress bar declarations---------*/
-    @InjectView(R.id.fab_import_to_database) View fabImportToDatabase;
-    @InjectView(R.id.download_layout) LinearLayout downloadLayout;
-    @InjectView(R.id.download_progress) TextView downloadInProgress;
-    @InjectView(R.id.download_count) TextView downloadCount;
-    @InjectView(R.id.progress)ProgressBar progressBar;
-    @InjectView(R.id.progress_view)ProgressView progressView;
+    @Bind(R.id.fab_import_to_database) View fabImportToDatabase;
+    @Bind(R.id.download_layout) LinearLayout downloadLayout;
+    @Bind(R.id.download_progress) TextView downloadInProgress;
+    @Bind(R.id.download_count) TextView downloadCount;
+    @Bind(R.id.progress)ProgressBar progressBar;
+    @Bind(R.id.progress_view)ProgressView progressView;
 
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        parent = (FrameLayout) findViewById(R.id.placeholder);
-        imgurList = (RelativeLayout) LayoutInflater.from(getBaseContext()).inflate(R.layout.imgur_list, null);
+        imgurList = (RelativeLayout) getLayoutInflater().inflate(R.layout.imgur_list, null);
         parent.addView(imgurList);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
+
 
         downloadLayout.setVisibility(View.GONE);
         websiteLink.setMovementMethod(LinkMovementMethod.getInstance());
@@ -141,7 +140,11 @@ public class Imgur extends BaseActivity {
 
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ButterKnife.unbind(this);
+    }
 
     void resetDownload(String filePathString) {
         // cancel any pending download
@@ -317,11 +320,11 @@ public class Imgur extends BaseActivity {
                 realmImgurImage.setSysLink(filePath);
             }
 
-            //end realm transaction
+            //end realm transaction & close realm when done.
             realm.commitTransaction();
-            realm.close(); // Remember to close Realm when done.
-            fab.setVisibility(View.INVISIBLE);
+            realm.close();
 
+            fab.setVisibility(View.INVISIBLE);
             playlistSubmitButton.setVisibility(View.INVISIBLE);
            } else {
             downloadLayout.setVisibility(View.INVISIBLE);

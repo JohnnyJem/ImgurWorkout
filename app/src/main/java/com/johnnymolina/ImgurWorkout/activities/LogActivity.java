@@ -22,8 +22,8 @@ import com.johnnymolina.imgurworkout.adapters.RealmRecyclerViewLogAdapter;
 import com.johnnymolina.imgurworkout.customViews.SimpleDividerItemDecoration;
 import com.johnnymolina.imgurworkout.network.model.Log;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -33,30 +33,30 @@ public class LogActivity extends BaseActivity {
     private Realm realm;
    // private LogAdapter adapter;
    private RealmRecyclerViewLogAdapter adapter;
-    FrameLayout parent;
     RelativeLayout activityLibrary;
     TextToSpeech tts;
 
 
     //ButterKnife Injections
-    @InjectView(R.id.log_edit_texts_drawer)      LinearLayout editTextDrawer;
-    @InjectView(R.id.log_edit_text_DateTime)     EditText dateTime;
-    @InjectView(R.id.log_edit_text_album_name)   EditText albumName;
-    @InjectView(R.id.log_edit_text_time_length)  EditText timeLength;
-    @InjectView(R.id.log_edit_text_workout_type) EditText workoutType;
-    @InjectView(R.id.log_edit_text_notes)        EditText notes;
-    @InjectView(R.id.fab_log_open)               View fabLogOpen;
-    @InjectView(R.id.fab_log_add)                View fabLogAdd;
+    @Bind(R.id.log_edit_texts_drawer)      LinearLayout editTextDrawer;
+    @Bind(R.id.log_edit_text_DateTime)     EditText dateTime;
+    @Bind(R.id.log_edit_text_album_name)   EditText albumName;
+    @Bind(R.id.log_edit_text_time_length)  EditText timeLength;
+    @Bind(R.id.log_edit_text_workout_type) EditText workoutType;
+    @Bind(R.id.log_edit_text_notes)        EditText notes;
+    @Bind(R.id.fab_log_open)               View fabLogOpen;
+    @Bind(R.id.fab_log_add)                View fabLogAdd;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        parent = (FrameLayout) findViewById(R.id.placeholder);
-        activityLibrary= (RelativeLayout) LayoutInflater.from(getBaseContext()).inflate(R.layout.activity_log, null);
+        activityLibrary= (RelativeLayout) getLayoutInflater().inflate(R.layout.activity_log, null);
         parent.addView(activityLibrary);
-        realm = Realm.getInstance(getBaseContext());
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
+
+        realm = Realm.getInstance(this);
+
 
 /*------Setting all the edit text boxs to respond to the softkeyboard enter---*/
         dateTime.setOnKeyListener(new View.OnKeyListener() {
@@ -238,6 +238,7 @@ public class LogActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        ButterKnife.unbind(this);
         realm.close();
        // Remember to close Realm when done.
     }

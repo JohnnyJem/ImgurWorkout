@@ -7,17 +7,19 @@ import android.widget.RelativeLayout;
 
 import com.johnnymolina.imgurworkout.R;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 public class Tutorial extends BaseActivity{
 
-    FrameLayout parent;
     RelativeLayout tutorialActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        parent = (FrameLayout) findViewById(R.id.placeholder);
-        tutorialActivity= (RelativeLayout) LayoutInflater.from(getBaseContext()).inflate(R.layout.activity_tutorial, null);
+        tutorialActivity= (RelativeLayout) getLayoutInflater().inflate(R.layout.activity_tutorial, null);
         parent.addView(tutorialActivity);
+
     }
 
 }

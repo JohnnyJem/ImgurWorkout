@@ -28,9 +28,10 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
+import icepick.Icicle;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
@@ -39,13 +40,12 @@ public class PlaylistActivity extends BaseActivity {
 
     //Important
     public CustomViewPager pager;
-    private FrameLayout parent;
     private RelativeLayout thisActivity;
 
     //ButterKnife Injections
-   @InjectView(R.id.tool_bar_right_text_view) TextView toolbarRightTextView;
-   @InjectView(R.id.fab_play_playlist_next) View fabPlayNow;
-   @InjectView(R.id.fab_go_next) View fabGoNext;
+   @Bind(R.id.tool_bar_right_text_view) TextView toolbarRightTextView;
+   @Bind(R.id.fab_play_playlist_next) View fabPlayNow;
+   @Bind(R.id.fab_go_next) View fabGoNext;
 
     //objects
     private TextToSpeech tts;
@@ -57,7 +57,8 @@ public class PlaylistActivity extends BaseActivity {
     private String albumID;
     private String textTitle;
     private String albumTitleIntent;
-    private String countDownText;
+    @Icicle String toolbarCountDownText;
+    @Icicle int currentAlbPosToolbar;
     private int albumSize;
     private int chronoTime;
     private int startTime;
@@ -66,18 +67,13 @@ public class PlaylistActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        parent = (FrameLayout) findViewById(R.id.placeholder);
-        thisActivity = (RelativeLayout) LayoutInflater.from(getBaseContext()).inflate(R.layout.activity_playlist_pager, null);
+        thisActivity = (RelativeLayout) getLayoutInflater().inflate(R.layout.activity_playlist_pager, null);
         parent.addView(thisActivity);
-        ButterKnife.inject(this);
-    }
-
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
+        ButterKnife.bind(this);
         realm = Realm.getInstance(this);
+
+
+
 /*--Grabbing the bundle from libraryAlbumViewerActivity.class ---*/
         Bundle b = getIntent().getExtras();
         albumID = "";
@@ -85,7 +81,7 @@ public class PlaylistActivity extends BaseActivity {
         chronoTime = b.getInt("CHRONO_TIME");
         startTime = b.getInt("startTime");
 
-  //using the Bundle info to lookup the appropriate album and its images we will be using.
+        //using the Bundle info to lookup the appropriate album and its images we will be using.
         albumQuery = realm.where(ImgurAlbum.class)
                 .equalTo("id", albumID)
                 .findAll();
@@ -95,13 +91,24 @@ public class PlaylistActivity extends BaseActivity {
         //total numer of images we will be displaying. 1 page per image.
         albumSize = albumImages.size();
 
-        //Making the layout that displays our updating slide position/total where the total is based on the amount of images we have.
-        toolbarRightTextView.setText(1 +" of "+albumSize );
+        //restore saved state variables
+        if (savedInstanceState!= null){
+            toolbarRightTextView.setText(toolbarCountDownText);
+        }else {
+            toolbarRightTextView.setText("1 of "+albumSize);
+        }
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        //Making the layout that displays our updating slide position/total where the total is based on the amount of images we have.toolbarRightTextView.setText(1 +" of "+albumSize );
         CharSequence albumTitle = albumQuery.get(0).getTitle().toString();
         albumTitleIntent = albumTitle.toString();
         toolbarRightTextView.setVisibility(View.VISIBLE);
         this.getSupportActionBar().setTitle(albumTitle);
-
 
         //SETTING UP VIEWPAGER AND ADAPTER
             pager = (CustomViewPager) findViewById(R.id.view_pager);
@@ -131,16 +138,12 @@ public class PlaylistActivity extends BaseActivity {
                 }
                 @Override
                 public void onPageSelected(int position) {
-                    //this spinnerSwitch value is restarted everytime the page changes
-                //in order for our countdown timer inner methods to work on every new slide.
-
                 //setting up the total page countdown on the toolbar
-                int countDown1 = pager.getCurrentItem() + 1;
-                int countDown2 = albumSize;
-                countDownText = countDown1 + " of " + countDown2;
-                toolbarRightTextView.setText(countDownText);
-                //Todo: Find a way to grab the title without it being null after the third item.
-               String title = ((TextView) pager.findViewWithTag(pager.getCurrentItem())).getText().toString();
+                currentAlbPosToolbar = pager.getCurrentItem() + 1;
+                toolbarCountDownText = currentAlbPosToolbar + " of " + albumSize;
+                toolbarRightTextView.setText(toolbarCountDownText);
+
+                String title = ((TextView) pager.findViewWithTag(pager.getCurrentItem())).getText().toString();
                 tts.speak(title, TextToSpeech.QUEUE_FLUSH, null);
             }
             @Override
@@ -152,14 +155,13 @@ public class PlaylistActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-                   }
+        ButterKnife.unbind(this);
+        realm.close(); // Remember to close Realm when done.
+    }
 
     @Override
     protected void onPause() {
         super.onPause();
-        //check if tts is enabled
-        realm.close(); // Remember to close Realm when done.
-
         if(tts!=null){
             tts.stop();
             tts.shutdown();

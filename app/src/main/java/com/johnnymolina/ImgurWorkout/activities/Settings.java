@@ -10,29 +10,26 @@ import com.johnnymolina.imgurworkout.R;
 import com.rey.material.widget.Button;
 import com.rey.material.widget.Switch;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 public class Settings extends BaseActivity {
-    FrameLayout parent;
+
     RelativeLayout settingsActivity;
 
-    @InjectView(R.id.button_clear_image_cache) Button clearImageCache;
-    @InjectView(R.id.button_clear_cache) Button clearCache;
-    @InjectView(R.id.switch_turn_off_tts) Switch ttsSwitch;
+    @Bind(R.id.button_clear_image_cache) Button clearImageCache;
+    @Bind(R.id.button_clear_cache) Button clearCache;
+    @Bind(R.id.switch_turn_off_tts) Switch ttsSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        parent = (FrameLayout) findViewById(R.id.placeholder);
-        settingsActivity= (RelativeLayout) LayoutInflater.from(getBaseContext()).inflate(R.layout.activity_settings, null);
+        settingsActivity= (RelativeLayout) getLayoutInflater().inflate(R.layout.activity_settings, null);
         parent.addView(settingsActivity);
-        ButterKnife.inject(this);
-
+        ButterKnife.bind(this);
 
         ttsSwitch.setChecked(ttsValue);
         settings = getSharedPreferences( ttsPreference, MODE_PRIVATE);
-
 
         clearImageCache.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,4 +51,9 @@ public class Settings extends BaseActivity {
         });
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ButterKnife.unbind(this);
+    }
 }
