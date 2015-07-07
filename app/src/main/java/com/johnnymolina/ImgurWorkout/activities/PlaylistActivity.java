@@ -59,6 +59,7 @@ public class PlaylistActivity extends BaseActivity {
     private String albumTitleIntent;
     @Icicle String toolbarCountDownText;
     @Icicle int currentAlbPosToolbar;
+    @Icicle int currentPage;
     private int albumSize;
     private int chronoTime;
     private int startTime;
@@ -71,8 +72,6 @@ public class PlaylistActivity extends BaseActivity {
         parent.addView(thisActivity);
         ButterKnife.bind(this);
         realm = Realm.getInstance(this);
-
-
 
 /*--Grabbing the bundle from libraryAlbumViewerActivity.class ---*/
         Bundle b = getIntent().getExtras();
@@ -97,12 +96,20 @@ public class PlaylistActivity extends BaseActivity {
         }else {
             toolbarRightTextView.setText("1 of "+albumSize);
         }
-    }
 
+        //initialize text-to-speech
+        tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (pager.getCurrentItem() == 0) {
+                    if (ttsValue == true) {
+                        String title = ((TextView) pager.getChildAt(0).findViewById(R.id.card_title_text)).getText().toString();
+                        tts.speak(title, TextToSpeech.QUEUE_FLUSH, null);
+                    }
+                }
+            }
+        });
 
-    @Override
-    protected void onResume() {
-        super.onResume();
 
         //Making the layout that displays our updating slide position/total where the total is based on the amount of images we have.toolbarRightTextView.setText(1 +" of "+albumSize );
         CharSequence albumTitle = albumQuery.get(0).getTitle().toString();
@@ -111,25 +118,21 @@ public class PlaylistActivity extends BaseActivity {
         this.getSupportActionBar().setTitle(albumTitle);
 
         //SETTING UP VIEWPAGER AND ADAPTER
-            pager = (CustomViewPager) findViewById(R.id.view_pager);
-            PlaylistFragmentAdapter playlistFragmentAdapter = new PlaylistFragmentAdapter(getSupportFragmentManager());
-            pager.setAdapter(playlistFragmentAdapter);
-            playlistFragmentAdapter.notifyDataSetChanged();
-            pager.setPagingEnabled(false);
-            pager.setOffscreenPageLimit(2);
+        pager = (CustomViewPager) findViewById(R.id.view_pager);
+        PlaylistFragmentAdapter playlistFragmentAdapter = new PlaylistFragmentAdapter(getSupportFragmentManager());
+        pager.setAdapter(playlistFragmentAdapter);
+        playlistFragmentAdapter.notifyDataSetChanged();
+        pager.setPagingEnabled(false);
+        pager.setOffscreenPageLimit(1);
 
-            //initialize text-to-speech
-            tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
-                @Override
-                public void onInit(int status) {
-                    if (pager.getCurrentItem() == 0) {
-                        if (ttsValue == true) {
-                            String title = ((TextView) pager.getChildAt(0).findViewById(R.id.card_title_text)).getText().toString();
-                            tts.speak(title, TextToSpeech.QUEUE_FLUSH, null);
-                        }
-                    }
-                }
-            });
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+
 
             //A listener that updates the textview in the toolbar on viewpager position out of total pages everytime we change pages.
             pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -142,7 +145,6 @@ public class PlaylistActivity extends BaseActivity {
                 currentAlbPosToolbar = pager.getCurrentItem() + 1;
                 toolbarCountDownText = currentAlbPosToolbar + " of " + albumSize;
                 toolbarRightTextView.setText(toolbarCountDownText);
-
                 String title = ((TextView) pager.findViewWithTag(pager.getCurrentItem())).getText().toString();
                 tts.speak(title, TextToSpeech.QUEUE_FLUSH, null);
             }
@@ -174,6 +176,7 @@ public class PlaylistActivity extends BaseActivity {
     //Here we call for our new fragments to be created.
     //We give them a position and albumID and use those parameters to create a new instance of Playlistfragment.
     class PlaylistFragmentAdapter extends FragmentStatePagerAdapter {
+
         private Map<Integer,PlaylistFragment> mPageReferenceMap = new HashMap<Integer, PlaylistFragment>();
 
         public PlaylistFragmentAdapter(FragmentManager fm) {
@@ -246,13 +249,6 @@ public class PlaylistActivity extends BaseActivity {
     }
 
 /*--ONCLICK METHODS----------------------------------------------------------------------------------------*/
-    @OnClick(R.id.fab_go_next)
-    public void onGoNextClick(View v) {
-        int index = pager.getCurrentItem();
-        PlaylistFragmentAdapter adapter = ((PlaylistFragmentAdapter)pager.getAdapter());
-        PlaylistFragment fragment = adapter.getFragment(index);
-        fragment.countDownRestLast();
-    }
 
     @OnClick(R.id.fab_play_playlist_next)
     public void onPlayPlaylistNextClick(View v) {
@@ -266,6 +262,16 @@ public class PlaylistActivity extends BaseActivity {
             fragment.countDownTimerTimed();
         }
     }
+
+    @OnClick(R.id.fab_go_next)
+    public void onGoNextClick(View v) {
+        int index = pager.getCurrentItem();
+        PlaylistFragmentAdapter adapter = ((PlaylistFragmentAdapter)pager.getAdapter());
+        PlaylistFragment fragment = adapter.getFragment(index);
+        fragment.countDownRestLast();
+    }
+
+
 
 }
 
