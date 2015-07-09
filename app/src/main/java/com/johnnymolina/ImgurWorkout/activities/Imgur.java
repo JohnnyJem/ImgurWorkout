@@ -4,13 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -39,11 +37,11 @@ import java.security.SecureRandom;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnTextChanged;
 import io.realm.Realm;
 
 public class Imgur extends BaseActivity {
     protected RelativeLayout imgurList;
-
     //Object declarations
     protected JsonObject album;
     Future<File> downloading;
@@ -54,6 +52,7 @@ public class Imgur extends BaseActivity {
     private String imgurImportLink = "";
     int count = 1;
     String filePath;
+    String link;
 
     //Butterknife View Injections
     @Bind(R.id.playlist_submit_button) ImageButton playlistSubmitButton;
@@ -76,8 +75,17 @@ public class Imgur extends BaseActivity {
         parent.addView(imgurList);
         ButterKnife.bind(this);
 
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        String type = intent.getType();
 
-        downloadLayout.setVisibility(View.GONE);
+        if (Intent.ACTION_SEND.equals(action) && type != null) {
+            if ("text/plain".equals(type)) {
+                handleSendText(intent); // Handle text being sent
+            }
+        }
+
+            downloadLayout.setVisibility(View.GONE);
         websiteLink.setMovementMethod(LinkMovementMethod.getInstance());
 
         // Setup of our adapter for our list view
@@ -146,41 +154,69 @@ public class Imgur extends BaseActivity {
         ButterKnife.unbind(this);
     }
 
-    void resetDownload(String filePathString) {
-        // cancel any pending download
-         filePath= filePathString;
-        if (downloading != null && !downloading.isCancelled()) {
-            downloading.cancel();
-            downloading = null;
-
-            // downloadCount.setText(null);
-            progressBar.setProgress(0);
-            return;
-        }
-
+    @OnTextChanged(value = R.id.import_Img_Link,callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
+    public void OnAfterTextChanged(CharSequence text){
+            fabImportToDatabase.setVisibility(View.INVISIBLE);
     }
 
+    public void handleSendText(Intent intent) {
+        String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
+        if (sharedText != null) {
+           editText.setText(sharedText);
+        }
+    }
 
     public void submitImgurID(){
         imgurImportLink = editText.getText().toString();
         //attempts to loads the JSON album object
-        load();
+        filterImgurImportLink(imgurImportLink);
+        load(link);
         //forces softkeyboard to close on submission
         InputMethodManager imm = (InputMethodManager)getSystemService(getBaseContext().INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getWindow().getCurrentFocus().getWindowToken(), 0);
     }
 
+    public void filterImgurImportLink(String editTextImportLink){
+        link = editTextImportLink;
+        if (link!=null){
+            int endIndex = link.indexOf(" ");
+            if (endIndex == -1) {
+                endIndex = link.length();
+            }
+            int startIndex = endIndex-5;
+            if (startIndex <= -1){
+                startIndex = 0;
+            }
+
+            link = editTextImportLink.substring(startIndex, endIndex);
+        }
+
+    }
+
+
+    public void resetDownload(String filePathString) {
+        // cancel any pending download
+         filePath= filePathString;
+        if (downloading != null && !downloading.isCancelled()) {
+            downloading.cancel();
+            downloading = null;
+            // downloadCount.setText(null);
+            progressBar.setProgress(0);
+        }
+    }
 
     //The following method Loads the IMGUR album Object with ION and uses GSON to read the JSONOBJECTS fields
     //and adds the Album's array of Image Json Objects into our listview
     Future<JsonObject> loading;
-    private void load() {
+     void load(String link) {
+         imgurAdapter.clear();
         if (loading != null && !loading.isDone() && !loading.isCancelled())
             return;
         downloadLayout.setVisibility(View.VISIBLE);
         downloadLayout.setOrientation(LinearLayout.VERTICAL);
         progressView.setVisibility(View.VISIBLE);
-        final String enteredUrl = "https://api.imgur.com/3/album/"+imgurImportLink+".json";
+
+        final String enteredUrl = "https://api.imgur.com/3/album/"+link+".json";
         final String CLIENTID = "3b78168400c66fd";
         // This request loads a URL as JsonObject and invokes
         // a callback on completion.
@@ -193,24 +229,15 @@ public class Imgur extends BaseActivity {
                 .setCallback(new FutureCallback<JsonObject>() {
                     @Override
                     public void onCompleted(Exception e, JsonObject result) {
-
                         // this is called back onto the ui thread, no Activity.runOnUiThread or Handler.post necessary.
-
                         if (e != null) {
                             Toast.makeText(Imgur.this, "Error loading images", Toast.LENGTH_SHORT).show();
                             Toast.makeText(Imgur.this, enteredUrl, Toast.LENGTH_LONG).show();
-
                             return;
                         }
-
                         album = result.getAsJsonObject("data");
-
                         if (album.has("images")) {
-
                             JsonArray images = album.getAsJsonArray("images");
-
-                            playlistSubmitButton.setVisibility(View.INVISIBLE);
-
                             // add the image Json objects to our adapter
                             for (int i = 0; i < images.size(); i++) {
                                 if (images.get(i).isJsonNull()) {
@@ -325,7 +352,6 @@ public class Imgur extends BaseActivity {
             realm.close();
 
             fab.setVisibility(View.INVISIBLE);
-            playlistSubmitButton.setVisibility(View.INVISIBLE);
            } else {
             downloadLayout.setVisibility(View.INVISIBLE);
             Toast.makeText(Imgur.this, "Error saving", Toast.LENGTH_LONG).show();

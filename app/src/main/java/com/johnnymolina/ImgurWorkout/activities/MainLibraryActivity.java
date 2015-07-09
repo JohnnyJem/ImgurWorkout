@@ -70,8 +70,6 @@ public class MainLibraryActivity extends BaseActivity {
     @Override
     protected void onPause() {
         super.onPause();
-
-
         //check if tts is enabled
         if(tts!=null){
             tts.stop();
@@ -82,8 +80,7 @@ public class MainLibraryActivity extends BaseActivity {
 
 
     @Override
-    protected void onDestroy()
-    {
+    protected void onDestroy() {
         realm.close(); // Remember to close Realm when done.
         ButterKnife.unbind(this);
         super.onDestroy();

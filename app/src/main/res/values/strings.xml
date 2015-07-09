@@ -18,7 +18,7 @@
     <string name="title_activity_imgur_api">ImgurApi</string>
     <string name="drawer_open">drawer open</string>
     <string name="drawer_close">drawer close</string>
-    <string name="title_activity_twitter_gson">Import Albums</string>
+    <string name="import_activity_title">Import Imgur Album</string>
     <string name="title_activity_library">Library</string>
     <string name="title_activity_library_image_viewer">Album Viewer</string>
     <string name="title_activity_settings">Settings</string>

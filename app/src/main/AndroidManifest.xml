@@ -22,9 +22,15 @@
             android:launchMode="singleTask">
         </activity>
         <activity
-            android:name="com.johnnymolina.imgurworkout.activities.Imgur"
-            android:label="@string/title_activity_twitter_gson"
+            android:name=".activities.Imgur"
+            android:label="@string/import_activity_title"
             android:launchMode="singleTask" >
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+
         </activity>
         <activity
             android:name="com.johnnymolina.imgurworkout.activities.MainLibraryActivity"
@@ -33,7 +39,6 @@
             android:windowSoftInputMode="stateHidden" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

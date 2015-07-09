@@ -22,8 +22,6 @@ import java.io.File;
 import com.nanotasks.BackgroundWork;
 import com.nanotasks.Completion;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
 import icepick.Icepick;
 
 

@@ -109,8 +109,8 @@ public class RealmRecyclerViewImgurAlbumAdapter extends RealmRecyclerViewAdapter
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int i) {
         AlbumViewHolder avh = (AlbumViewHolder) viewHolder;
         ImgurAlbum album = getItem(i);
-        avh.title.setText(album.getTitle());
 
+        avh.title.setText(album.getTitle());
 
         if (album.getDescription().contains("null")) {
             avh.description.setText(album.getDescription());
@@ -122,8 +122,6 @@ public class RealmRecyclerViewImgurAlbumAdapter extends RealmRecyclerViewAdapter
         String imageId = album.getImages().get(0).getId();
         String imageLink = album.getImages().get(0).getLink().substring(album.getImages().get(0).getLink().lastIndexOf('/') + 1);
         String imageSmallUrl = "http://i.imgur.com/" + imageId + "t.png";
-
-        //start with Glide
 
         //start with Glide
         Glide.with(context)
