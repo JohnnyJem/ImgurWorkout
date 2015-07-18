@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#4CAF50</color>
-    <color name="colorPrimaryDark">#388E3C</color>
-    <color name="colorAccent">#8BC34A</color>
-
-
     <!-- MAIN PALLETE-->
-    <color name="toolbarcolor">#2b323c</color>
-    <color name="backgroundcolor">#121314</color>
+    <color name="colorPrimary">#2B2A30</color>
+    <color name="colorPrimaryDark">#2B2A30</color>
+    <color name="colorAccent">#8BC34A</color>
+    <color name="backgroundcolor">#232228</color>
     <color name="sidebarcolor">#020202</color>
     <color name="sidebarcolormisc">#091540</color>
     <color name="textcolorbold">#4E76C9</color>

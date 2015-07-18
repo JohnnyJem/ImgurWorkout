@@ -133,7 +133,8 @@ public class BaseActivity extends ActionBarActivity{
     }
 
     /**Called to start the Playlist **/
-    public void goToImgurImportActivity(View view){
+
+    public void goToImgurImportActivity(){
         Intent intent = new Intent(this,Imgur.class);
         startActivity(intent);
     }

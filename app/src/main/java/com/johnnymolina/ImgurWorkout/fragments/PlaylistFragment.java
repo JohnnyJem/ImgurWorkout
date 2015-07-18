@@ -55,6 +55,7 @@ public class PlaylistFragment extends Fragment {
     @Icicle int time;
     @Icicle int timeRest;
     String imageLink;
+    Boolean booleanAutoContinue = true;
 
     //Butterknife Injections
     CardView cardViewFragment;
@@ -101,7 +102,6 @@ public class PlaylistFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
     }
 
     @Override
@@ -121,6 +121,7 @@ public class PlaylistFragment extends Fragment {
         albumImages = realm.where(ImgurImage.class)
                 .contains("album",imagesAlbumID, false)
                 .findAll();
+
 
         if (savedInstanceState == null) {
             time = albumImages.get(imagesFragmentPosition).getSlideValue();
@@ -162,7 +163,6 @@ public class PlaylistFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
         if (imagesFragmentPosition == 0) {
             if (albumImages.get(imagesFragmentPosition).isSwitchValue()) {
                 if (spinnerTotal > 0) {
@@ -182,6 +182,7 @@ public class PlaylistFragment extends Fragment {
                     repsAndTimeCountDown.setText("Ready to Countdown");
                     ((PlaylistActivity) getActivity()).findViewById(R.id.fab_play_playlist_next).setVisibility(View.VISIBLE);
                     ((PlaylistActivity) getActivity()).findViewById(R.id.fab_go_next).setVisibility(View.INVISIBLE);
+
                 } else {
                     countDownTimerTimed();
                     ((PlaylistActivity) getActivity()).findViewById(R.id.fab_play_playlist_next).setVisibility(View.VISIBLE);
@@ -242,9 +243,11 @@ if(isVisibleToUser && isResumed()) {
         }
     } else {
         if (timer==null) {
-            repsAndTimeCountDown.setText("Ready to Countdown");
             ((PlaylistActivity) getActivity()).findViewById(R.id.fab_play_playlist_next).setVisibility(View.VISIBLE);
             ((PlaylistActivity) getActivity()).findViewById(R.id.fab_go_next).setVisibility(View.INVISIBLE);
+            if (booleanAutoContinue){
+                countDownTimerCountdown();
+            }
         }else{
             countDownTimerTimed();
             ((PlaylistActivity) getActivity()).findViewById(R.id.fab_play_playlist_next).setVisibility(View.VISIBLE);
@@ -367,6 +370,7 @@ if(isVisibleToUser && isResumed()) {
             if (timer!=null){
                 timer.cancel();
             }
+
            timer = new CountDownTimer(time * 1000, 350) {
                 public void onTick(long millisUntilFinished) {
                     repsAndTimeCountDown.setText("" + String.valueOf(Math.round(millisUntilFinished * 0.001f)));
@@ -376,12 +380,54 @@ if(isVisibleToUser && isResumed()) {
                     repsAndTimeCountDown.setText("");
                     ((PlaylistActivity) getActivity()).findViewById(R.id.fab_play_playlist_next).setVisibility(View.INVISIBLE);
                     ((PlaylistActivity) getActivity()).findViewById(R.id.fab_go_next).setVisibility(View.VISIBLE);
+                if (booleanAutoContinue){
+                    countDownRestLast();
+                }
                 }
             }.start();
         }else {
             repsAndTimeCountDown.setText("");
             ((PlaylistActivity) getActivity()).findViewById(R.id.fab_go_next).setVisibility(View.VISIBLE);
         }
+    }
+
+    public void countDownTimerCountdown() {
+        ((PlaylistActivity) getActivity()).findViewById(R.id.fab_play_playlist_next).setVisibility(View.INVISIBLE);
+
+        if (time > 1) {
+            if (timer != null) {
+                timer.cancel();
+            }
+        }
+            if (booleanAutoContinue) {
+                ((PlaylistActivity) getActivity()).findViewById(R.id.fab_play_playlist_next).setVisibility(View.INVISIBLE);
+
+                timer = new CountDownTimer(6 * 1000, 350) {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+
+                        if (Math.round(millisUntilFinished * 0.001f)==6){
+                            repsAndTimeCountDown.setText("READY");
+                        }
+                        if (Math.round(millisUntilFinished * 0.001f)==4){
+                            repsAndTimeCountDown.setText("SET");
+                        }
+                        if (Math.round(millisUntilFinished * 0.001f)==2){
+                            repsAndTimeCountDown.setText("GO!");
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        countDownTimerTimed();
+                    }
+                }.start();
+            }else{
+                countDownTimerTimed();
+            }
+
     }
 
     public void setCountText(){

@@ -130,6 +130,7 @@ public class RealmRecyclerViewImgurAlbumAdapter extends RealmRecyclerViewAdapter
                 .load("file:///data/data/com.johnnymolina.imgurworkout/files/"+imageLink)
                 .asBitmap()
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .fitCenter()
                 .placeholder(R.drawable.placeholderdrawable)
                 .error(R.drawable.imageplaceholder)
                 .into(avh.image);

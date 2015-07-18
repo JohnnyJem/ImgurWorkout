@@ -4,6 +4,8 @@
     tools:context="com.johnnymolina.imgurworkout.activities.BaseActivity">
     <item android:id="@+id/action_settings" android:title="@string/action_settings"
         android:orderInCategory="100" app:showAsAction="never" />
+
     <item android:id="@+id/action_feedback" android:title="Feedback"
         android:orderInCategory="100" app:showAsAction="never"/>
+
 </menu>

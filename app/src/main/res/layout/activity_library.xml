@@ -30,8 +30,20 @@
                     android:layout_alignParentLeft="true"
                     android:layout_weight="1"
                     android:singleLine="true"
-                    android:hint="Search Albums"/>
+                    android:hint="Search Albums"
+                    android:visibility="gone"/>
             </RelativeLayout>
+            <com.daimajia.slider.library.SliderLayout
+                android:id="@+id/slider"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                />
+            <com.daimajia.slider.library.Indicators.PagerIndicator
+                android:id="@+id/custom_indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                />
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

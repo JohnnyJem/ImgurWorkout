@@ -66,6 +66,7 @@
         \n\nPlease consult your physician before attempting any workout routines. Software is provided as-is and in no event shall the author be liable for any special, direct, indirect, or consequential damages or any damages whatsoever resulting from injury, loss of use, data or profits, whether in action of contract, negligence or other tortious action, arising out or in connection with the use or performance of this software."
         </string>
     <string name="thanks_to">"\nThis app was made by Johnny Molina.\n\nThanks to:\n \nMy Family for their support. Including Michael for his feedback and ideas.\n \nThe users over at StackOverflow for helping me out with my newbie questions.\n \nManelsen from reddit for important feedback."</string>
+    <string name="add_new_album">add_new_album</string>
 
 
 </resources>

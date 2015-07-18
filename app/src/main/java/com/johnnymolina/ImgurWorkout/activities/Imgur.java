@@ -75,17 +75,8 @@ public class Imgur extends BaseActivity {
         parent.addView(imgurList);
         ButterKnife.bind(this);
 
-        Intent intent = getIntent();
-        String action = intent.getAction();
-        String type = intent.getType();
 
-        if (Intent.ACTION_SEND.equals(action) && type != null) {
-            if ("text/plain".equals(type)) {
-                handleSendText(intent); // Handle text being sent
-            }
-        }
-
-            downloadLayout.setVisibility(View.GONE);
+        downloadLayout.setVisibility(View.GONE);
         websiteLink.setMovementMethod(LinkMovementMethod.getInstance());
 
         // Setup of our adapter for our list view
@@ -106,15 +97,19 @@ public class Imgur extends BaseActivity {
                         .placeholder(R.drawable.imageplaceholder)
                         .error(R.drawable.imageplaceholder)
                         .into(imageView);
+
                 // Set the Title and Description TextViews
                 // first checking if the json object has a value for title and description
                 TextView title = (TextView)convertView.findViewById(R.id.imgur_img_title);
+
                 if(image.get("title").isJsonNull()) {
                     title.setText("");
                 }else{
                     title.setText(image.get("title").getAsString());
                 }
+
                 TextView description = (TextView)convertView.findViewById(R.id.imgur_img_description);
+
                 if(image.get("description").isJsonNull()) {
                     description.setText("");
                 }else{
@@ -146,6 +141,25 @@ public class Imgur extends BaseActivity {
             }
         });
 
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        String type = intent.getType();
+
+        if (Intent.ACTION_SEND.equals(action) && type != null) {
+            if ("text/plain".equals(type)) {
+                handleSendText(intent); // Handle text being sent
+                submitIntentImgurID();
+            }
+        }
+
+        Bundle b = getIntent().getExtras();
+        if (b!=null){
+            String link = b.getString("link");
+            handleTextFromSlideShow(link);
+            submitIntentImgurID();
+        }
+
+
     }
 
     @Override
@@ -166,14 +180,29 @@ public class Imgur extends BaseActivity {
         }
     }
 
+    public void handleTextFromSlideShow(String string){
+        if (string!=null){
+            editText.setText(string);
+        }
+    }
+
     public void submitImgurID(){
         imgurImportLink = editText.getText().toString();
         //attempts to loads the JSON album object
         filterImgurImportLink(imgurImportLink);
         load(link);
         //forces softkeyboard to close on submission
+
         InputMethodManager imm = (InputMethodManager)getSystemService(getBaseContext().INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getWindow().getCurrentFocus().getWindowToken(), 0);
+
+    }
+    public void submitIntentImgurID(){
+        imgurImportLink = editText.getText().toString();
+        //attempts to loads the JSON album object
+        filterImgurImportLink(imgurImportLink);
+        load(link);
+        //forces softkeyboard to close on submission
     }
 
     public void filterImgurImportLink(String editTextImportLink){

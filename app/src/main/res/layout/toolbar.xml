@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
 
-    android:background="@color/toolbarcolor"
+    android:background="@color/colorPrimary"
     android:minHeight="@dimen/abc_action_bar_default_height_material">
 
         <TextView
@@ -20,5 +20,18 @@
             android:paddingLeft="5dp"
             android:paddingRight="10dp"
             android:visibility="invisible"/>
+    <ImageButton
+        android:id="@+id/add_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/ic_add"
+        android:layout_gravity="right"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="10dp"
+        android:visibility="invisible"/>
+
 
     </android.support.v7.widget.Toolbar>
