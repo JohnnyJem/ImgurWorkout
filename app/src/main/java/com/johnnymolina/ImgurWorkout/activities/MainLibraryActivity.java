@@ -3,18 +3,12 @@ package com.johnnymolina.imgurworkout.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.LayoutInflater;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -24,22 +18,17 @@ import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
 import com.johnnymolina.imgurworkout.R;
-import com.johnnymolina.imgurworkout.adapters.RealmRecyclerViewImgurAlbumAdapter;
 import com.johnnymolina.imgurworkout.adapters.RealmImgurAlbumModelAdapter;
+import com.johnnymolina.imgurworkout.adapters.RealmRecyclerViewImgurAlbumAdapter;
 import com.johnnymolina.imgurworkout.customViews.SimpleDividerItemDecoration;
 import com.johnnymolina.imgurworkout.network.model.ImgurAlbum;
-import com.johnnymolina.imgurworkout.network.model.ImgurImage;
 import com.koushikdutta.async.future.Future;
-import com.koushikdutta.async.future.FutureCallback;
-import com.koushikdutta.ion.Ion;
-import com.koushikdutta.ion.ProgressCallback;
 
 import java.io.File;
 import java.util.HashMap;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import butterknife.OnTextChanged;
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -58,7 +47,6 @@ public class MainLibraryActivity extends BaseActivity implements BaseSliderView.
     @Bind(R.id.search_edit_text) EditText searchEditText;
     @Bind(R.id.slider) SliderLayout mDemoSlider;
     @Bind(R.id.custom_indicator) PagerIndicator pagerIndicator;
-    @Bind(R.id.add_button) ImageButton addToolbarButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +58,7 @@ public class MainLibraryActivity extends BaseActivity implements BaseSliderView.
 
 
 
-
+        //TODO: Use alternative HashMap implementation that works well with android framework.(less memory)
         url_maps = new HashMap<String, String>();
         url_maps.put("Fundamental Bodyweight Exercises","http://i.imgur.com/ZcwYxMJb.jpg");
         url_maps.put("Undoing the Damage of Sitting", "http://i.imgur.com/ppTmboSb.jpg");
@@ -110,24 +98,21 @@ public class MainLibraryActivity extends BaseActivity implements BaseSliderView.
         mDemoSlider.setDuration(4000);
         mDemoSlider.addOnPageChangeListener(this);
 
-
-
         //Adapter configuration
         adapter = new RealmRecyclerViewImgurAlbumAdapter();
         RecyclerView rv = (RecyclerView)findViewById(R.id.rv);
-        rv.setLayoutManager(new GridLayoutManager(getBaseContext(),2));
+        rv.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         rv.addItemDecoration(new SimpleDividerItemDecoration(getBaseContext()));
         rv.setAdapter(adapter);
 
         //SearchView configuration
         searchEditText.clearFocus();
 
-        addToolbarButton.setVisibility(View.VISIBLE);
     }
 
-    @Override @OnClick(R.id.add_button)
-    public void goToImgurImportActivity() {
-        super.goToImgurImportActivity();
+    @Override
+    public void goToImgurImportActivity(View v) {
+        super.goToImgurImportActivity(v);
     }
 
     @Override
@@ -227,10 +212,8 @@ public class MainLibraryActivity extends BaseActivity implements BaseSliderView.
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
-        }
-        if (id == R.id.add_new_album) {
-            goToImgurImportActivity();
+            Intent intent = new Intent(this,Settings.class);
+            startActivity(intent);
             return true;
         }
 

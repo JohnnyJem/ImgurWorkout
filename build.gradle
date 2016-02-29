@@ -4,13 +4,10 @@ buildscript {
     repositories {
         jcenter()
         mavenCentral()
-        maven {
-            url 'https://repos.zeroturnaround.com/nexus/content/repositories/zt-public-releases'
-        }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.2.3'
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4'
+        classpath 'com.android.tools.build:gradle:2.0.0-beta6'
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
         classpath 'me.tatarka:gradle-retrolambda:3.1.0'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -25,27 +22,4 @@ allprojects {
             url 'https://clojars.org/repo/'
         }
     }
-}
-
-ext {
-    // minSdk = 14
-    //targetSdk = 22
-    //buildToolsVersion = '22.0.1'
-    //compileSdkVersion = 22
-
-    // javaSourceCompatibility = JavaVersion.VERSION_1_7
-    //javaTargetCompatibility = JavaVersion.VERSION_1_7
-
-    // Libraries
-    appcompat7Version = '22.0.0'
-    recyclerviewVersion = '22.1.1'
-    fragmentargsVersion = '2.1.0'
-    butterknifeVersion = '7.0.0'
-    dagger2Version = '2.0.1'
-    icepickVersion = '3.0.2'
-
-    // Test Libs
-    robolectricVersion = '2.4'
-    junitVersion = '4.12'
-    mockitoVersion = '1.9.5'
 }

@@ -5,8 +5,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -16,18 +16,16 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.johnnymolina.imgurworkout.R;
+import com.nanotasks.BackgroundWork;
+import com.nanotasks.Completion;
 import com.nanotasks.Tasks;
 
 import java.io.File;
-import com.nanotasks.BackgroundWork;
-import com.nanotasks.Completion;
 
 import icepick.Icepick;
 
 
-public class BaseActivity extends ActionBarActivity{
-
-
+public class BaseActivity extends AppCompatActivity{
 
     //Declare Titles And Icons in their respective Arrays For Our Navigation Drawer List View
     String TITLES[] = {"Albums","Log","Import","Settings","Tutorial","About"};
@@ -134,15 +132,10 @@ public class BaseActivity extends ActionBarActivity{
 
     /**Called to start the Playlist **/
 
-    public void goToImgurImportActivity(){
+    public void goToImgurImportActivity(View v){
         Intent intent = new Intent(this,Imgur.class);
         startActivity(intent);
     }
-
-
-
-
-
 
 
     public void switchTts(boolean b){

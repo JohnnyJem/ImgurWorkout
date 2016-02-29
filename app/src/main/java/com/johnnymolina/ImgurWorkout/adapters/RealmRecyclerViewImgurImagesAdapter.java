@@ -26,8 +26,6 @@ public class RealmRecyclerViewImgurImagesAdapter extends RealmRecyclerViewAdapte
     //http://gradlewhy.ghost.io/realm-results-with-recyclerview/
     Context context;
 
-
-
     private class AlbumViewHolder extends RecyclerView.ViewHolder {
         public ImageView image;
         public TextView title;

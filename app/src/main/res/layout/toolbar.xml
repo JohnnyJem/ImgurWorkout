@@ -20,18 +20,4 @@
             android:paddingLeft="5dp"
             android:paddingRight="10dp"
             android:visibility="invisible"/>
-    <ImageButton
-        android:id="@+id/add_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:background="@drawable/ic_add"
-        android:layout_gravity="right"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:paddingLeft="5dp"
-        android:paddingRight="10dp"
-        android:visibility="invisible"/>
-
-
     </android.support.v7.widget.Toolbar>

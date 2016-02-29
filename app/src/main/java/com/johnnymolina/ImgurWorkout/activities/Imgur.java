@@ -1,6 +1,7 @@
 package com.johnnymolina.imgurworkout.activities;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
 import android.view.KeyEvent;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.johnnymolina.imgurworkout.BuildConfig;
 import com.johnnymolina.imgurworkout.R;
 import com.johnnymolina.imgurworkout.network.model.ImgurAlbum;
 import com.johnnymolina.imgurworkout.network.model.ImgurImage;
@@ -246,7 +248,7 @@ public class Imgur extends BaseActivity {
         progressView.setVisibility(View.VISIBLE);
 
         final String enteredUrl = "https://api.imgur.com/3/album/"+link+".json";
-        final String CLIENTID = "3b78168400c66fd";
+        final String CLIENTID = BuildConfig.MY_IMGUR_API_KEY; //See readme for api key
         // This request loads a URL as JsonObject and invokes
         // a callback on completion.
         // This request loads a URL as JsonObject and invokes

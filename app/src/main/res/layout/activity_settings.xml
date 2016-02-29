@@ -27,8 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
-        android:text="Clear System Cache"
-        app:delayClick="false"/>
+        android:text="Clear System Cache"/>
         <Space
             android:layout_width="match_parent"
             android:layout_height="10dp" />
@@ -43,8 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
-            android:text="Clear Temporary Image Cache"
-            app:delayClick="false"/>
+            android:text="Clear Temporary Image Cache"/>
         <Space
             android:layout_width="match_parent"
             android:layout_height="10dp" />
