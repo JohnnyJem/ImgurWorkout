@@ -3,8 +3,8 @@ package com.johnnymolina.imgurworkout.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -101,7 +101,7 @@ public class MainLibraryActivity extends BaseActivity implements BaseSliderView.
         //Adapter configuration
         adapter = new RealmRecyclerViewImgurAlbumAdapter();
         RecyclerView rv = (RecyclerView)findViewById(R.id.rv);
-        rv.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        rv.setLayoutManager(new GridLayoutManager(getBaseContext(), 2));
         rv.addItemDecoration(new SimpleDividerItemDecoration(getBaseContext()));
         rv.setAdapter(adapter);
 
